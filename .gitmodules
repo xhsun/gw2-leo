@@ -1,0 +1,3 @@
+[submodule "android-studio-docker"]
+	path = android-studio-docker
+	url = git@github.com:xhsun/android-studio-docker.git
