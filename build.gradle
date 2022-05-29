@@ -1,4 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.hiltVersion = '2.42'
+    ext.kotlinVersion = "1.6.21"
+    dependencies {
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
 plugins {
     id 'com.android.application' version '7.2.1' apply false
     id 'com.android.library' version '7.2.1' apply false
@@ -7,4 +16,27 @@ plugins {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    // Sdk and tools
+    minSdkVersion = 28
+    targetSdkVersion = 32
+    compileSdkVersion = 32
+
+
+    coroutinesVersion= '1.6.2'
+    glidVersion = '4.13.2'
+    roomVersion = "2.4.2"
+    lifecycleVersion = "2.5.0-rc01"
+    retrofitVersion = "2.9.0"
+    moshiVersion = '1.13.0'
+    okhttpInterceptorVersion = '4.9.0'
+
+    archVersion = "2.1.0"
+    junitVersion = '5.8.2'
+    mockVersion = '1.12.4'
+    assertjVersion = '3.22.0'
+    espressoVersion = '3.4.0'
+    androidXTextVersion = '1.4.0'
 }
