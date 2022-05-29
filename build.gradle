@@ -24,7 +24,9 @@ ext {
     targetSdkVersion = 32
     compileSdkVersion = 32
 
-
+    cameraxVersion = "1.1.0-beta01"
+    zxingVersion = '3.5.0'
+    qrScannerVersion = "17.0.2"
     coroutinesVersion= '1.6.2'
     glidVersion = '4.13.2'
     roomVersion = "2.4.2"
