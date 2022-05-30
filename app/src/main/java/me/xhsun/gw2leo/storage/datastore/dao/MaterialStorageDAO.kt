@@ -1,5 +1,6 @@
 package me.xhsun.gw2leo.storage.datastore.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorageBase
@@ -17,5 +18,5 @@ interface MaterialStorageDAO {
 
     @Transaction
     @Query("SELECT * FROM materialstorage WHERE accountID = :accountID")
-    fun getAll(accountID: String): List<MaterialStorage>
+    fun getAll(accountID: String): LiveData<List<MaterialStorage>>
 }

@@ -24,6 +24,7 @@ ext {
     targetSdkVersion = 32
     compileSdkVersion = 32
 
+    loggerVersion = "5.0.1"
     qrScannerVersion = "1.4.2"
     coroutinesVersion = '1.6.2'
     glidVersion = '4.13.2'
