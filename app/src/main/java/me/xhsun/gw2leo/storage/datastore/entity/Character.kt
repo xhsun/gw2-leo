@@ -8,12 +8,12 @@ import androidx.room.PrimaryKey
 @Entity(
     foreignKeys = [ForeignKey(
         entity = Account::class,
-        parentColumns = ["API"],
-        childColumns = ["API"],
+        parentColumns = ["id"],
+        childColumns = ["accountID"],
         onDelete = CASCADE
     )]
 )
 data class Character(
     @PrimaryKey val name: String,
-    val API: String
+    val accountID: String
 )

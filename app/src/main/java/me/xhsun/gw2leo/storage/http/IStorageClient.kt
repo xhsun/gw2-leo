@@ -8,6 +8,13 @@ import retrofit2.http.Query
 
 interface IStorageClient {
     /**
+     * Returns information about player accounts
+     * @param auth HTTP header to your request with the value Bearer <API key>
+     */
+    @GET("account")
+    fun getAccount(@Header("Authorization") auth: String): AccountDTO
+
+    /**
      * Return an array of characters by name
      * @param auth HTTP header to your request with the value Bearer <API key>
      */

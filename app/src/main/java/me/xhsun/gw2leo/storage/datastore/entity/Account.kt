@@ -5,5 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Account(
-    @PrimaryKey val API: String,
+    @PrimaryKey val id: String,
+    val name: String,
+    val API: String
 )
