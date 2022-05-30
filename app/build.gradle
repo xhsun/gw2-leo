@@ -33,7 +33,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     packagingOptions {
@@ -77,12 +77,7 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpInterceptorVersion"
     // QR Code
-    implementation "androidx.camera:camera-core:$cameraxVersion"
-    implementation "androidx.camera:camera-camera2:$cameraxVersion"
-    implementation "androidx.camera:camera-lifecycle:$cameraxVersion"
-    implementation "androidx.camera:camera-view:$cameraxVersion"
-    implementation "com.google.zxing:core:$zxingVersion"
-    implementation "com.google.mlkit:barcode-scanning:$qrScannerVersion"
+    implementation("io.github.g00fy2.quickie:quickie-bundled:$qrScannerVersion")
 
 
     testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
