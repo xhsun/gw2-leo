@@ -1,5 +1,6 @@
-package me.xhsun.gw2leo.storage.http
+package me.xhsun.gw2leo.http
 
+import me.xhsun.gw2leo.account.http.model.AccountDTO
 import me.xhsun.gw2leo.storage.http.model.*
 import retrofit2.http.GET
 import retrofit2.http.Header

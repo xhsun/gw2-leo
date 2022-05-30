@@ -3,6 +3,7 @@ package me.xhsun.gw2leo.storage.datastore.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import me.xhsun.gw2leo.account.datastore.entity.Account
 
 @Entity(
     tableName = "materialstorage",

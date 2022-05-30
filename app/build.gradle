@@ -52,7 +52,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     // Room
     implementation "androidx.room:room-runtime:$roomVersion"
-    annotationProcessor"androidx.room:room-compiler:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     testImplementation "androidx.room:room-testing:$roomVersion"
@@ -79,7 +79,7 @@ dependencies {
     // QR Code
     implementation("io.github.g00fy2.quickie:quickie-bundled:$qrScannerVersion")
 
-
+    implementation "io.github.serpro69:kotlin-faker:$fakerVersion"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
     testImplementation "io.mockk:mockk:$mockVersion"
     testImplementation "io.mockk:mockk-agent-jvm:$mockVersion"

@@ -25,7 +25,7 @@ ext {
     compileSdkVersion = 32
 
     qrScannerVersion = "1.4.2"
-    coroutinesVersion= '1.6.2'
+    coroutinesVersion = '1.6.2'
     glidVersion = '4.13.2'
     roomVersion = "2.4.2"
     lifecycleVersion = "2.5.0-rc01"
@@ -33,6 +33,7 @@ ext {
     moshiVersion = '1.13.0'
     okhttpInterceptorVersion = '4.9.0'
 
+    fakerVersion = "1.11.0"
     archVersion = "2.1.0"
     junitVersion = '5.8.2'
     mockVersion = '1.12.4'

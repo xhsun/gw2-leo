@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.storage.http.model
+package me.xhsun.gw2leo.account.http.model
 
 data class AccountDTO(
     val id: String,

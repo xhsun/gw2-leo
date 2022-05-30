@@ -1,7 +1,7 @@
-package me.xhsun.gw2leo.storage.datastore.dao
+package me.xhsun.gw2leo.account.datastore.dao
 
 import androidx.room.*
-import me.xhsun.gw2leo.storage.datastore.entity.Account
+import me.xhsun.gw2leo.account.datastore.entity.Account
 
 @Dao
 interface AccountDAO {

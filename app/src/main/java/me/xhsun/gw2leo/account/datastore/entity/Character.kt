@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.storage.datastore.entity
+package me.xhsun.gw2leo.account.datastore.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
