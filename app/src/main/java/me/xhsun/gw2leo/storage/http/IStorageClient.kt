@@ -6,7 +6,7 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface IStorageRepository {
+interface IStorageClient {
     /**
      * Return an array of characters by name
      * @param auth HTTP header to your request with the value Bearer <API key>
