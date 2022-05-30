@@ -5,7 +5,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-object StorageClient {
+object HttpClient {
     private const val BASE_URL = "https://api.guildwars2.com/v2/"
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -15,5 +15,5 @@ object StorageClient {
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    val client: IStorageClient by lazy { retrofit.create(IStorageClient::class.java) }
+    val client: IHttpClient by lazy { retrofit.create(IHttpClient::class.java) }
 }

@@ -21,7 +21,7 @@ import me.xhsun.gw2leo.storage.datastore.entity.StorageBase
     entities = [Account::class, Character::class, Item::class, MaterialStorageBase::class, MaterialType::class, StorageBase::class],
     version = 1
 )
-abstract class StorageDatabase : RoomDatabase() {
+abstract class SQLDatabase : RoomDatabase() {
     abstract val accountDAO: AccountDAO
     abstract val characterDAO: CharacterDAO
     abstract val itemDAO: ItemDAO
@@ -31,16 +31,16 @@ abstract class StorageDatabase : RoomDatabase() {
 
     companion object {
         @Volatile
-        private var INSTANCE: StorageDatabase? = null
+        private var INSTANCE: me.xhsun.gw2leo.datastore.SQLDatabase? = null
 
-        fun getInstance(context: Context): StorageDatabase {
+        fun getInstance(context: Context): me.xhsun.gw2leo.datastore.SQLDatabase {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        StorageDatabase::class.java,
+                        SQLDatabase::class.java,
                         "gw2_leo_database"
                     )
                         .fallbackToDestructiveMigration()

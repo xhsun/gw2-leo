@@ -7,7 +7,7 @@ import me.xhsun.gw2leo.account.datastore.entity.Account
 
 @Entity(
     tableName = "materialstorage",
-    primaryKeys = ["itemID", "API", "categoryID"],
+    primaryKeys = ["itemID", "accountID", "categoryID"],
     foreignKeys = [
         ForeignKey(
             entity = Account::class,

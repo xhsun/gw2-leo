@@ -12,7 +12,7 @@ import me.xhsun.gw2leo.account.datastore.entity.Character
         ForeignKey(
             entity = Character::class,
             parentColumns = ["name"],
-            childColumns = ["characterName"],
+            childColumns = ["storageType"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
@@ -26,7 +26,7 @@ import me.xhsun.gw2leo.account.datastore.entity.Character
 data class StorageBase(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val itemID: Int,
-    val characterName: String,
+    val storageType: String,
     val count: Int,
     @ColumnInfo(defaultValue = "0") val charges: Int,
     @ColumnInfo(defaultValue = "None") val binding: String,

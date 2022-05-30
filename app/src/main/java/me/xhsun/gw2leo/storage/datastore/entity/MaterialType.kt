@@ -6,6 +6,5 @@ import androidx.room.PrimaryKey
 @Entity
 data class MaterialType(
     @PrimaryKey val id: Int,
-    val name: String,
-    val order: Int
+    val name: String
 )
