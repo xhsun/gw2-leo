@@ -6,7 +6,7 @@ import me.xhsun.gw2leo.account.datastore.entity.Character
 @Dao
 interface CharacterDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(vararg characters: Character)
+    fun insertAll(vararg characters: Character): Int
 
     @Delete
     fun bulkDelete(vararg character: Character)

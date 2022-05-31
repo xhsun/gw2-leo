@@ -14,6 +14,6 @@ interface ItemDAO {
     @Delete
     fun bulkDelete(vararg items: Item)
 
-    @Query("SELECT * FROM item WHERE sellable = 1")
-    fun getAllSellable(): List<Item>
+    @Query("SELECT id FROM item WHERE sellable = 1")
+    fun getAllSellableIds(): List<Int>
 }

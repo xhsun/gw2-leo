@@ -10,13 +10,16 @@ interface MaterialStorageDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg items: MaterialStorageBase)
 
-    @Update
-    fun bulkUpdate(items: List<MaterialStorageBase>): Int
-
-    @Delete
-    fun bulkDelete(vararg items: MaterialStorageBase)
+    @Query("DELETE FROM materialstorage WHERE accountID = :accountID")
+    fun bulkDelete(accountID: String)
 
     @Transaction
     @Query("SELECT * FROM materialstorage WHERE accountID = :accountID")
     fun getAll(accountID: String): LiveData<List<MaterialStorage>>
+
+    @Transaction
+    fun bulkUpdate(accountID: String, vararg items: MaterialStorageBase) {
+        bulkDelete(accountID)
+        insertAll(*items)
+    }
 }

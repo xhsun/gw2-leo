@@ -10,13 +10,16 @@ interface StorageDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg items: StorageBase)
 
-    @Update
-    fun bulkUpdate(items: List<StorageBase>): Int
-
-    @Delete
-    fun bulkDelete(vararg items: StorageBase)
+    @Query("DELETE FROM storage WHERE storageType = :storageType")
+    fun bulkDelete(storageType: String)
 
     @Transaction
     @Query("SELECT * FROM storage WHERE storageType = :storageType")
     fun getAll(storageType: String): LiveData<List<Storage>>
+
+    @Transaction
+    fun bulkUpdate(storageType: String, vararg items: StorageBase) {
+        bulkDelete(storageType)
+        insertAll(*items)
+    }
 }

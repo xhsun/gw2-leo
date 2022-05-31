@@ -6,13 +6,13 @@ import me.xhsun.gw2leo.account.datastore.entity.Account
 @Dao
 interface AccountDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg accounts: Account)
+    fun insertAll(vararg accounts: Account): Int
 
     @Delete
     fun delete(account: Account)
 
     @Query("SELECT * FROM account WHERE id= :id LIMIT 1")
-    fun getByID(id: String): Account
+    fun getByID(id: String): Account?
 
     @Query("SELECT * FROM account")
     fun getAll(): List<Account>

@@ -15,4 +15,49 @@ data class Item(
     val sellGold: Int,
     val sellSilver: Int,
     val sellCopper: Int
-)
+) {
+    fun toDAO(): me.xhsun.gw2leo.storage.datastore.entity.Item {
+        return me.xhsun.gw2leo.storage.datastore.entity.Item(
+            id = id,
+            chatLink = chatLink,
+            name = name,
+            icon = icon,
+            description = description,
+            rarity = rarity,
+            level = level,
+            sellable = sellable,
+            buyGold = buyGold,
+            buySilver = buySilver,
+            buyCopper = buyCopper,
+            sellGold = sellGold,
+            sellSilver = sellSilver,
+            sellCopper = sellCopper
+        )
+    }
+
+    fun updatePrice(
+        buyGold: Int,
+        buySilver: Int,
+        buyCopper: Int,
+        sellGold: Int,
+        sellSilver: Int,
+        sellCopper: Int
+    ): Item {
+        return Item(
+            id = id,
+            chatLink = chatLink,
+            name = name,
+            icon = icon,
+            description = description,
+            rarity = rarity,
+            level = level,
+            sellable = sellable,
+            buyGold = buyGold,
+            buySilver = buySilver,
+            buyCopper = buyCopper,
+            sellGold = sellGold,
+            sellSilver = sellSilver,
+            sellCopper = sellCopper
+        )
+    }
+}
