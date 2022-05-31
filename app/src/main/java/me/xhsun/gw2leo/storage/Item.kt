@@ -9,9 +9,11 @@ data class Item(
     val rarity: String,
     val level: Int,
     val sellable: Boolean,
+    val buy: Int,
     val buyGold: Int,
     val buySilver: Int,
     val buyCopper: Int,
+    val sell: Int,
     val sellGold: Int,
     val sellSilver: Int,
     val sellCopper: Int
@@ -26,9 +28,11 @@ data class Item(
             rarity = rarity,
             level = level,
             sellable = sellable,
+            buy = buy,
             buyGold = buyGold,
             buySilver = buySilver,
             buyCopper = buyCopper,
+            sell = sell,
             sellGold = sellGold,
             sellSilver = sellSilver,
             sellCopper = sellCopper
@@ -36,13 +40,11 @@ data class Item(
     }
 
     fun updatePrice(
-        buyGold: Int,
-        buySilver: Int,
-        buyCopper: Int,
-        sellGold: Int,
-        sellSilver: Int,
-        sellCopper: Int
+        buy: Int,
+        sell: Int
     ): Item {
+        val buyPrice = this.parseCoins(buy)
+        val sellPrice = this.parseCoins(sell)
         return Item(
             id = id,
             chatLink = chatLink,
@@ -52,12 +54,29 @@ data class Item(
             rarity = rarity,
             level = level,
             sellable = sellable,
-            buyGold = buyGold,
-            buySilver = buySilver,
-            buyCopper = buyCopper,
-            sellGold = sellGold,
-            sellSilver = sellSilver,
-            sellCopper = sellCopper
+            buy = buy,
+            buyGold = buyPrice.first,
+            buySilver = buyPrice.second,
+            buyCopper = buyPrice.third,
+            sell = sell,
+            sellGold = sellPrice.first,
+            sellSilver = sellPrice.second,
+            sellCopper = sellPrice.third
         )
     }
+
+    /**
+     * Convert given value to coins
+     * @return Triple<gold, silver, copper>
+     */
+    private fun parseCoins(value: Int): Triple<Int, Int, Int> {
+        if (value < 0) return Triple(0, 0, 0)
+        var temp = value
+        val copper = temp % 100
+        temp /= 100
+        val silver = temp % 100
+        val gold = temp / 100
+        return Triple(gold, silver, copper)
+    }
+
 }

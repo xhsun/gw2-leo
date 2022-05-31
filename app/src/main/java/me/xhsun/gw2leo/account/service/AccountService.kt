@@ -29,9 +29,9 @@ class AccountService @Inject constructor(
 
     override fun api(): String {
         return api.ifEmpty {
-            Timber.d("Account API key is empty, attempt to retrieve from cache");
+            Timber.d("Account API key is empty, attempt to retrieve from cache")
             if (accountID.isEmpty()) {
-                Timber.d("Account ID is empty, no way to recovery, ask user to log in");
+                Timber.d("Account ID is empty, no way to recovery, ask user to log in")
                 throw NotLoggedInError()
             }
             val account =
@@ -42,28 +42,28 @@ class AccountService @Inject constructor(
             synchronized(this.name) {
                 name = account.name
             }
-            Timber.d("Account API key retrieved::$api");
+            Timber.d("Account API key retrieved::$api")
             api
         }
     }
 
     override fun accountID(): String {
         if (accountID.isEmpty()) {
-            Timber.d("Account ID is empty, no way to recovery, ask user to log in");
+            Timber.d("Account ID is empty, no way to recovery, ask user to log in")
             throw NotLoggedInError()
         }
         return accountID
     }
 
     override fun update(API: String): Boolean {
-        Timber.d("Start update account information::${API}");
+        Timber.d("Start update account information::${API}")
         var account: Account
         var cacheResult: Boolean
         synchronized(this.api) {
             api = API
             account = gw2Repository.getAccount().toDomain(api)
         }
-        Timber.d("Account information updated, start update cache::${account}");
+        Timber.d("Account information updated, start update cache::${account}")
         synchronized(this.name) {
             name = account.name
         }
@@ -73,7 +73,7 @@ class AccountService @Inject constructor(
         }
         val count = datastore.accountDAO.insertAll(account.toDAO())
         val result = cacheResult && count > 1
-        Timber.d("Account information cache updated::${result}");
+        Timber.d("Account information cache updated::${result}")
         return result
     }
 }

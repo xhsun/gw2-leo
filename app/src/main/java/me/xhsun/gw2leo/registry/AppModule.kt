@@ -9,10 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.xhsun.gw2leo.account.datastore.AccountIDRepository
 import me.xhsun.gw2leo.account.datastore.IAccountIDRepository
-import me.xhsun.gw2leo.account.service.AccountService
-import me.xhsun.gw2leo.account.service.CharacterService
-import me.xhsun.gw2leo.account.service.IAccountService
-import me.xhsun.gw2leo.account.service.ICharacterService
+import me.xhsun.gw2leo.account.service.*
 import me.xhsun.gw2leo.config.DB_NAME
 import me.xhsun.gw2leo.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.http.GW2RepositoryFactory
@@ -65,6 +62,15 @@ class AppModule {
         characterService: ICharacterService
     ): IStorageService {
         return StorageService(updateService, datastore, accountService, characterService)
+    }
+
+    @Provides
+    fun provideRefreshService(
+        accountService: IAccountService,
+        characterService: ICharacterService,
+        storageService: StorageService
+    ): IRefreshService {
+        return RefreshService(accountService, characterService, storageService)
     }
 
     @Provides

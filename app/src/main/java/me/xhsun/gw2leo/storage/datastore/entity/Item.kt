@@ -15,9 +15,11 @@ data class Item(
     val rarity: String,
     val level: Int,
     @ColumnInfo(defaultValue = "true") val sellable: Boolean,
+    @ColumnInfo(defaultValue = "0") val buy: Int,
     @ColumnInfo(defaultValue = "0") val buyGold: Int,
     @ColumnInfo(defaultValue = "0") val buySilver: Int,
     @ColumnInfo(defaultValue = "0") val buyCopper: Int,
+    @ColumnInfo(defaultValue = "0") val sell: Int,
     @ColumnInfo(defaultValue = "0") val sellGold: Int,
     @ColumnInfo(defaultValue = "0") val sellSilver: Int,
     @ColumnInfo(defaultValue = "0") val sellCopper: Int
@@ -32,9 +34,11 @@ data class Item(
             rarity = rarity,
             level = level,
             sellable = sellable,
+            buy = buy,
             buyGold = buyGold,
             buySilver = buySilver,
             buyCopper = buyCopper,
+            sell = sell,
             sellGold = sellGold,
             sellSilver = sellSilver,
             sellCopper = sellCopper

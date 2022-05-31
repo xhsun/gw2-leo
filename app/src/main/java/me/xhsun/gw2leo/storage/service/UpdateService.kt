@@ -11,17 +11,17 @@ class UpdateService @Inject constructor(
     private val retrievalService: IRetrievalService,
     private val accountService: IAccountService
 ) : IUpdateService {
-    
+
     override fun addItems(vararg ids: Int): Boolean {
         if (ids.isEmpty()) {
-            Timber.d("item IDs not provided");
+            Timber.d("item IDs not provided")
             throw IllegalArgumentException("ids")
         }
 
-        Timber.d("Start retrieving item information:: ${ids.size}");
+        Timber.d("Start retrieving item information:: ${ids.size}")
         var items = retrievalService.getItems(*ids)
         if (items.isEmpty()) {
-            Timber.d("Got empty item list");
+            Timber.d("Got empty item list")
             return false
         }
 
@@ -33,26 +33,26 @@ class UpdateService @Inject constructor(
                 Timber.d("Successfully updated items::${items}")
                 true
             } catch (e: Exception) {
-                Timber.d("Failed to updated items:: ${e.message}");
+                Timber.d("Failed to updated items:: ${e.message}")
                 false
             }
         }
-        Timber.d("Failed to updated items");
+        Timber.d("Failed to updated items")
         return false
     }
 
     override fun updateItems(): Boolean {
         val sellable = datastore.itemDAO.getAllSellableIds()
         if (sellable.isEmpty()) {
-            Timber.d("Datastore is empty");
+            Timber.d("Datastore is empty")
             throw IllegalArgumentException("ids")
         }
         val itemIds = sellable.toIntArray()
 
-        Timber.d("Start update item information:: ${itemIds.size}");
+        Timber.d("Start update item information:: ${itemIds.size}")
         var items = retrievalService.getItems(*itemIds)
         if (items.isEmpty()) {
-            Timber.d("Got empty item list");
+            Timber.d("Got empty item list")
             return false
         }
 
@@ -61,17 +61,17 @@ class UpdateService @Inject constructor(
             val result = datastore.itemDAO.bulkUpdate(items.map {
                 it.toDAO()
             }) == items.size
-            Timber.d("Successfully updated items::${result}::${items}");
+            Timber.d("Successfully updated items::${result}::${items}")
             return result
         }
-        Timber.d("Failed to updated items");
+        Timber.d("Failed to updated items")
         return false
     }
 
     override fun updateMaterialCategories(vararg ids: Int): Boolean {
         var typeIds = ids
         if (typeIds.isEmpty()) {
-            Timber.d("Material type IDs not provided, start updating existing material types");
+            Timber.d("Material type IDs not provided, start updating existing material types")
             typeIds = datastore.materialTypeDAO.getAllIds().toIntArray()
         }
 
@@ -79,12 +79,12 @@ class UpdateService @Inject constructor(
             it.toDAO()
         }.toTypedArray()
         if (categories.isEmpty()) {
-            Timber.d("Got empty material categories list");
+            Timber.d("Got empty material categories list")
             return false
         }
 
         val result = datastore.materialTypeDAO.insertAll(*categories) == typeIds.size
-        Timber.d("Successfully updated material types::${result}::${categories}");
+        Timber.d("Successfully updated material types::${result}::${categories}")
         return result
     }
 
@@ -105,7 +105,7 @@ class UpdateService @Inject constructor(
             datastore.materialStorageDAO.bulkUpdate(accountID, *result)
             true
         } catch (e: Exception) {
-            Timber.d("Failed to updated items:: ${e.message}");
+            Timber.d("Failed to updated items:: ${e.message}")
             false
         }
     }
@@ -125,14 +125,14 @@ class UpdateService @Inject constructor(
             datastore.storageDAO.bulkUpdate(DB_BANK_KEY_FORMAT.format(accountID), *result)
             true
         } catch (e: Exception) {
-            Timber.d("Failed to updated items:: ${e.message}");
+            Timber.d("Failed to updated items:: ${e.message}")
             false
         }
     }
 
     override fun updateInventoryItems(characterName: String): Boolean {
         if (characterName.isEmpty()) {
-            Timber.d("character name is empty");
+            Timber.d("character name is empty")
             throw IllegalArgumentException("characterName")
         }
         Timber.d("Start update character storage items:: $characterName")
@@ -148,7 +148,7 @@ class UpdateService @Inject constructor(
             datastore.storageDAO.bulkUpdate(characterName, *result)
             true
         } catch (e: Exception) {
-            Timber.d("Failed to updated items:: ${e.message}");
+            Timber.d("Failed to updated items:: ${e.message}")
             false
         }
     }

@@ -32,7 +32,7 @@ class StorageService @Inject constructor(
 
     override fun materialStorageData(): LiveData<List<MaterialItem>> {
         val accountID = accountService.accountID()
-        Timber.d("Retrieving material storage information::${accountID}");
+        Timber.d("Retrieving material storage information::${accountID}")
         return Transformations.map(datastore.materialStorageDAO.getAll(accountID)) { list ->
             list.filter {
                 it.material.count > 0

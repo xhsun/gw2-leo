@@ -22,7 +22,7 @@ class CharacterService @Inject constructor(
 
     override fun characters(): List<String> {
         if (this.characters.isEmpty()) {
-            Timber.d("Account character list is empty, attempt to retrieve from cache");
+            Timber.d("Account character list is empty, attempt to retrieve from cache")
             synchronized(this.characters) {
                 val characters = datastore.characterDAO.getAll(accountService.accountID()).map {
                     it.name
@@ -34,13 +34,13 @@ class CharacterService @Inject constructor(
                 }
             }
         }
-        Timber.d("Account API key retrieved::${this.characters}");
+        Timber.d("Account API key retrieved::${this.characters}")
         return this.characters
     }
 
     override fun update(): Boolean {
         val accountID = accountService.accountID()
-        Timber.d("Start update character list information::${accountID}");
+        Timber.d("Start update character list information::${accountID}")
         val characters = gw2Repository.getAllCharacterName().toMutableList()
         characters.add(DB_BANK_KEY_FORMAT.format(accountID))
         val characterArr = characters.map {
@@ -54,7 +54,7 @@ class CharacterService @Inject constructor(
             this.characters = characters.toList()
             result = datastore.characterDAO.insertAll(*characterArr) == characters.size
         }
-        Timber.d("Character list information updated::${result}::${this.characters}");
+        Timber.d("Character list information updated::${result}::${this.characters}")
         return result
     }
 }

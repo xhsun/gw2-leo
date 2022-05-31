@@ -241,36 +241,16 @@ class RetrievalService @Inject constructor(
                 response.headers()[TOTAL_PAGE_HEADER]?.toInt()
                     ?: throw HTTPError("Received invalid total page count"),
                 response.body()?.mapNotNull {
-                    val buyPrice = this.parseCoins(it.buys.unitPrice)
-                    val sellPrice = this.parseCoins(it.sells.unitPrice)
                     items[it.id]?.updatePrice(
-                        buyPrice.first,
-                        buyPrice.second,
-                        buyPrice.third,
-                        sellPrice.first,
-                        sellPrice.second,
-                        sellPrice.third
+                        it.buys.unitPrice,
+                        it.sells.unitPrice
                     )
                 } ?: throw HTTPError("Received empty item price list"))
         } else {
             throw HTTPError(response.errorBody().toString())
         }
     }
-
-    /**
-     * Convert given value to coins
-     * @return Triple<gold, silver, copper>
-     */
-    private fun parseCoins(value: Int): Triple<Int, Int, Int> {
-        if (value < 0) return Triple(0, 0, 0)
-        var temp = value
-        val copper = temp % 100
-        temp /= 100
-        val silver = temp % 100
-        val gold = temp / 100
-        return Triple(gold, silver, copper)
-    }
-
+    
     /**
      * @return DEFAULT_RESPONSE_SIZE if array size is too big, otherwise, array size
      */

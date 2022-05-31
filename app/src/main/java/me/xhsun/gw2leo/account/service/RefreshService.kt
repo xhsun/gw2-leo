@@ -1,10 +1,8 @@
-package me.xhsun.gw2leo.service
+package me.xhsun.gw2leo.account.service
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.xhsun.gw2leo.account.error.NotLoggedInError
-import me.xhsun.gw2leo.account.service.IAccountService
-import me.xhsun.gw2leo.account.service.ICharacterService
 import me.xhsun.gw2leo.storage.service.StorageService
 import timber.log.Timber
 import javax.inject.Inject
