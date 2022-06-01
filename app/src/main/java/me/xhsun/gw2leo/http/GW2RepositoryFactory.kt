@@ -6,6 +6,7 @@ import me.xhsun.gw2leo.BuildConfig
 import me.xhsun.gw2leo.config.BASE_URL
 import me.xhsun.gw2leo.config.TIMEOUT
 import me.xhsun.gw2leo.http.interceptor.AuthorizationInterceptor
+import me.xhsun.gw2leo.http.interceptor.AuthorizationStatusInterceptor
 import me.xhsun.gw2leo.http.interceptor.ContentTypeInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +19,8 @@ import javax.inject.Singleton
 @Singleton
 class GW2RepositoryFactory @Inject constructor(
     authInterceptor: AuthorizationInterceptor,
-    contentTypeInterceptor: ContentTypeInterceptor
+    contentTypeInterceptor: ContentTypeInterceptor,
+    authorizationStatusInterceptor: AuthorizationStatusInterceptor
 ) : IGW2RepositoryFactory {
     private val okHttpBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
     private val retrofit: Retrofit
@@ -36,6 +38,7 @@ class GW2RepositoryFactory @Inject constructor(
         okHttpBuilder.addInterceptor(contentTypeInterceptor)
         okHttpBuilder.addInterceptor(authInterceptor)
         okHttpBuilder.addInterceptor(logger)
+        okHttpBuilder.addInterceptor(authorizationStatusInterceptor)
         okHttpBuilder.connectTimeout(TIMEOUT.toLong(), TimeUnit.SECONDS)
         okHttpBuilder.readTimeout(TIMEOUT.toLong(), TimeUnit.SECONDS)
         val okHttp = okHttpBuilder.build()

@@ -12,13 +12,13 @@ interface IGW2Repository {
      * Returns information about player accounts
      */
     @GET("account")
-    fun getAccount(): AccountDTO
+    suspend fun getAccount(): AccountDTO
 
     /**
      * Return an array of characters by name
      */
     @GET("characters")
-    fun getAllCharacterName(): List<String>
+    suspend fun getAllCharacterName(): List<String>
 
     /**
      * Returns information about the inventory of a character attached to a specific account
@@ -29,7 +29,7 @@ interface IGW2Repository {
      * @param pageSize (Default 50) Size per page, maximum allowed 200
      */
     @GET("characters/{name}/inventory")
-    fun getCharacterInventory(
+    suspend fun getCharacterInventory(
         @Path("name") name: String,
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int = 50
@@ -45,7 +45,7 @@ interface IGW2Repository {
      * @param pageSize (Default 50) Size per page, maximum allowed 200
      */
     @GET("account/bank")
-    fun getBank(
+    suspend fun getBank(
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int = 50
     ): Response<List<InventoryDTO?>>
@@ -60,7 +60,7 @@ interface IGW2Repository {
      * @param pageSize (Default 50) Size per page, maximum allowed 200
      */
     @GET("account/materials")
-    fun getMaterialBank(
+    suspend fun getMaterialBank(
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int = 50
     ): Response<List<MaterialDTO>>
@@ -75,7 +75,7 @@ interface IGW2Repository {
      * @param pageSize (Default 50) Size per page, maximum allowed 200
      */
     @GET("items")
-    fun getItems(
+    suspend fun getItems(
         @Query("ids") ids: String,
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int = 50,
@@ -89,7 +89,7 @@ interface IGW2Repository {
      * @param lang (Valid options: en, es, de, fr, and zh) Request localized information
      */
     @GET("materials")
-    fun getMaterialBankInfo(
+    suspend fun getMaterialBankInfo(
         @Query("ids") ids: String,
         @Query("lang") lang: String = "en"
     ): List<MaterialTypeDTO>
@@ -103,7 +103,7 @@ interface IGW2Repository {
      * @param pageSize (Default 50) Size per page, maximum allowed 200
      */
     @GET("commerce/prices")
-    fun getPrices(
+    suspend fun getPrices(
         @Query("ids") ids: String,
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int = 50

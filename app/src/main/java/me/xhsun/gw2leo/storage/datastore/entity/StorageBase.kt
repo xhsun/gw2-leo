@@ -25,7 +25,9 @@ import me.xhsun.gw2leo.account.datastore.entity.Character
 )
 data class StorageBase(
     @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(index = true)
     val itemID: Int,
+    @ColumnInfo(index = true)
     val storageType: String,
     val count: Int,
     @ColumnInfo(defaultValue = "0") val charges: Int,

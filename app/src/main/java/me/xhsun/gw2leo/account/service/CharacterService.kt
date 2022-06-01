@@ -1,6 +1,7 @@
 package me.xhsun.gw2leo.account.service
 
 import me.xhsun.gw2leo.account.datastore.entity.Character
+import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.config.DB_BANK_KEY_FORMAT
 import me.xhsun.gw2leo.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.http.IGW2Repository
@@ -22,15 +23,17 @@ class CharacterService @Inject constructor(
 
     override fun characters(): List<String> {
         if (this.characters.isEmpty()) {
+            val accountID = accountService.accountID()
+            val bankKey = DB_BANK_KEY_FORMAT.format(accountID)
             Timber.d("Account character list is empty, attempt to retrieve from cache")
             synchronized(this.characters) {
                 val characters = datastore.characterDAO.getAll(accountService.accountID()).map {
                     it.name
-                }
+                }.filter { it != bankKey }
                 if (characters.isNotEmpty()) {
                     this.characters = characters
                 } else {
-                    update()
+                    throw NotLoggedInError()
                 }
             }
         }
@@ -38,8 +41,9 @@ class CharacterService @Inject constructor(
         return this.characters
     }
 
-    override fun update(): Boolean {
+    override suspend fun update(): Boolean {
         val accountID = accountService.accountID()
+        val bankKey = DB_BANK_KEY_FORMAT.format(accountID)
         Timber.d("Start update character list information::${accountID}")
         val characters = gw2Repository.getAllCharacterName().toMutableList()
         characters.add(DB_BANK_KEY_FORMAT.format(accountID))
@@ -49,9 +53,8 @@ class CharacterService @Inject constructor(
                 accountID = accountID
             )
         }.toTypedArray()
-        val result: Boolean
         synchronized(this.characters) {
-            this.characters = characters.toList()
+            this.characters = characters.toList().filter { it != bankKey }
             datastore.characterDAO.insertAll(*characterArr)
         }
         Timber.d("Character list information updated::${this.characters}")

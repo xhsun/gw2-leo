@@ -11,11 +11,13 @@ import javax.inject.Inject
 class AccountAddService @Inject constructor(
     gw2RepositoryFactory: IGW2RepositoryFactory,
     private val datastore: IDatastoreRepository,
-    private val accountIDRepository: IAccountIDRepository
+    private val accountIDRepository: IAccountIDRepository,
+    private val accountService: IAccountService
 ) : IAccountAddService {
     private val gw2Repository: IGW2Repository = gw2RepositoryFactory.gw2Repository()
 
-    override fun add(API: String): Account {
+    override suspend fun add(API: String): Account {
+        accountService.updateAPI(API)
         Timber.d("Start update account information::${API}")
         val account = gw2Repository.getAccount().toDomain(API)
         Timber.d("Account information updated, start update cache::${account}")
@@ -23,6 +25,7 @@ class AccountAddService @Inject constructor(
         datastore.accountDAO.insertAll(account.toDAO())
 
         Timber.d("Account information cache updated")
+        accountService.update(account.id)
         return account
     }
 }

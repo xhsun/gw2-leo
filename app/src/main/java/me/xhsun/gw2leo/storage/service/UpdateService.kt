@@ -12,7 +12,7 @@ class UpdateService @Inject constructor(
     private val accountService: IAccountService
 ) : IUpdateService {
 
-    override fun addItems(vararg ids: Int): Boolean {
+    override suspend fun addItems(vararg ids: Int): Boolean {
         if (ids.isEmpty()) {
             Timber.d("item IDs not provided")
             throw IllegalArgumentException("ids")
@@ -41,7 +41,7 @@ class UpdateService @Inject constructor(
         return false
     }
 
-    override fun updateItems(): Boolean {
+    override suspend fun updateItems(): Boolean {
         val sellable = datastore.itemDAO.getAllSellableIds()
         if (sellable.isEmpty()) {
             Timber.d("Datastore is empty")
@@ -68,7 +68,7 @@ class UpdateService @Inject constructor(
         return false
     }
 
-    override fun updateMaterialCategories(vararg ids: Int): Boolean {
+    override suspend fun updateMaterialCategories(vararg ids: Int): Boolean {
         var typeIds = ids
         if (typeIds.isEmpty()) {
             Timber.d("Material type IDs not provided, start updating existing material types")
@@ -88,7 +88,7 @@ class UpdateService @Inject constructor(
         return true
     }
 
-    override fun updateMaterialItems(): Boolean {
+    override suspend fun updateMaterialItems(): Boolean {
         val accountID = accountService.accountID()
         Timber.d("Start update material storage items")
         val items = retrievalService.getMaterialItems()
@@ -110,7 +110,7 @@ class UpdateService @Inject constructor(
         }
     }
 
-    override fun updateBankItems(): Boolean {
+    override suspend fun updateBankItems(): Boolean {
         val accountID = accountService.accountID()
         Timber.d("Start update bank storage items")
         val items = retrievalService.getBankItems()
@@ -130,7 +130,7 @@ class UpdateService @Inject constructor(
         }
     }
 
-    override fun updateInventoryItems(characterName: String): Boolean {
+    override suspend fun updateInventoryItems(characterName: String): Boolean {
         if (characterName.isEmpty()) {
             Timber.d("character name is empty")
             throw IllegalArgumentException("characterName")

@@ -10,25 +10,20 @@ import javax.inject.Inject
 class RefreshService @Inject constructor(
     private val characterService: ICharacterService,
     private val storageService: StorageService,
-    private val addService: IAccountAddService,
-    private val accountService: IAccountService
+    private val addService: IAccountAddService
 ) : IRefreshService {
 
-    override suspend fun refreshAccount(API: String): Boolean {
+    override suspend fun initializeAccount(API: String): Boolean {
         try {
             withContext(Dispatchers.IO) {
-                val account = addService.add(API)
-                accountService.update(account.id)
+                addService.add(API)
                 characterService.update()
-                storageService.updateAll()
             }
             return true
         } catch (e: Exception) {
+            Timber.d("Failed to initialize account::${API}::${e.message}")
             when (e) {
                 is NotLoggedInError -> throw e
-                else -> {
-                    Timber.d("Failed to update all storages::${e.message}")
-                }
             }
         }
         return false
@@ -47,28 +42,6 @@ class RefreshService @Inject constructor(
                 is NotLoggedInError -> throw e
                 else -> {
                     Timber.d("Failed to update all storages::${e.message}")
-                }
-            }
-        }
-        return false
-    }
-
-
-    override suspend fun refreshCharacters(): Boolean {
-        try {
-            withContext(Dispatchers.IO) {
-                if (characterService.update()) {
-                    characterService.characters().forEach {
-                        storageService.updateStorage(it)
-                    }
-                }
-            }
-            return true
-        } catch (e: Exception) {
-            when (e) {
-                is NotLoggedInError -> throw e
-                else -> {
-                    Timber.d("Failed to update all character storages::${e.message}")
                 }
             }
         }

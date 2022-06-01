@@ -30,8 +30,11 @@ import me.xhsun.gw2leo.account.datastore.entity.Account
     ]
 )
 data class MaterialStorageBase(
+    @ColumnInfo(index = true)
     val itemID: Int,
+    @ColumnInfo(index = true)
     val accountID: String,
+    @ColumnInfo(index = true)
     val categoryID: Int,
     @ColumnInfo(defaultValue = "false") val accountBounded: Boolean,
     @ColumnInfo(defaultValue = "0") val count: Int

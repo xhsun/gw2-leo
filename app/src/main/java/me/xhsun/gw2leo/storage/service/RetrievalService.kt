@@ -21,7 +21,7 @@ class RetrievalService @Inject constructor(
 ) : IRetrievalService {
     private val gw2Repository: IGW2Repository = gw2RepositoryFactory.gw2Repository()
 
-    override fun getMaterialCategories(vararg ids: Int): List<MaterialCategory> {
+    override suspend fun getMaterialCategories(vararg ids: Int): List<MaterialCategory> {
         if (ids.isEmpty()) {
             throw IllegalArgumentException("ids")
         }
@@ -35,7 +35,7 @@ class RetrievalService @Inject constructor(
         return categories
     }
 
-    override fun getItems(vararg ids: Int): List<Item> {
+    override suspend fun getItems(vararg ids: Int): List<Item> {
         if (ids.isEmpty()) {
             throw IllegalArgumentException("ids")
         }
@@ -56,7 +56,7 @@ class RetrievalService @Inject constructor(
         return items
     }
 
-    override fun getItemPrices(vararg shouldUpdate: Item): List<Item> {
+    override suspend fun getItemPrices(vararg shouldUpdate: Item): List<Item> {
         if (shouldUpdate.isEmpty()) {
             Timber.d("Item IDs not provided")
             throw IllegalArgumentException("shouldUpdate")
@@ -78,7 +78,7 @@ class RetrievalService @Inject constructor(
         return result
     }
 
-    override fun getMaterialItems(): List<MaterialItem> {
+    override suspend fun getMaterialItems(): List<MaterialItem> {
         val accountID = accountService.accountID()
         var currentPage = 0
         val items = emptyList<MaterialItem>().toMutableList()
@@ -95,7 +95,7 @@ class RetrievalService @Inject constructor(
         return result
     }
 
-    override fun getBankItems(): List<StorageItem> {
+    override suspend fun getBankItems(): List<StorageItem> {
         val accountID = accountService.accountID()
         var currentPage = 0
         val items = emptyList<StorageItem>().toMutableList()
@@ -112,7 +112,7 @@ class RetrievalService @Inject constructor(
         return result
     }
 
-    override fun getInventoryItems(characterName: String): List<StorageItem> {
+    override suspend fun getInventoryItems(characterName: String): List<StorageItem> {
         if (characterName.isEmpty()) {
             Timber.d("Character name not provided")
             throw IllegalArgumentException("characterName")
@@ -137,7 +137,7 @@ class RetrievalService @Inject constructor(
      * @param characterName List of ids as comma delimited list string
      * @param current Current page
      */
-    private fun getInventoryItem(
+    private suspend fun getInventoryItem(
         characterName: String,
         current: Int,
     ): Pair<Int, List<StorageItem>> {
@@ -161,7 +161,7 @@ class RetrievalService @Inject constructor(
      * Get bank storage item information from current page
      * @param current Current page
      */
-    private fun getBankItem(
+    private suspend fun getBankItem(
         accountID: String,
         current: Int,
     ): Pair<Int, List<StorageItem>> {
@@ -182,7 +182,7 @@ class RetrievalService @Inject constructor(
      * Get material storage item information from current page
      * @param current Current page
      */
-    private fun getMaterialItem(
+    private suspend fun getMaterialItem(
         accountID: String,
         current: Int,
     ): Pair<Int, List<MaterialItem>> {
@@ -205,7 +205,7 @@ class RetrievalService @Inject constructor(
      * @param current Current page
      * @param totalPageSize Total page size
      */
-    private fun getItem(
+    private suspend fun getItem(
         idString: String,
         current: Int,
         totalPageSize: Int
@@ -229,7 +229,7 @@ class RetrievalService @Inject constructor(
      * @param current Current page
      * @param totalPageSize Total page size
      */
-    private fun getItemPrice(
+    private suspend fun getItemPrice(
         idString: String,
         current: Int,
         totalPageSize: Int,
@@ -250,7 +250,7 @@ class RetrievalService @Inject constructor(
             throw HTTPError(response.errorBody().toString())
         }
     }
-    
+
     /**
      * @return DEFAULT_RESPONSE_SIZE if array size is too big, otherwise, array size
      */

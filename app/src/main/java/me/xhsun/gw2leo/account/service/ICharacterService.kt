@@ -6,5 +6,5 @@ interface ICharacterService {
     /**
      * Update character name list for the current account
      */
-    fun update(): Boolean
+    suspend fun update(): Boolean
 }

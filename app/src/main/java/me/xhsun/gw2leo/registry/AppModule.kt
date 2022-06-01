@@ -15,6 +15,7 @@ import me.xhsun.gw2leo.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.http.GW2RepositoryFactory
 import me.xhsun.gw2leo.http.IGW2RepositoryFactory
 import me.xhsun.gw2leo.http.interceptor.AuthorizationInterceptor
+import me.xhsun.gw2leo.http.interceptor.AuthorizationStatusInterceptor
 import me.xhsun.gw2leo.http.interceptor.ContentTypeInterceptor
 import me.xhsun.gw2leo.storage.service.*
 import javax.inject.Singleton
@@ -32,18 +33,29 @@ class AppModule {
     fun provideAccountAddService(
         gw2RepositoryFactory: IGW2RepositoryFactory,
         datastore: IDatastoreRepository,
-        accountIDRepository: IAccountIDRepository
+        accountIDRepository: IAccountIDRepository,
+        accountService: IAccountService
     ): IAccountAddService {
-        return AccountAddService(gw2RepositoryFactory, datastore, accountIDRepository)
+        return AccountAddService(
+            gw2RepositoryFactory,
+            datastore,
+            accountIDRepository,
+            accountService
+        )
     }
 
     @Provides
     @Singleton
     fun provideGW2RepositoryFactory(
         authInterceptor: AuthorizationInterceptor,
-        contentTypeInterceptor: ContentTypeInterceptor
+        contentTypeInterceptor: ContentTypeInterceptor,
+        authorizationStatusInterceptor: AuthorizationStatusInterceptor
     ): IGW2RepositoryFactory {
-        return GW2RepositoryFactory(authInterceptor, contentTypeInterceptor)
+        return GW2RepositoryFactory(
+            authInterceptor,
+            contentTypeInterceptor,
+            authorizationStatusInterceptor
+        )
     }
 
     @Provides
@@ -77,10 +89,9 @@ class AppModule {
     fun provideRefreshService(
         characterService: ICharacterService,
         storageService: StorageService,
-        addService: IAccountAddService,
-        accountService: IAccountService
+        addService: IAccountAddService
     ): IRefreshService {
-        return RefreshService(characterService, storageService, addService, accountService)
+        return RefreshService(characterService, storageService, addService)
     }
 
     @Provides

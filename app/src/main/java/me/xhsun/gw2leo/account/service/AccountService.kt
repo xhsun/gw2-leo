@@ -31,10 +31,8 @@ class AccountService @Inject constructor(
             }
             val account =
                 datastore.accountDAO.getByID(accountID) ?: throw NotLoggedInError()
-            synchronized(this.api) {
+            synchronized(this) {
                 api = account.API
-            }
-            synchronized(this.name) {
                 name = account.name
             }
             Timber.d("Account API key retrieved::$api")
@@ -50,14 +48,17 @@ class AccountService @Inject constructor(
         return accountID
     }
 
+    override fun updateAPI(api: String) {
+        Timber.d("ONLY updating account API key::${api}")
+        synchronized(this) {
+            this.api = api
+        }
+    }
+
     override fun update(accountID: String) {
-        synchronized(this.accountID) {
+        synchronized(this) {
             this.accountID = accountIDRepository.getCurrent()
-        }
-        synchronized(this.api) {
             api = ""
-        }
-        synchronized(this.name) {
             name = ""
         }
     }
