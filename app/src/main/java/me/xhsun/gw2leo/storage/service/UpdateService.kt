@@ -58,11 +58,11 @@ class UpdateService @Inject constructor(
 
         items = retrievalService.getItemPrices(*items.toTypedArray())
         if (items.isNotEmpty()) {
-            val result = datastore.itemDAO.bulkUpdate(items.map {
+            datastore.itemDAO.bulkUpdate(items.map {
                 it.toDAO()
-            }) == items.size
-            Timber.d("Successfully updated items::${result}::${items}")
-            return result
+            })
+            Timber.d("Successfully updated items::${items}")
+            return true
         }
         Timber.d("Failed to updated items")
         return false
@@ -83,9 +83,9 @@ class UpdateService @Inject constructor(
             return false
         }
 
-        val result = datastore.materialTypeDAO.insertAll(*categories) == typeIds.size
-        Timber.d("Successfully updated material types::${result}::${categories}")
-        return result
+        datastore.materialTypeDAO.insertAll(*categories)
+        Timber.d("Successfully updated material types::${categories}")
+        return true
     }
 
     override fun updateMaterialItems(): Boolean {

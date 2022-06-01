@@ -29,6 +29,15 @@ class AppModule {
     }
 
     @Provides
+    fun provideAccountAddService(
+        gw2RepositoryFactory: IGW2RepositoryFactory,
+        datastore: IDatastoreRepository,
+        accountIDRepository: IAccountIDRepository
+    ): IAccountAddService {
+        return AccountAddService(gw2RepositoryFactory, datastore, accountIDRepository)
+    }
+
+    @Provides
     @Singleton
     fun provideGW2RepositoryFactory(
         authInterceptor: AuthorizationInterceptor,
@@ -66,11 +75,12 @@ class AppModule {
 
     @Provides
     fun provideRefreshService(
-        accountService: IAccountService,
         characterService: ICharacterService,
-        storageService: StorageService
+        storageService: StorageService,
+        addService: IAccountAddService,
+        accountService: IAccountService
     ): IRefreshService {
-        return RefreshService(accountService, characterService, storageService)
+        return RefreshService(characterService, storageService, addService, accountService)
     }
 
     @Provides
@@ -90,9 +100,8 @@ class AppModule {
     fun provideAccountService(
         datastore: IDatastoreRepository,
         accountIDRepository: IAccountIDRepository,
-        gw2RepositoryFactory: IGW2RepositoryFactory
     ): IAccountService {
-        return AccountService(datastore, accountIDRepository, gw2RepositoryFactory)
+        return AccountService(datastore, accountIDRepository)
     }
 
     @Provides

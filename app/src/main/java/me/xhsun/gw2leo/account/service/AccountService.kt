@@ -1,11 +1,8 @@
 package me.xhsun.gw2leo.account.service
 
-import me.xhsun.gw2leo.account.Account
 import me.xhsun.gw2leo.account.datastore.IAccountIDRepository
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.datastore.IDatastoreRepository
-import me.xhsun.gw2leo.http.IGW2Repository
-import me.xhsun.gw2leo.http.IGW2RepositoryFactory
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,10 +10,8 @@ import javax.inject.Singleton
 @Singleton
 class AccountService @Inject constructor(
     private val datastore: IDatastoreRepository,
-    private val accountIDRepository: IAccountIDRepository,
-    gw2RepositoryFactory: IGW2RepositoryFactory
+    private val accountIDRepository: IAccountIDRepository
 ) : IAccountService {
-    private val gw2Repository: IGW2Repository = gw2RepositoryFactory.gw2Repository()
 
     @Volatile
     private var accountID: String = accountIDRepository.getCurrent()
@@ -55,25 +50,15 @@ class AccountService @Inject constructor(
         return accountID
     }
 
-    override fun update(API: String): Boolean {
-        Timber.d("Start update account information::${API}")
-        var account: Account
-        var cacheResult: Boolean
-        synchronized(this.api) {
-            api = API
-            account = gw2Repository.getAccount().toDomain(api)
-        }
-        Timber.d("Account information updated, start update cache::${account}")
-        synchronized(this.name) {
-            name = account.name
-        }
+    override fun update(accountID: String) {
         synchronized(this.accountID) {
-            accountID = account.id
-            cacheResult = accountIDRepository.updateCurrent(accountID)
+            this.accountID = accountIDRepository.getCurrent()
         }
-        val count = datastore.accountDAO.insertAll(account.toDAO())
-        val result = cacheResult && count > 1
-        Timber.d("Account information cache updated::${result}")
-        return result
+        synchronized(this.api) {
+            api = ""
+        }
+        synchronized(this.name) {
+            name = ""
+        }
     }
 }

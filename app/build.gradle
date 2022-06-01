@@ -19,7 +19,9 @@ android {
     }
 
     buildFeatures {
-        dataBinding true
+        dataBinding {
+            enabled = true
+        }
     }
 
     buildTypes {
@@ -29,7 +31,7 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

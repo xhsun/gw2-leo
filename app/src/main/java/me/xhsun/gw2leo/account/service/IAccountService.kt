@@ -7,7 +7,7 @@ interface IAccountService {
     /**
      * Update currently selected account to the provided one
      * and update cache/datastore
-     * @param API API token of the new account
+     * @param accountID account ID of the new account
      */
-    fun update(API: String): Boolean
+    fun update(accountID: String)
 }

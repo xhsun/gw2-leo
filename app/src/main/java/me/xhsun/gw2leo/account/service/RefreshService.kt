@@ -8,18 +8,19 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class RefreshService @Inject constructor(
-    private val accountService: IAccountService,
     private val characterService: ICharacterService,
-    private val storageService: StorageService
+    private val storageService: StorageService,
+    private val addService: IAccountAddService,
+    private val accountService: IAccountService
 ) : IRefreshService {
 
     override suspend fun refreshAccount(API: String): Boolean {
         try {
             withContext(Dispatchers.IO) {
-                if (accountService.update(API)) {
-                    characterService.update()
-                    storageService.updateAll()
-                }
+                val account = addService.add(API)
+                accountService.update(account.id)
+                characterService.update()
+                storageService.updateAll()
             }
             return true
         } catch (e: Exception) {
@@ -51,6 +52,7 @@ class RefreshService @Inject constructor(
         }
         return false
     }
+
 
     override suspend fun refreshCharacters(): Boolean {
         try {

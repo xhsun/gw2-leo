@@ -12,7 +12,7 @@ import me.xhsun.gw2leo.account.datastore.entity.Account
         ForeignKey(
             entity = Account::class,
             parentColumns = ["id"],
-            childColumns = ["accountName"],
+            childColumns = ["accountID"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(

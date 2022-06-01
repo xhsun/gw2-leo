@@ -6,7 +6,7 @@ import me.xhsun.gw2leo.account.datastore.entity.Account
 @Dao
 interface AccountDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg accounts: Account): Int
+    fun insertAll(vararg accounts: Account)
 
     @Delete
     fun delete(account: Account)

@@ -9,7 +9,7 @@ interface ItemDAO {
     fun insertAll(vararg items: Item)
 
     @Update
-    fun bulkUpdate(items: List<Item>): Int
+    fun bulkUpdate(items: List<Item>)
 
     @Delete
     fun bulkDelete(vararg items: Item)

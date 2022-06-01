@@ -52,9 +52,9 @@ class CharacterService @Inject constructor(
         val result: Boolean
         synchronized(this.characters) {
             this.characters = characters.toList()
-            result = datastore.characterDAO.insertAll(*characterArr) == characters.size
+            datastore.characterDAO.insertAll(*characterArr)
         }
-        Timber.d("Character list information updated::${result}::${this.characters}")
-        return result
+        Timber.d("Character list information updated::${this.characters}")
+        return true
     }
 }

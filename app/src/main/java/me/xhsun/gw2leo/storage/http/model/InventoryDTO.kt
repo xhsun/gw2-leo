@@ -23,9 +23,11 @@ data class InventoryDTO(
                 rarity = "",
                 level = 0,
                 sellable = false,
+                buy = 0,
                 buyGold = 0,
                 buySilver = 0,
                 buyCopper = 0,
+                sell = 0,
                 sellGold = 0,
                 sellSilver = 0,
                 sellCopper = 0
