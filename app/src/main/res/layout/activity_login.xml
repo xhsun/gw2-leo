@@ -15,31 +15,45 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/md_theme_light_onBackground"
+        android:background="@color/md_theme_light_outline"
         tools:context=".account.ui.LoginActivity">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/login_loading_message"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_loading"
+            tools:ignore="TextContrastCheck"
+            android:visibility="@{viewmodel.loading? View.VISIBLE : View.GONE}" />
+
         <ProgressBar
-            style="?android:attr/progressBarStyle"
+            android:id="@+id/login_loading"
+            style="@android:style/Widget.Material.ProgressBar.Horizontal"
             android:layout_width="0dp"
             android:layout_height="80dp"
+            android:visibility="@{viewmodel.loading? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent=".8"
-            android:visibility="@{viewmodel.loading? View.VISIBLE : View.GONE}" />
+            app:layout_constraintWidth_percent=".8" />
 
         <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="?attr/materialCardViewElevatedStyle"
+            android:visibility="@{viewmodel.loading? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent=".8"
-            android:visibility="@{viewmodel.loading? View.GONE : View.VISIBLE}">
+            app:layout_constraintWidth_percent=".8">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -76,9 +90,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
-                    app:errorText="@{viewmodel.errMsg}"
                     app:endIconDrawable="@drawable/ic_baseline_qr_code_scanner_24"
                     app:endIconMode="custom"
+                    app:errorText="@{viewmodel.errMsg}"
                     app:layout_constraintBottom_toTopOf="@+id/login_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -88,12 +102,15 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/login_input_hint"
                         android:inputType="textNoSuggestions"
+                        android:onTextChanged="@{()->viewmodel.onTextChange()}"
                         android:text="@={viewmodel.api}"
-                        android:onTextChanged="@{()->viewmodel.onTextChange()}" />
+                        android:textColorHint="#795548"
+                        tools:ignore="TextContrastCheck" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/login_button"
+                    style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -101,7 +118,6 @@
                     android:enabled="@{!viewmodel.api.empty}"
                     android:onClick="@{() -> viewmodel.onEnter()}"
                     android:text="@string/button_enter"
-                    style="?attr/borderlessButtonStyle"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 

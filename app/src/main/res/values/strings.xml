@@ -3,6 +3,7 @@
     <string name="login_title">Enter Your API Key</string>
     <string name="login_subtitle">This application requires account, inventories, and characters permission</string>
     <string name="login_input_hint">API Key</string>
+    <string name="login_loading_message">Loading... Please wait...</string>
     <string name="button_enter">Enter</string>
     <string name="err_missing_permission">Missing Permission</string>
     <string name="err_cancel">Operation Canceled</string>
