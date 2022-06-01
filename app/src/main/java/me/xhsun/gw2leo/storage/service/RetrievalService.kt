@@ -102,8 +102,7 @@ class RetrievalService @Inject constructor(
         Timber.d("Start retrieving bank items")
 
         val r = this.getBankItem(accountID, currentPage++)
-        val totalPages = r.first
-        items.addAll(r.second)
+        items.addAll(r)
         while (currentPage < totalPages) {
             items.addAll(this.getBankItem(accountID, currentPage++).second)
         }
@@ -164,18 +163,12 @@ class RetrievalService @Inject constructor(
     private suspend fun getBankItem(
         accountID: String,
         current: Int,
-    ): Pair<Int, List<StorageItem>> {
-        val response = gw2Repository.getBank(current, DEFAULT_RESPONSE_SIZE)
-        if (response.isSuccessful) {
-            return Pair(
-                response.headers()[TOTAL_PAGE_HEADER]?.toInt()
-                    ?: throw HTTPError("Received invalid total page count"),
-                response.body()?.mapNotNull {
-                    it?.toDomain(DB_BANK_KEY_FORMAT.format(accountID))
-                } ?: throw HTTPError("Received empty item list"))
-        } else {
-            throw HTTPError(response.errorBody().toString())
-        }
+        pageSize: Int
+    ): List<StorageItem> {
+        val response = gw2Repository.getBank(current, pageSize)
+        return response.mapNotNull {
+            it?.toDomain(DB_BANK_KEY_FORMAT.format(accountID))
+        }.filter { it.count > 1 }
     }
 
     /**
@@ -209,17 +202,10 @@ class RetrievalService @Inject constructor(
         idString: String,
         current: Int,
         totalPageSize: Int
-    ): Pair<Int, List<Item>> {
+    ): List<Item> {
         val response = gw2Repository.getItems(idString, current, totalPageSize)
-        if (response.isSuccessful) {
-            return Pair(
-                response.headers()[TOTAL_PAGE_HEADER]?.toInt()
-                    ?: throw HTTPError("Received invalid total page count"),
-                response.body()?.map {
-                    it.toDomain()
-                } ?: throw HTTPError("Received empty item list"))
-        } else {
-            throw HTTPError(response.errorBody().toString())
+        return response.map {
+            it.toDomain()
         }
     }
 

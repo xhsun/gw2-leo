@@ -59,11 +59,11 @@ class AppModule {
     }
 
     @Provides
-    fun provideItemRetrievalService(
+    fun provideStorageRetrievalService(
         gw2RepositoryFactory: IGW2RepositoryFactory,
         accountService: IAccountService
-    ): IRetrievalService {
-        return RetrievalService(gw2RepositoryFactory, accountService)
+    ): IStorageRetrievalService {
+        return StorageRetrievalService(gw2RepositoryFactory, accountService)
     }
 
     @Provides

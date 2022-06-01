@@ -22,4 +22,16 @@ data class StorageItem(
             count = count
         )
     }
+
+    fun updateItem(item: Item): StorageItem {
+        return StorageItem(
+            id = id,
+            detail = item,
+            storageType = storageType,
+            charges = charges,
+            binding = binding,
+            bindTo = bindTo,
+            count = count
+        )
+    }
 }

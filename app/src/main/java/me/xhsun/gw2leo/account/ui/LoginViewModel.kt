@@ -42,12 +42,8 @@ class LoginViewModel @Inject constructor(
 
     val api: ObservableField<String> = ObservableField()
 
-    val shouldTransfer: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
-
-    val snackbarText: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+    val states: MutableLiveData<UIState> by lazy {
+        MutableLiveData<UIState>()
     }
 
     fun onTextChange() {
@@ -81,7 +77,7 @@ class LoginViewModel @Inject constructor(
             errMsg = ""
             api.set(text)
         } else {
-            snackbarText.value = text
+            states.value = UIState(snackbarText = text)
         }
     }
 
@@ -90,7 +86,7 @@ class LoginViewModel @Inject constructor(
             try {
                 val result = refreshService.initializeAccount(api)
                 if (result) {
-                    shouldTransfer.postValue(true)
+                    states.value = UIState(shouldTransfer = true)
                 } else {
                     loading = false
                     Timber.d("Unexpected issue happened when initializing account::${api}")

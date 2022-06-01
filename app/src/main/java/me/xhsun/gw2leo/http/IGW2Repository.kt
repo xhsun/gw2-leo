@@ -80,7 +80,7 @@ interface IGW2Repository {
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int = 50,
         @Query("lang") lang: String = "en"
-    ): Response<List<ItemDTO>>
+    ): List<ItemDTO>
 
     /**
      * Returns information about the categories in material storage
@@ -107,5 +107,5 @@ interface IGW2Repository {
         @Query("ids") ids: String,
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int = 50
-    ): Response<List<PriceDTO>>
+    ): List<PriceDTO>
 }

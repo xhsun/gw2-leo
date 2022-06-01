@@ -18,4 +18,14 @@ data class MaterialItem(
             count = count
         )
     }
+
+    fun update(item: Item, category: MaterialCategory): MaterialItem {
+        return MaterialItem(
+            accountID = accountID,
+            detail = item,
+            category = category,
+            accountBounded = accountBounded,
+            count = count
+        )
+    }
 }

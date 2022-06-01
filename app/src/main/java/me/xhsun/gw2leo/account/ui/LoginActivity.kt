@@ -44,23 +44,21 @@ class LoginActivity : AppCompatActivity() {
             )
         }
 
-        val transferObserver = Observer<Boolean> {
-            if (it) {
-                Timber.d("Acquired account information, complete login process")
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-                finishAndRemoveTask()
-            }
-        }
-
-        val snackbarObserver = Observer<String> {
+        val stateObserver = Observer<UIState> {
             if (it != null) {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                if (it.snackbarText.isNotEmpty()) {
+                    Snackbar.make(binding.root, it.snackbarText, Snackbar.LENGTH_SHORT).show()
+                }
+                if (it.shouldTransfer) {
+                    Timber.d("Acquired account information, complete login process")
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    startActivity(intent)
+                    finishAndRemoveTask()
+                }
             }
         }
 
-        viewModel.shouldTransfer.observe(this, transferObserver)
-        viewModel.snackbarText.observe(this, snackbarObserver)
+        viewModel.states.observe(this, stateObserver)
     }
 }
