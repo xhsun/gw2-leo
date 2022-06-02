@@ -29,22 +29,22 @@ class RefreshService @Inject constructor(
         return false
     }
 
-    override suspend fun refreshAccount(): Boolean {
-        try {
-            withContext(Dispatchers.IO) {
-                if (characterService.update()) {
-                    storageService.updateAll()
-                }
-            }
-            return true
-        } catch (e: Exception) {
-            when (e) {
-                is NotLoggedInError -> throw e
-                else -> {
-                    Timber.d("Failed to update all storages::${e.message}")
-                }
-            }
-        }
-        return false
-    }
+//    override suspend fun refreshAccount(): Boolean {
+//        try {
+//            withContext(Dispatchers.IO) {
+//                if (characterService.update()) {
+//                    storageService.updateAll()
+//                }
+//            }
+//            return true
+//        } catch (e: Exception) {
+//            when (e) {
+//                is NotLoggedInError -> throw e
+//                else -> {
+//                    Timber.d("Failed to update all storages::${e.message}")
+//                }
+//            }
+//        }
+//        return false
+//    }
 }

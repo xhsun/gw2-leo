@@ -17,7 +17,10 @@ import me.xhsun.gw2leo.http.IGW2RepositoryFactory
 import me.xhsun.gw2leo.http.interceptor.AuthorizationInterceptor
 import me.xhsun.gw2leo.http.interceptor.AuthorizationStatusInterceptor
 import me.xhsun.gw2leo.http.interceptor.ContentTypeInterceptor
-import me.xhsun.gw2leo.storage.service.*
+import me.xhsun.gw2leo.storage.service.IStorageRetrievalService
+import me.xhsun.gw2leo.storage.service.IStorageService
+import me.xhsun.gw2leo.storage.service.StorageRetrievalService
+import me.xhsun.gw2leo.storage.service.StorageService
 import javax.inject.Singleton
 
 
@@ -67,22 +70,12 @@ class AppModule {
     }
 
     @Provides
-    fun provideUpdateService(
-        datastore: IDatastoreRepository,
-        retrievalService: IRetrievalService,
-        accountService: IAccountService
-    ): IUpdateService {
-        return UpdateService(datastore, retrievalService, accountService)
-    }
-
-    @Provides
     fun provideStorageService(
-        updateService: UpdateService,
         datastore: IDatastoreRepository,
         accountService: IAccountService,
-        characterService: ICharacterService
+        storageRetrievalService: IStorageRetrievalService
     ): IStorageService {
-        return StorageService(updateService, datastore, accountService, characterService)
+        return StorageService(datastore, accountService, storageRetrievalService)
     }
 
     @Provides

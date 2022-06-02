@@ -1,6 +1,6 @@
 package me.xhsun.gw2leo.storage.datastore.dao
 
-import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 import me.xhsun.gw2leo.storage.datastore.entity.Storage
 import me.xhsun.gw2leo.storage.datastore.entity.StorageBase
@@ -13,9 +13,17 @@ interface StorageDAO {
     @Query("DELETE FROM storage WHERE storageType = :storageType")
     fun bulkDelete(storageType: String)
 
-    @Transaction
-    @Query("SELECT * FROM storage WHERE storageType = :storageType")
-    fun getAll(storageType: String): LiveData<List<Storage>>
+    @Query("SELECT *, item.id as itemItemID FROM storage INNER JOIN item ON storage.itemID = item.id AND storage.storageType = :storageType ORDER BY :orderBy ASC")
+    fun getAllAscending(
+        storageType: String,
+        orderBy: String
+    ): PagingSource<Int, Storage>
+
+    @Query("SELECT *, item.id as itemItemID FROM storage INNER JOIN item ON storage.itemID = item.id AND storage.storageType = :storageType ORDER BY :orderBy DESC")
+    fun getAllDescending(
+        storageType: String,
+        orderBy: String
+    ): PagingSource<Int, Storage>
 
     @Transaction
     fun bulkUpdate(storageType: String, vararg items: StorageBase) {

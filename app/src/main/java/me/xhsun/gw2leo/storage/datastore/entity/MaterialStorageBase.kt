@@ -1,13 +1,11 @@
 package me.xhsun.gw2leo.storage.datastore.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import me.xhsun.gw2leo.account.datastore.entity.Account
 
 @Entity(
     tableName = "materialstorage",
-    primaryKeys = ["itemID", "accountID", "categoryID"],
+    indices = [Index(value = ["itemID", "accountID", "categoryID"], unique = true)],
     foreignKeys = [
         ForeignKey(
             entity = Account::class,
@@ -30,6 +28,7 @@ import me.xhsun.gw2leo.account.datastore.entity.Account
     ]
 )
 data class MaterialStorageBase(
+    @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(index = true)
     val itemID: Int,
     @ColumnInfo(index = true)

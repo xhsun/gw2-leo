@@ -12,6 +12,7 @@ data class MaterialDTO(
 ) {
     fun toDomain(accountID: String): MaterialItem {
         return MaterialItem(
+            id = id,
             accountID = accountID,
             category = MaterialCategory(
                 id = category,

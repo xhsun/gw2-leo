@@ -41,6 +41,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 
     packagingOptions {
@@ -64,6 +65,7 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$roomVersion"
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-paging:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     testImplementation "androidx.room:room-testing:$roomVersion"

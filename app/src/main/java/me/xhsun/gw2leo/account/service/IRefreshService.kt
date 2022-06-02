@@ -7,8 +7,8 @@ interface IRefreshService {
      */
     suspend fun initializeAccount(API: String): Boolean
 
-    /**
-     * Reload all information related to the currently selected account
-     */
-    suspend fun refreshAccount(): Boolean
+//    /**
+//     * Reload all information related to the currently selected account
+//     */
+//    suspend fun refreshAccount(): Boolean
 }

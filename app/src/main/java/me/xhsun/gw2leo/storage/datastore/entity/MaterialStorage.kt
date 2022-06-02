@@ -19,6 +19,7 @@ data class MaterialStorage(
 ) {
     fun toDomain(): MaterialItem {
         return MaterialItem(
+            id = material.id,
             accountID = material.accountID,
             category = type.toDomain(),
             detail = item.toDomain(),
