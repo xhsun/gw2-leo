@@ -6,9 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +21,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var navController: NavController
 
     @Inject
     lateinit var accountService: IAccountService
@@ -37,9 +33,6 @@ class MainActivity : AppCompatActivity() {
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment
-        navController = navHostFragment.navController
 
         try {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -51,7 +44,6 @@ class MainActivity : AppCompatActivity() {
                     CHARACTER_LIST_KEY to characters,
                     ACCOUNT_ID_KEY to accountID
                 )
-                binding.navigationRail.setupWithNavController(navController)
                 binding.navigationRail.setOnItemSelectedListener { item ->
                     navController.navigate(item.itemId, args)
                     true
