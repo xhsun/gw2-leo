@@ -21,7 +21,7 @@ class CharacterService @Inject constructor(
     @Volatile
     private var characters: List<String> = emptyList()
 
-    override fun characters(): List<String> {
+    override suspend fun characters(): List<String> {
         if (this.characters.isEmpty()) {
             val accountID = accountService.accountID()
             val bankKey = DB_BANK_KEY_FORMAT.format(accountID)

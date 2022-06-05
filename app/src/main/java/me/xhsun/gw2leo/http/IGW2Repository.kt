@@ -24,7 +24,7 @@ interface IGW2Repository {
      * @param name Character name
      */
     @GET("characters/{name}/inventory")
-    suspend fun getCharacterInventory(@Path("name") name: String): List<BagDTO>
+    suspend fun getCharacterInventory(@Path("name") name: String): BagsDTO
 
     /**
      * Returns the items stored in a player's vault (not including material storage)

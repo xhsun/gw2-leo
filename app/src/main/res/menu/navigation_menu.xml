@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_bank"
+        android:title="@string/menu_bank"
+        android:icon="@drawable/ic_nav_bank"/>
+    <item
+        android:id="@+id/nav_materials"
+        android:title="@string/menu_Material"
+        android:icon="@drawable/ic_nav_material"/>
+    <item
+        android:id="@+id/nav_inventory"
+        android:title="@string/menu_Inventory"
+        android:icon="@drawable/ic_nav_inventory"/>
+</menu>

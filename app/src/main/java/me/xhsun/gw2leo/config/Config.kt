@@ -20,7 +20,7 @@ const val CHARACTER_LIST_KEY = "characters"
 
 const val ORDER_BY_BUY = "buy"
 const val ORDER_BY_SELL = "sell"
-const val STORAGE_TYPE_KEY = "STORAGE_TYPE"
+const val STORAGE_TYPE_KEY = "storageType"
 const val STORAGE_DISPLAY_KEY = "STORAGE_DISPLAY"
 
 const val STORAGE_LIST_COLUMN_WIDTH = 84

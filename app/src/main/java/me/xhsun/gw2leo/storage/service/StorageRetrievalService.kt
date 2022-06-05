@@ -44,7 +44,7 @@ class StorageRetrievalService @Inject constructor(
     override suspend fun inventoryItems(characterName: String): List<StorageItem> {
         Timber.d("Retrieving update inventory items::$characterName")
         val response = gw2Repository.getCharacterInventory(characterName)
-        val res = response.flatMap { bag ->
+        val res = response.bags.filterNotNull().flatMap { bag ->
             bag.inventory.mapNotNull {
                 it?.toDomain(characterName)
             }
@@ -105,6 +105,7 @@ class StorageRetrievalService @Inject constructor(
         if (items.isNotEmpty()) {
             itemMap.putAll(items.associateBy({ it.id }, { it }))
         }
+        Timber.d("$itemMap")
         return itemMap
     }
 
@@ -151,7 +152,7 @@ class StorageRetrievalService @Inject constructor(
      * @return List of updated items
      */
     private suspend fun getItemPrices(shouldUpdate: List<Item>): List<Item> {
-        val itemChunks = shouldUpdate.chunked(MAX_RESPONSE_SIZE)
+        val itemChunks = shouldUpdate.filter { it.sellable }.chunked(MAX_RESPONSE_SIZE)
         val result = emptyList<Item>().toMutableList()
 
         try {
