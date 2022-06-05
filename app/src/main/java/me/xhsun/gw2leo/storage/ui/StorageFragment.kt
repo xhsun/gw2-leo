@@ -1,92 +1,111 @@
 package me.xhsun.gw2leo.storage.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 import me.xhsun.gw2leo.R
-import me.xhsun.gw2leo.storage.StorageType
+import me.xhsun.gw2leo.account.error.NotLoggedInError
+import me.xhsun.gw2leo.account.ui.LoginActivity
+import me.xhsun.gw2leo.config.ACCOUNT_ID_KEY
+import me.xhsun.gw2leo.config.ORDER_BY_BUY
+import me.xhsun.gw2leo.config.STORAGE_LIST_COLUMN_WIDTH
+import me.xhsun.gw2leo.config.STORAGE_TYPE_KEY
+import me.xhsun.gw2leo.databinding.FragmentStorageBinding
+import me.xhsun.gw2leo.storage.ui.adapter.PostsLoadStateAdapter
+import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
+import me.xhsun.gw2leo.storage.ui.model.StorageDisplay
+import me.xhsun.gw2leo.storage.ui.model.StorageViewModel
+import timber.log.Timber
 
-private const val STORAGE_TYPE_KEY = "STORAGE_TYPE"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [StorageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class StorageFragment : Fragment() {
-    private var adapter: StorageAdapter = StorageAdapter()
-    private var storageType: StorageType = StorageType.Bank
+    private lateinit var storageType: String
+    private lateinit var accountID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            storageType = enumValueOf(it.getString(STORAGE_TYPE_KEY) ?: StorageType.Bank.toString())
+        try {
+            arguments?.let {
+                storageType = it.getString(STORAGE_TYPE_KEY) ?: throw IllegalArgumentException()
+                accountID = it.getString(ACCOUNT_ID_KEY) ?: throw NotLoggedInError()
+            }
+        } catch (e: NotLoggedInError) {
+            Timber.d("Not logged in, start login process")
+            val intent = Intent(activity, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
         }
+        Timber.d("Displaying storage list for $accountID::$storageType")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_storage, container, false)
-    }
+    ): View {
+        val binding: FragmentStorageBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_storage, container, false
+        )
+        val viewModel = ViewModelProvider(this)[StorageViewModel::class.java]
+        binding.lifecycleOwner = viewLifecycleOwner
 
-    private fun initAdapter() {
-        adapter = StorageAdapter()
-        binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
+        val adapter = StorageAdapter()
+        this.addLayoutManager(binding.storageList)
+
+        binding.storageList.adapter = adapter
+        binding.swipeRefresh.setOnRefreshListener {
+            adapter.refresh()
+            binding.swipeRefresh.isRefreshing = false
+        }
+
+        viewModel.updateItem(
+            StorageDisplay(
+                storageType,
+                ORDER_BY_BUY,
+                true
+            )
+        )
+
+        binding.storageList.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PostsLoadStateAdapter(adapter),
             footer = PostsLoadStateAdapter(adapter)
         )
 
         lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow.collect { loadStates ->
-                binding.swipeRefresh.isRefreshing =
-                    loadStates.mediator?.refresh is LoadState.Loading
-            }
-        }
-
-        lifecycleScope.launchWhenCreated {
-            model.posts.collectLatest {
+            viewModel.items.collectLatest {
                 adapter.submitData(it)
             }
         }
 
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow
-                // Use a state-machine to track LoadStates such that we only transition to
-                // NotLoading from a RemoteMediator load if it was also presented to UI.
                 .asMergedLoadStates()
-                // Only emit when REFRESH changes, as we only want to react on loads replacing the
-                // list.
                 .distinctUntilChangedBy { it.refresh }
-                // Only react to cases where REFRESH completes i.e., NotLoading.
                 .filter { it.refresh is LoadState.NotLoading }
-                // Scroll to top is synchronous with UI updates, even if remote load was triggered.
-                .collect { binding.list.scrollToPosition(0) }
+                .collect {
+                    binding.storageList.scrollToPosition(0)
+                }
         }
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param storageType Type of storage to display
-         * @return A new instance of fragment StorageFragment.
-         */
-        @JvmStatic
-        fun newInstance(storageType: StorageType) =
-            StorageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(STORAGE_TYPE_KEY, storageType.toString())
-                }
-            }
+    private fun addLayoutManager(recyclerView: RecyclerView) {
+        val displayMetrics = recyclerView.context.resources.displayMetrics
+        val noOfColumns =
+            ((displayMetrics.widthPixels / displayMetrics.density) / STORAGE_LIST_COLUMN_WIDTH).toInt()
+        recyclerView.layoutManager = GridLayoutManager(this.context, noOfColumns)
     }
 }

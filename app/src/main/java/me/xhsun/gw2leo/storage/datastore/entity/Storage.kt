@@ -53,7 +53,9 @@ data class Storage(
             count = count,
             charges = charges,
             binding = binding,
-            bindTo = bindTo
+            bindTo = bindTo,
+            accountID = "",
+            category = null
         )
     }
 }

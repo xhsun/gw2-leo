@@ -7,9 +7,9 @@ import me.xhsun.gw2leo.storage.StorageItem
 data class InventoryDTO(
     val id: Int,
     val count: Int,
-    val charges: Int,
-    val binding: String,
-    @Json(name = "bound_to") val boundTo: String
+    val charges: Int?,
+    val binding: String?,
+    @Json(name = "bound_to") val boundTo: String?
 ) {
     fun toDomain(storageType: String): StorageItem {
         return StorageItem(
@@ -33,10 +33,12 @@ data class InventoryDTO(
                 sellCopper = 0
             ),
             storageType = storageType,
-            binding = binding,
+            binding = binding ?: "",
             bindTo = boundTo,
             charges = charges,
-            count = count
+            count = count,
+            accountID = "",
+            category = null
         )
     }
 }

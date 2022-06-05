@@ -6,44 +6,41 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import me.xhsun.gw2leo.account.error.NotLoggedInError
-import me.xhsun.gw2leo.config.DB_BANK_KEY_PREFIX
+import me.xhsun.gw2leo.account.service.IAccountService
 import me.xhsun.gw2leo.datastore.IDatastoreRepository
-import me.xhsun.gw2leo.storage.datastore.entity.Storage
+import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
 import me.xhsun.gw2leo.storage.error.NoItemFoundError
 import timber.log.Timber
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class StorageRemoteMediator @Inject constructor(
-    private val storageType: String,
+class MaterialStorageRemoteMediator @Inject constructor(
+    private val accountService: IAccountService,
     private val storageRetrievalService: IStorageRetrievalService,
     private val datastore: IDatastoreRepository
-) : RemoteMediator<Int, Storage>() {
+) : RemoteMediator<Int, MaterialStorage>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Storage>
+        state: PagingState<Int, MaterialStorage>
     ): MediatorResult {
         if (loadType != LoadType.REFRESH) {
             MediatorResult.Success(endOfPaginationReached = true)
         }
-        val isBank = storageType.contains(DB_BANK_KEY_PREFIX)
         try {
-            val items = if (isBank) {
-                storageRetrievalService.bankItems()
-            } else {
-                storageRetrievalService.inventoryItems(storageType)
-            }
+            val accountID = accountService.accountID()
+            val items = storageRetrievalService.materialItems()
 
             datastore.withTransaction {
-                datastore.storageDAO.bulkDelete(storageType)
+                datastore.materialStorageDAO.bulkDelete(accountID)
                 datastore.itemDAO.insertAll(items.map { it.detail.toDAO() })
-                datastore.storageDAO.insertAll(items.map { it.toStorageDAO() })
+                datastore.materialTypeDAO.insertAll(items.map { it.category!!.toDAO() })
+                datastore.materialStorageDAO.insertAll(items.map { it.toMaterialDAO() })
             }
-            Timber.d("Successfully refreshed storage items::$storageType::${items.size}")
+            Timber.d("Successfully refreshed material storage items::${items.size}")
             return MediatorResult.Success(endOfPaginationReached = true)
         } catch (e: Exception) {
-            Timber.d("Encountered an error while loading storage data::${e.message}")
+            Timber.d("Encountered an error while loading material storage data::${e.message}")
             when (e) {// Could also be IOException, HttpException
                 is NotLoggedInError -> {
                     return MediatorResult.Error(e)

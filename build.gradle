@@ -25,6 +25,7 @@ ext {
     compileSdkVersion = 32
     fragmentVersion = "1.4.1"
     pagingVersion = "3.1.1"
+    swipeRefreshVersion = "1.1.0"
 
     loggerVersion = "5.0.1"
     qrScannerVersion = "1.4.2"

@@ -1,25 +1,30 @@
 package me.xhsun.gw2leo.storage.datastore.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.paging.PagingSource
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorageBase
 
 @Dao
 interface MaterialStorageDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg items: MaterialStorageBase)
+    fun insertAll(items: List<MaterialStorageBase>)
 
     @Query("DELETE FROM materialstorage WHERE accountID = :accountID")
     fun bulkDelete(accountID: String)
 
-    @Transaction
-    @Query("SELECT * FROM materialstorage WHERE accountID = :accountID")
-    fun getAll(accountID: String): LiveData<List<MaterialStorage>>
+    @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND storage.categoryID = t.id ORDER BY i.buy ASC")
+    fun getAllOderByBuyAscending(): PagingSource<Int, MaterialStorage>
 
-    @Transaction
-    fun bulkUpdate(accountID: String, vararg items: MaterialStorageBase) {
-        bulkDelete(accountID)
-        insertAll(*items)
-    }
+    @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND storage.categoryID = t.id ORDER BY i.buy DESC")
+    fun getAllOderByBuyDescending(): PagingSource<Int, MaterialStorage>
+
+    @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND storage.categoryID = t.id ORDER BY i.sell ASC")
+    fun getAllOderBySellAscending(): PagingSource<Int, MaterialStorage>
+
+    @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND storage.categoryID = t.id ORDER BY i.sell DESC")
+    fun getAllOderBySellDescending(): PagingSource<Int, MaterialStorage>
 }

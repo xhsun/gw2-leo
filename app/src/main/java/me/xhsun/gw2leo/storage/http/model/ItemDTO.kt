@@ -8,7 +8,7 @@ data class ItemDTO(
     @Json(name = "chat_link") val chatLink: String,
     val name: String,
     val icon: String,
-    val description: String,
+    val description: String?,
     val rarity: String,
     val level: Int,
     val flags: List<String>
@@ -19,7 +19,7 @@ data class ItemDTO(
             chatLink = chatLink,
             name = name,
             icon = icon,
-            description = description,
+            description = description ?: "",
             rarity = rarity,
             level = level,
             sellable = !flags.contains("NoSell"),

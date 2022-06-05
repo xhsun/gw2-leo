@@ -1,17 +1,18 @@
 package me.xhsun.gw2leo.storage.http.model
 
+import me.xhsun.gw2leo.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.MaterialCategory
-import me.xhsun.gw2leo.storage.MaterialItem
+import me.xhsun.gw2leo.storage.StorageItem
 
 data class MaterialDTO(
     val id: Int,
     val category: Int,
-    val binding: String, //Account or omitted
+    val binding: String?, //Account or omitted
     val count: Int
 ) {
-    fun toDomain(accountID: String): MaterialItem {
-        return MaterialItem(
+    fun toDomain(accountID: String): StorageItem {
+        return StorageItem(
             id = id,
             accountID = accountID,
             category = MaterialCategory(
@@ -36,8 +37,11 @@ data class MaterialDTO(
                 sellSilver = 0,
                 sellCopper = 0
             ),
-            accountBounded = binding.isNotEmpty(),
-            count = count
+            binding = binding ?: "",
+            count = count,
+            storageType = MATERIAL_STORAGE_PREFIX,
+            charges = null,
+            bindTo = ""
         )
     }
 }

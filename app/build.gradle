@@ -57,6 +57,8 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
     implementation "com.jakewharton.timber:timber:$loggerVersion"
     implementation "androidx.paging:paging-runtime:$pagingVersion"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshVersion"
+
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"

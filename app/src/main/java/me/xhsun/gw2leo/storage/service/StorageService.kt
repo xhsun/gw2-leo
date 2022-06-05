@@ -1,105 +1,89 @@
 package me.xhsun.gw2leo.storage.service
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import androidx.paging.*
-import me.xhsun.gw2leo.account.service.IAccountService
-import me.xhsun.gw2leo.config.DEFAULT_RESPONSE_SIZE
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import me.xhsun.gw2leo.config.MAX_RESPONSE_SIZE
+import me.xhsun.gw2leo.config.ORDER_BY_BUY
 import me.xhsun.gw2leo.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.storage.StorageItem
+import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
+import timber.log.Timber
 import javax.inject.Inject
 
+@OptIn(ExperimentalPagingApi::class)
 class StorageService @Inject constructor(
     private val datastore: IDatastoreRepository,
-    private val accountService: IAccountService,
-    private val storageRetrievalService: IStorageRetrievalService
+    private val storageRemoteMediatorBuilder: IStorageRemoteMediatorBuilder,
+    private val materialStorageRemoteMediator: RemoteMediator<Int, MaterialStorage>
 ) : IStorageService {
 
     override fun storageStream(
         storageType: String,
         orderBy: String,
-        isAsc: Boolean
-    ): LiveData<PagingData<StorageItem>> {
+        isAsc: Boolean,
+        scope: CoroutineScope
+    ): Flow<PagingData<StorageItem>> {
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
-                pageSize = DEFAULT_RESPONSE_SIZE,
+                pageSize = MAX_RESPONSE_SIZE,
                 enablePlaceholders = false
             ),
-            remoteMediator = StorageRemoteMediator(
-                storageType,
-                accountService,
-                storageRetrievalService,
-                datastore
-            ),
+            remoteMediator = storageRemoteMediatorBuilder.build(storageType),
             pagingSourceFactory = {
-                if (isAsc) {
-                    datastore.storageDAO.getAllAscending(storageType, orderBy)
+                Timber.d("Display storage items::$orderBy::Ascending($isAsc)")
+                if (orderBy == ORDER_BY_BUY) {
+                    if (isAsc) {
+                        datastore.storageDAO.getAllOderByBuyAscending(storageType)
+                    } else {
+                        datastore.storageDAO.getAllOderByBuyDescending(storageType)
+                    }
                 } else {
-                    datastore.storageDAO.getAllDescending(storageType, orderBy)
+                    if (isAsc) {
+                        datastore.storageDAO.getAllOderBySellAscending(storageType)
+                    } else {
+                        datastore.storageDAO.getAllOderBySellDescending(storageType)
+                    }
                 }
             }
-        ).liveData.map { data ->
+        ).flow.map { data ->
             data.map { it.toDomain() }
-        }
+        }.cachedIn(scope)
     }
 
 
-//
-//    override fun materialStorageData(): LiveData<List<MaterialItem>> {
-//        val accountID = accountService.accountID()
-//        Timber.d("Retrieving material storage information::${accountID}")
-//        return Transformations.map(datastore.materialStorageDAO.getAll(accountID)) { list ->
-//            list.filter {
-//                it.material.count > 0
-//            }.map {
-//                it.toDomain()
-//            }
-//        }
-//    }
-
-//    override suspend fun updatePrices(): Boolean {
-//        return withContext(Dispatchers.IO) {
-//            try {
-//                updateService.updateItems()
-//            } catch (e: Exception) {
-//                Timber.d("Failed to update item prices::${e.message}")
-//                false
-//            }
-//        }
-//    }
-//
-//    override suspend fun updateAll(): Boolean {
-//        try {
-//            withContext(Dispatchers.IO) {
-//                updateService.updateBankItems()
-//                updateService.updateMaterialItems()
-//                characterService.characters().forEach {
-//                    updateService.updateInventoryItems(it)
-//                }
-//            }
-//        } catch (e: Exception) {
-//            when (e) {
-//                is NotLoggedInError -> throw e
-//                else -> {
-//                    Timber.d("Failed to update all storages::${e.message}")
-//                    return false
-//                }
-//            }
-//        }
-//        return true
-//    }
-//
-//    override suspend fun updateStorage(storageType: String): Boolean {
-//        if (storageType.isEmpty()) {
-//            throw IllegalArgumentException("storageType")
-//        }
-//        return withContext(Dispatchers.IO) {
-//            when (storageType) {
-//                DB_BANK_KEY_FORMAT.format(accountService.accountID()) -> updateService.updateBankItems()
-//                MATERIAL_STORAGE_KEY -> updateService.updateMaterialItems()
-//                else -> updateService.updateInventoryItems(storageType)
-//            }
-//        }
-//    }
+    override fun materialStorageData(
+        orderBy: String,
+        isAsc: Boolean,
+        scope: CoroutineScope
+    ): Flow<PagingData<StorageItem>> {
+        @OptIn(ExperimentalPagingApi::class)
+        return Pager(
+            config = PagingConfig(
+                pageSize = MAX_RESPONSE_SIZE,
+                enablePlaceholders = false
+            ),
+            remoteMediator = materialStorageRemoteMediator,
+            pagingSourceFactory = {
+                Timber.d("Display storage items::$orderBy::Ascending($isAsc)")
+                if (orderBy == ORDER_BY_BUY) {
+                    if (isAsc) {
+                        datastore.materialStorageDAO.getAllOderByBuyAscending()
+                    } else {
+                        datastore.materialStorageDAO.getAllOderByBuyDescending()
+                    }
+                } else {
+                    if (isAsc) {
+                        datastore.materialStorageDAO.getAllOderBySellAscending()
+                    } else {
+                        datastore.materialStorageDAO.getAllOderBySellDescending()
+                    }
+                }
+            }
+        ).flow.map { data ->
+            data.map { it.toDomain() }
+        }.cachedIn(scope)
+    }
 }

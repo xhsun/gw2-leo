@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.storage.ui
+package me.xhsun.gw2leo.storage.ui.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -31,13 +31,22 @@ class StorageAdapter() :
     companion object {
         private val PAYLOAD_SCORE = Any()
         val STORAGE_COMPARATOR = object : DiffUtil.ItemCallback<StorageItem>() {
-            override fun areContentsTheSame(oldItem: StorageItem, newItem: StorageItem): Boolean =
+            override fun areContentsTheSame(
+                oldItem: StorageItem,
+                newItem: StorageItem
+            ): Boolean =
                 oldItem == newItem
 
-            override fun areItemsTheSame(oldItem: StorageItem, newItem: StorageItem): Boolean =
+            override fun areItemsTheSame(
+                oldItem: StorageItem,
+                newItem: StorageItem
+            ): Boolean =
                 oldItem.id == newItem.id
 
-            override fun getChangePayload(oldItem: StorageItem, newItem: StorageItem): Any? {
+            override fun getChangePayload(
+                oldItem: StorageItem,
+                newItem: StorageItem
+            ): Any? {
                 return if (sameExceptPrice(oldItem, newItem) || sameExceptCount(oldItem, newItem)) {
                     PAYLOAD_SCORE
                 } else {

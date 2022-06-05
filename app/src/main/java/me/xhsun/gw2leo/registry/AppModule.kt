@@ -1,6 +1,8 @@
 package me.xhsun.gw2leo.registry
 
 import android.content.Context
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.RemoteMediator
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -17,10 +19,8 @@ import me.xhsun.gw2leo.http.IGW2RepositoryFactory
 import me.xhsun.gw2leo.http.interceptor.AuthorizationInterceptor
 import me.xhsun.gw2leo.http.interceptor.AuthorizationStatusInterceptor
 import me.xhsun.gw2leo.http.interceptor.ContentTypeInterceptor
-import me.xhsun.gw2leo.storage.service.IStorageRetrievalService
-import me.xhsun.gw2leo.storage.service.IStorageService
-import me.xhsun.gw2leo.storage.service.StorageRetrievalService
-import me.xhsun.gw2leo.storage.service.StorageService
+import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
+import me.xhsun.gw2leo.storage.service.*
 import javax.inject.Singleton
 
 
@@ -70,12 +70,35 @@ class AppModule {
     }
 
     @Provides
+    @OptIn(ExperimentalPagingApi::class)
     fun provideStorageService(
         datastore: IDatastoreRepository,
-        accountService: IAccountService,
-        storageRetrievalService: IStorageRetrievalService
+        storageRemoteMediatorBuilder: IStorageRemoteMediatorBuilder,
+        materialStorageRemoteMediator: RemoteMediator<Int, MaterialStorage>
     ): IStorageService {
-        return StorageService(datastore, accountService, storageRetrievalService)
+        return StorageService(
+            datastore,
+            storageRemoteMediatorBuilder,
+            materialStorageRemoteMediator
+        )
+    }
+
+    @Provides
+    fun provideStorageRemoteMediatorBuilder(
+        storageRetrievalService: IStorageRetrievalService,
+        datastore: IDatastoreRepository
+    ): IStorageRemoteMediatorBuilder {
+        return StorageRemoteMediatorBuilder(storageRetrievalService, datastore)
+    }
+
+    @Provides
+    @OptIn(ExperimentalPagingApi::class)
+    fun provideMaterialStorageRemoteMediator(
+        accountService: IAccountService,
+        storageRetrievalService: IStorageRetrievalService,
+        datastore: IDatastoreRepository
+    ): RemoteMediator<Int, MaterialStorage> {
+        return MaterialStorageRemoteMediator(accountService, storageRetrievalService, datastore)
     }
 
     @Provides

@@ -30,7 +30,7 @@ data class StorageBase(
     @ColumnInfo(index = true)
     val storageType: String,
     val count: Int,
-    @ColumnInfo(defaultValue = "0") val charges: Int,
+    val charges: Int?,
     @ColumnInfo(defaultValue = "None") val binding: String,
     val bindTo: String?
 )

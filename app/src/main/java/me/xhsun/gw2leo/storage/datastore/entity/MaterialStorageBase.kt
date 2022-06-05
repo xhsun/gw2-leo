@@ -35,6 +35,6 @@ data class MaterialStorageBase(
     val accountID: String,
     @ColumnInfo(index = true)
     val categoryID: Int,
-    @ColumnInfo(defaultValue = "false") val accountBounded: Boolean,
+    @ColumnInfo(defaultValue = "") val binding: String,
     @ColumnInfo(defaultValue = "0") val count: Int
 )

@@ -86,7 +86,7 @@ class LoginViewModel @Inject constructor(
             try {
                 val result = refreshService.initializeAccount(api)
                 if (result) {
-                    states.value = UIState(shouldTransfer = true)
+                    states.postValue(UIState(shouldTransfer = true))
                 } else {
                     loading = false
                     Timber.d("Unexpected issue happened when initializing account::${api}")

@@ -4,7 +4,6 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingSource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.scan
 
@@ -21,7 +20,6 @@ import kotlinx.coroutines.flow.scan
  * [Loading] in cases where invalidation doesn't happen because the fetched network data represents
  * exactly what is already cached in DB.
  */
-@OptIn(ExperimentalCoroutinesApi::class)
 fun Flow<CombinedLoadStates>.asMergedLoadStates(): Flow<LoadStates> {
     val syncRemoteState = LoadStatesMerger()
     return scan(syncRemoteState.toLoadStates()) { _, combinedLoadStates ->

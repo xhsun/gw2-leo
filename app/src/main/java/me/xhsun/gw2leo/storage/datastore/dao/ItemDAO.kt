@@ -6,7 +6,7 @@ import me.xhsun.gw2leo.storage.datastore.entity.Item
 @Dao
 interface ItemDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg items: Item)
+    fun insertAll(items: List<Item>)
 
     @Update
     fun bulkUpdate(items: List<Item>)
