@@ -34,6 +34,8 @@ import timber.log.Timber
 class StorageFragment : Fragment() {
     private lateinit var storageType: String
     private lateinit var accountID: String
+    private lateinit var viewModel: StorageViewModel
+    private lateinit var adapter: StorageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +51,15 @@ class StorageFragment : Fragment() {
             startActivity(intent)
         }
         Timber.d("Displaying storage list for $accountID::$storageType")
+        viewModel = ViewModelProvider(this)[StorageViewModel::class.java]
+        adapter = StorageAdapter()
+        viewModel.updateItem(
+            StorageDisplay(
+                storageType,
+                ORDER_BY_BUY,
+                true
+            )
+        )
     }
 
     override fun onCreateView(
@@ -58,26 +69,14 @@ class StorageFragment : Fragment() {
         val binding: FragmentStorageBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_storage, container, false
         )
-        val viewModel = ViewModelProvider(this)[StorageViewModel::class.java]
         binding.lifecycleOwner = viewLifecycleOwner
-
-        val adapter = StorageAdapter()
         this.addLayoutManager(binding.storageList)
-
         binding.storageList.adapter = adapter
+
         binding.swipeRefresh.setOnRefreshListener {
             adapter.refresh()
             binding.swipeRefresh.isRefreshing = false
         }
-
-        viewModel.updateItem(
-            StorageDisplay(
-                storageType,
-                ORDER_BY_BUY,
-                true
-            )
-        )
-
         binding.storageList.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PostsLoadStateAdapter(adapter),
             footer = PostsLoadStateAdapter(adapter)

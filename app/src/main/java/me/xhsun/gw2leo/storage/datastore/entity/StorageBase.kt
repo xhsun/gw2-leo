@@ -14,11 +14,6 @@ import me.xhsun.gw2leo.account.datastore.entity.Character
             parentColumns = ["name"],
             childColumns = ["storageType"],
             onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = Item::class,
-            parentColumns = ["id"],
-            childColumns = ["itemID"]
         )
     ]
 )
