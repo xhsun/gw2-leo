@@ -2,7 +2,7 @@ package me.xhsun.gw2leo.account.service
 
 import me.xhsun.gw2leo.account.datastore.entity.Character
 import me.xhsun.gw2leo.account.error.NotLoggedInError
-import me.xhsun.gw2leo.config.DB_BANK_KEY_FORMAT
+import me.xhsun.gw2leo.config.BANK_STORAGE_KEY_FORMAT
 import me.xhsun.gw2leo.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.http.IGW2Repository
 import me.xhsun.gw2leo.http.IGW2RepositoryFactory
@@ -24,7 +24,7 @@ class CharacterService @Inject constructor(
     override suspend fun characters(): List<String> {
         if (this.characters.isEmpty()) {
             val accountID = accountService.accountID()
-            val bankKey = DB_BANK_KEY_FORMAT.format(accountID)
+            val bankKey = BANK_STORAGE_KEY_FORMAT.format(accountID)
             Timber.d("Account character list is empty, attempt to retrieve from cache")
             synchronized(this.characters) {
                 val characters = datastore.characterDAO.getAll(accountService.accountID()).map {
@@ -43,10 +43,10 @@ class CharacterService @Inject constructor(
 
     override suspend fun update(): Boolean {
         val accountID = accountService.accountID()
-        val bankKey = DB_BANK_KEY_FORMAT.format(accountID)
+        val bankKey = BANK_STORAGE_KEY_FORMAT.format(accountID)
         Timber.d("Start update character list information::${accountID}")
         val characters = gw2Repository.getAllCharacterName().toMutableList()
-        characters.add(DB_BANK_KEY_FORMAT.format(accountID))
+        characters.add(BANK_STORAGE_KEY_FORMAT.format(accountID))
         val characterArr = characters.map {
             Character(
                 name = it,

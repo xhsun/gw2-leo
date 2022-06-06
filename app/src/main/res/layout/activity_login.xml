@@ -9,7 +9,7 @@
 
         <variable
             name="viewmodel"
-            type="me.xhsun.gw2leo.account.ui.LoginViewModel" />
+            type="me.xhsun.gw2leo.account.ui.model.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

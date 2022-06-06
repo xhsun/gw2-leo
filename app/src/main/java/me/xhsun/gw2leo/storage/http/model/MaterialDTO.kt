@@ -41,7 +41,11 @@ data class MaterialDTO(
             count = count,
             storageType = MATERIAL_STORAGE_PREFIX,
             charges = null,
-            bindTo = ""
+            bindTo = "",
+            price = 0,
+            gold = 0,
+            silver = 0,
+            copper = 0
         )
     }
 }

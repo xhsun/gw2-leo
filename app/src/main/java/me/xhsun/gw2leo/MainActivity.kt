@@ -3,6 +3,7 @@ package me.xhsun.gw2leo
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import me.xhsun.gw2leo.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.databinding.ActivityMainBinding
 import me.xhsun.gw2leo.storage.ui.InventoryFragment
 import me.xhsun.gw2leo.storage.ui.StorageFragment
+import me.xhsun.gw2leo.storage.ui.model.SortViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -28,6 +30,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private var fragments: MutableMap<String, Fragment> =
         emptyMap<String, Fragment>().toMutableMap()
+    private val viewModel by viewModels<SortViewModel>()
 
     @Inject
     lateinit var accountService: IAccountService
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
+        binding.viewmodel = viewModel
 
         try {
             val accountID = accountService.accountID()
@@ -62,6 +66,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
+        }
+
+        binding.sortFieldToggle.addOnButtonCheckedListener { group, _, _ ->
+            viewModel.onSortFieldChange(group.checkedButtonId)
         }
 
         binding.navigationRail.setOnItemSelectedListener { this.navigation(it) }

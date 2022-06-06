@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +22,8 @@ import me.xhsun.gw2leo.account.ui.LoginActivity
 import me.xhsun.gw2leo.config.*
 import me.xhsun.gw2leo.databinding.FragmentStorageBinding
 import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
+import me.xhsun.gw2leo.storage.ui.model.SortState
+import me.xhsun.gw2leo.storage.ui.model.SortViewModel
 import me.xhsun.gw2leo.storage.ui.model.StorageDisplay
 import me.xhsun.gw2leo.storage.ui.model.StorageViewModel
 import timber.log.Timber
@@ -29,7 +33,8 @@ import javax.inject.Inject
 class StorageFragment : Fragment() {
     private lateinit var storageType: String
     private lateinit var accountID: String
-    private lateinit var viewModel: StorageViewModel
+    private val viewModel by viewModels<StorageViewModel>()
+    private val sortViewModel by activityViewModels<SortViewModel>()
 
     @Inject
     lateinit var storageAdapter: StorageAdapter
@@ -42,7 +47,9 @@ class StorageFragment : Fragment() {
                 accountID = it.getString(ACCOUNT_ID_KEY) ?: throw NotLoggedInError()
             }
             storageType =
-                if (storageType.contains(BANK_STORAGE_PREFIX)) DB_BANK_KEY_FORMAT.format(accountID) else storageType
+                if (storageType.contains(BANK_STORAGE_PREFIX)) BANK_STORAGE_KEY_FORMAT.format(
+                    accountID
+                ) else storageType
         } catch (e: NotLoggedInError) {
             Timber.d("Not logged in, start login process")
             val intent = Intent(activity, LoginActivity::class.java)
@@ -51,15 +58,14 @@ class StorageFragment : Fragment() {
         }
         Timber.d("Displaying storage list for $accountID::$storageType")
 
-        viewModel = ViewModelProvider(this)[StorageViewModel::class.java]
-        viewModel.updateItem(
-            StorageDisplay(
-                storageType,
-                ORDER_BY_BUY,
-                true
-            ),
-            storageAdapter
-        )
+        val sortObserver = Observer<SortState> {
+            if (it != null) {
+                this.update(it.isBuy, it.isAsc)
+            }
+        }
+
+        sortViewModel.sortState.observe(this, sortObserver)
+        this.update(isBuy = true, isAsc = false)
     }
 
     override fun onCreateView(
@@ -96,6 +102,18 @@ class StorageFragment : Fragment() {
                 }
         }
         return binding.root
+    }
+
+    private fun update(isBuy: Boolean, isAsc: Boolean) {
+        Timber.d("Update storage sorting::isBuy(${isBuy})::isAsc(${isAsc})")
+        viewModel.update(
+            StorageDisplay(
+                storageType,
+                if (isBuy) ORDER_BY_BUY else ORDER_BY_SELL,
+                isAsc
+            ),
+            storageAdapter
+        )
     }
 
     private fun layoutManager(recyclerView: RecyclerView): GridLayoutManager {

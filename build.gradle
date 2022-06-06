@@ -24,6 +24,8 @@ ext {
     targetSdkVersion = 32
     compileSdkVersion = 32
     fragmentVersion = "1.4.1"
+    activityVersion = "1.4.0"
+    lifecycleExtVersion = "2.2.0"
     pagingVersion = "3.1.1"
     swipeRefreshVersion = "1.1.0"
 

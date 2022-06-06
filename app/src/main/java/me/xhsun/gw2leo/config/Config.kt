@@ -10,11 +10,13 @@ const val MAX_RESPONSE_SIZE = 200
 const val ID_SEPARATOR = ","
 
 const val DB_NAME = "gw2_leo_database"
-const val DB_BANK_KEY_FORMAT = "_BANK%s"
 
 const val BANK_STORAGE_PREFIX = "_BANK"
+const val BANK_STORAGE_KEY_FORMAT = "_BANK%s"
 const val MATERIAL_STORAGE_PREFIX = "_MATERIAL"
+const val MATERIAL_STORAGE_KEY_FORMAT = "_MATERIAL%s"
 const val INVENTORY_STORAGE_PREFIX = "_INVENTORY"
+const val MIN_REFRESH_RATE_HR = 1
 
 const val SHARED_PREFERENCES_FILE_NAME = "account"
 const val ACCOUNT_ID_KEY = "accountID"

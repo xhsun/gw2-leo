@@ -1,7 +1,7 @@
 package me.xhsun.gw2leo.storage.service
 
 import me.xhsun.gw2leo.account.service.IAccountService
-import me.xhsun.gw2leo.config.DB_BANK_KEY_FORMAT
+import me.xhsun.gw2leo.config.BANK_STORAGE_KEY_FORMAT
 import me.xhsun.gw2leo.config.ID_SEPARATOR
 import me.xhsun.gw2leo.config.MAX_RESPONSE_SIZE
 import me.xhsun.gw2leo.http.IGW2Repository
@@ -24,7 +24,7 @@ class StorageRetrievalService @Inject constructor(
         Timber.d("Retrieving update bank storage items::$accountID")
         val response = gw2Repository.getBank()
         val res = response.mapNotNull {
-            it?.toDomain(DB_BANK_KEY_FORMAT.format(accountID))
+            it?.toDomain(BANK_STORAGE_KEY_FORMAT.format(accountID))
         }.filter { it.count > 1 }
         if (res.isEmpty()) {
             Timber.d("Got empty bank storage item list")

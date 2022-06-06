@@ -25,6 +25,7 @@ class StorageService @Inject constructor(
         isAsc: Boolean,
         scope: CoroutineScope
     ): Flow<PagingData<StorageItem>> {
+        val isBuy = orderBy == ORDER_BY_BUY
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
@@ -34,7 +35,7 @@ class StorageService @Inject constructor(
             remoteMediator = storageRemoteMediatorBuilder.build(storageType),
             pagingSourceFactory = {
                 Timber.d("Display storage items::$orderBy::Ascending($isAsc)")
-                if (orderBy == ORDER_BY_BUY) {
+                if (isBuy) {
                     if (isAsc) {
                         datastore.storageDAO.getAllOderByBuyAscending(storageType)
                     } else {
@@ -49,7 +50,7 @@ class StorageService @Inject constructor(
                 }
             }
         ).flow.map { data ->
-            data.map { it.toDomain() }
+            data.map { it.toDomain(isBuy) }
         }.cachedIn(scope)
     }
 
@@ -59,6 +60,7 @@ class StorageService @Inject constructor(
         isAsc: Boolean,
         scope: CoroutineScope
     ): Flow<PagingData<StorageItem>> {
+        val isBuy = orderBy == ORDER_BY_BUY
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
@@ -68,7 +70,7 @@ class StorageService @Inject constructor(
             remoteMediator = materialStorageRemoteMediator,
             pagingSourceFactory = {
                 Timber.d("Display storage items::$orderBy::Ascending($isAsc)")
-                if (orderBy == ORDER_BY_BUY) {
+                if (isBuy) {
                     if (isAsc) {
                         datastore.materialStorageDAO.getAllOderByBuyAscending()
                     } else {
@@ -83,7 +85,7 @@ class StorageService @Inject constructor(
                 }
             }
         ).flow.map { data ->
-            data.map { it.toDomain() }
+            data.map { it.toDomain(isBuy) }
         }.cachedIn(scope)
     }
 }

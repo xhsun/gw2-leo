@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.account.ui
+package me.xhsun.gw2leo.account.ui.model
 
 data class UIState(
     val shouldTransfer: Boolean = false,

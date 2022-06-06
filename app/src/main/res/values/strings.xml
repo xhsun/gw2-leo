@@ -11,6 +11,8 @@
     <string name="storage_not_sellable">Not Sellable</string>
     <string name="button_enter">Enter</string>
     <string name="button_retry">Retry</string>
+    <string name="button_buy">BUY</string>
+    <string name="button_sell">SELL</string>
     <string name="err_missing_permission">Missing Permission</string>
     <string name="err_cancel">Operation Canceled</string>
     <string name="err_items_not_found">No items were found, please try again"</string>

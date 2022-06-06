@@ -38,7 +38,7 @@ class StorageViewHolder(view: View) :
 //        }
 //    }
 
-    fun bind(item: StorageItem?, isBuy: Boolean) {
+    fun bind(item: StorageItem?) {
         this.item = item
         setRarity(item?.detail?.rarity ?: "")
         if (item?.detail?.icon?.startsWith("http") == true) {
@@ -52,19 +52,13 @@ class StorageViewHolder(view: View) :
 
         amount.text = this.item?.count.toString()
 
-        val isSellable = this.item?.detail?.buy!! > 0 || this.item?.detail?.sell!! > 0
+        val isSellable = this.item?.price!! > 0 || this.item?.detail?.sellable ?: false
         if (isSellable) {
             notSellable.visibility = GONE
             priceContainer.visibility = VISIBLE
-            if (isBuy) {
-                gold.text = this.item?.detail?.buyGold.toString()
-                silver.text = this.item?.detail?.buySilver.toString()
-                copper.text = this.item?.detail?.buyCopper.toString()
-            } else {
-                gold.text = this.item?.detail?.sellGold.toString()
-                silver.text = this.item?.detail?.sellSilver.toString()
-                copper.text = this.item?.detail?.sellCopper.toString()
-            }
+            gold.text = this.item?.gold.toString()
+            silver.text = this.item?.silver.toString()
+            copper.text = this.item?.copper.toString()
 
             Glide.with(this.itemView).load(COIN_GOLD)
                 .placeholder(R.drawable.ic_image_placeholder)
@@ -105,17 +99,11 @@ class StorageViewHolder(view: View) :
         rarity.setBackgroundColor(setting)
     }
 
-    fun update(item: StorageItem?, isBuy: Boolean) {
+    fun update(item: StorageItem?) {
         this.item = item ?: this.item
         amount.text = this.item?.count.toString()
-        if (isBuy) {
-            gold.text = this.item?.detail?.buyGold.toString()
-            silver.text = this.item?.detail?.buySilver.toString()
-            copper.text = this.item?.detail?.buyCopper.toString()
-        } else {
-            gold.text = this.item?.detail?.sellGold.toString()
-            silver.text = this.item?.detail?.sellSilver.toString()
-            copper.text = this.item?.detail?.sellCopper.toString()
-        }
+        gold.text = this.item?.gold.toString()
+        silver.text = this.item?.silver.toString()
+        copper.text = this.item?.copper.toString()
     }
 }

@@ -28,7 +28,7 @@ data class Storage(
     val sellSilver: Int,
     val sellCopper: Int
 ) {
-    fun toDomain(): StorageItem {
+    fun toDomain(isBuy: Boolean): StorageItem {
         return StorageItem(
             id = id,
             detail = Item(
@@ -55,7 +55,11 @@ data class Storage(
             binding = binding,
             bindTo = bindTo,
             accountID = "",
-            category = null
+            category = null,
+            price = if (isBuy) buy else sell,
+            gold = if (isBuy) buyGold else sellGold,
+            silver = if (isBuy) buySilver else sellSilver,
+            copper = if (isBuy) buyCopper else sellCopper
         )
     }
 }

@@ -9,8 +9,9 @@ import javax.inject.Inject
 
 class StorageAdapter @Inject constructor() :
     PagingDataAdapter<StorageItem, StorageViewHolder>(STORAGE_COMPARATOR) {
+
     override fun onBindViewHolder(holder: StorageViewHolder, position: Int) {
-        holder.bind(getItem(position), true)
+        holder.bind(getItem(position))
     }
 
     override fun onBindViewHolder(
@@ -20,7 +21,7 @@ class StorageAdapter @Inject constructor() :
     ) {
         if (payloads.isNotEmpty()) {
             val item = getItem(position)
-            holder.update(item, true)
+            holder.update(item)
         } else {
             onBindViewHolder(holder, position)
         }
@@ -49,7 +50,11 @@ class StorageAdapter @Inject constructor() :
                 oldItem: StorageItem,
                 newItem: StorageItem
             ): Any? {
-                return if (sameExceptPrice(oldItem, newItem) || sameExceptCount(oldItem, newItem)) {
+                return if (sameExceptDetails(oldItem, newItem) || sameExceptCount(
+                        oldItem,
+                        newItem
+                    ) || sameExceptPrice(oldItem, newItem)
+                ) {
                     PAYLOAD_SCORE
                 } else {
                     null
@@ -57,8 +62,12 @@ class StorageAdapter @Inject constructor() :
             }
         }
 
-        private fun sameExceptPrice(oldItem: StorageItem, newItem: StorageItem): Boolean {
+        private fun sameExceptDetails(oldItem: StorageItem, newItem: StorageItem): Boolean {
             return oldItem.copy(detail = newItem.detail) == newItem
+        }
+
+        private fun sameExceptPrice(oldItem: StorageItem, newItem: StorageItem): Boolean {
+            return oldItem.copy(price = newItem.price) == newItem
         }
 
         private fun sameExceptCount(oldItem: StorageItem, newItem: StorageItem): Boolean {

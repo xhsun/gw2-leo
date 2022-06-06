@@ -12,7 +12,11 @@ data class StorageItem(
     val count: Int,
     val charges: Int?,
     val binding: String,
-    val bindTo: String?
+    val bindTo: String?,
+    val price: Int,
+    val gold: Int,
+    val silver: Int,
+    val copper: Int,
 ) {
     fun toMaterialDAO(): MaterialStorageBase {
         return MaterialStorageBase(
@@ -47,7 +51,11 @@ data class StorageItem(
             charges = charges,
             binding = binding,
             bindTo = bindTo,
-            count = count
+            count = count,
+            price = price,
+            gold = gold,
+            silver = silver,
+            copper = copper
         )
     }
 }

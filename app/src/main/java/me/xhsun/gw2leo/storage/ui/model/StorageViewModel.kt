@@ -66,11 +66,17 @@ class StorageViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
-    fun updateItem(storageDisplay: StorageDisplay, adapter: StorageAdapter) {
-        storageLoading = true
-        storageErrMsg = ""
-        this.adapter = adapter
-        savedStateHandle[STORAGE_DISPLAY_KEY] = storageDisplay
+    fun update(storageDisplay: StorageDisplay, adapter: StorageAdapter) {
+        if (shouldUpdate(storageDisplay)) {
+            storageLoading = true
+            storageErrMsg = ""
+            this.adapter = adapter
+            savedStateHandle[STORAGE_DISPLAY_KEY] = storageDisplay
+        }
+    }
+
+    private fun shouldUpdate(storageDisplay: StorageDisplay): Boolean {
+        return savedStateHandle.get<StorageDisplay>(STORAGE_DISPLAY_KEY) != storageDisplay
     }
 
     fun onRetry() {
