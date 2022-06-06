@@ -21,6 +21,8 @@ const val MIN_REFRESH_RATE_HR = 1
 const val SHARED_PREFERENCES_FILE_NAME = "account"
 const val ACCOUNT_ID_KEY = "accountID"
 const val CHARACTER_LIST_KEY = "characters"
+const val STORAGE_ITEM_KEY = "storageItem"
+const val ITEM_DIALOG_TAG = "storageItemDialog"
 
 const val ORDER_BY_BUY = "buy"
 const val ORDER_BY_SELL = "sell"

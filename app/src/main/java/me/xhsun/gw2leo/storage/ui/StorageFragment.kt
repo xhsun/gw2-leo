@@ -27,7 +27,6 @@ import me.xhsun.gw2leo.storage.ui.model.SortViewModel
 import me.xhsun.gw2leo.storage.ui.model.StorageDisplay
 import me.xhsun.gw2leo.storage.ui.model.StorageViewModel
 import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class StorageFragment : Fragment() {
@@ -36,11 +35,11 @@ class StorageFragment : Fragment() {
     private val viewModel by viewModels<StorageViewModel>()
     private val sortViewModel by activityViewModels<SortViewModel>()
 
-    @Inject
-    lateinit var storageAdapter: StorageAdapter
+    private lateinit var storageAdapter: StorageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         try {
             arguments?.let {
                 storageType = it.getString(STORAGE_TYPE_KEY) ?: throw IllegalArgumentException()
@@ -57,6 +56,8 @@ class StorageFragment : Fragment() {
             startActivity(intent)
         }
         Timber.d("Displaying storage list for $accountID::$storageType")
+
+        storageAdapter = StorageAdapter(childFragmentManager)
 
         val sortObserver = Observer<SortState> {
             if (it != null) {

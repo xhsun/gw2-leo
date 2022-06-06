@@ -1,13 +1,13 @@
 package me.xhsun.gw2leo.storage.ui.adapter
 
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import me.xhsun.gw2leo.storage.StorageItem
-import javax.inject.Inject
 
 
-class StorageAdapter @Inject constructor() :
+class StorageAdapter(private val fragmentManager: FragmentManager) :
     PagingDataAdapter<StorageItem, StorageViewHolder>(STORAGE_COMPARATOR) {
 
     override fun onBindViewHolder(holder: StorageViewHolder, position: Int) {
@@ -28,7 +28,7 @@ class StorageAdapter @Inject constructor() :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StorageViewHolder {
-        return StorageViewHolder.create(parent)
+        return StorageViewHolder.create(parent, fragmentManager)
     }
 
     companion object {

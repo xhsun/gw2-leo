@@ -8,14 +8,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import me.xhsun.gw2leo.R
-import me.xhsun.gw2leo.config.*
+import me.xhsun.gw2leo.config.COIN_COPPER
+import me.xhsun.gw2leo.config.COIN_GOLD
+import me.xhsun.gw2leo.config.COIN_SILVER
+import me.xhsun.gw2leo.config.ITEM_DIALOG_TAG
 import me.xhsun.gw2leo.databinding.ItemStorageBinding
+import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.StorageItem
+import me.xhsun.gw2leo.storage.ui.ItemDialogFragment
 
-class StorageViewHolder(view: View) :
+class StorageViewHolder(view: View, private val fragmentManager: FragmentManager) :
     RecyclerView.ViewHolder(view) {
     private val binding = ItemStorageBinding.bind(itemView)
 
@@ -32,15 +38,20 @@ class StorageViewHolder(view: View) :
     private val copper: TextView = binding.storageItemCopperAmount
     private var item: StorageItem? = null
 
-//    init {
-//        view.setOnClickListener {
-//            TODO("Open popup to show item details")
-//        }
-//    }
+    init {
+        view.setOnClickListener {
+            val i = item
+            if (i != null) {
+                val dialog = ItemDialogFragment.newInstance(i)
+                dialog.isCancelable = true
+                dialog.show(fragmentManager, ITEM_DIALOG_TAG)
+            }
+        }
+    }
 
     fun bind(item: StorageItem?) {
         this.item = item
-        setRarity(item?.detail?.rarity ?: "")
+        rarity.setBackgroundColor(Item.getColorCode(item?.detail?.rarity ?: ""))
         if (item?.detail?.icon?.startsWith("http") == true) {
             Glide.with(this.itemView).load(item.detail.icon)
                 .placeholder(R.drawable.ic_image_placeholder)
@@ -75,35 +86,19 @@ class StorageViewHolder(view: View) :
         }
     }
 
-    companion object {
-        fun create(parent: ViewGroup): StorageViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_storage, parent, false)
-            return StorageViewHolder(view)
-        }
-    }
-
-    private fun setRarity(type: String) {
-        val setting = when (type) {
-            "Junk" -> COLOR_Junk
-            "Fine" -> COLOR_Fine
-            "Masterwork" -> COLOR_Masterwork
-            "Rare" -> COLOR_Rare
-            "Exotic" -> COLOR_Exotic
-            "Ascended" -> COLOR_Ascended
-            "Legendary" -> COLOR_Legendary
-            "Basic" -> COLOR_Basic
-            else -> COLOR_Basic
-        }
-
-        rarity.setBackgroundColor(setting)
-    }
-
     fun update(item: StorageItem?) {
         this.item = item ?: this.item
         amount.text = this.item?.count.toString()
         gold.text = this.item?.gold.toString()
         silver.text = this.item?.silver.toString()
         copper.text = this.item?.copper.toString()
+    }
+
+    companion object {
+        fun create(parent: ViewGroup, fragmentManager: FragmentManager): StorageViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_storage, parent, false)
+            return StorageViewHolder(view, fragmentManager)
+        }
     }
 }

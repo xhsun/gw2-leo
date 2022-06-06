@@ -59,7 +59,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:buttonTint="@color/md_theme_light_primary"
-            android:onClick="@{viewmodel.onSortDirectionChange}" />
+            android:onClick="@{viewmodel::onSortDirectionChange}" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"

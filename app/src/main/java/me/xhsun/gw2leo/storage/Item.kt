@@ -1,5 +1,10 @@
 package me.xhsun.gw2leo.storage
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import me.xhsun.gw2leo.config.*
+
+@Parcelize
 data class Item(
     val id: Int,
     val chatLink: String,
@@ -17,7 +22,7 @@ data class Item(
     val sellGold: Int,
     val sellSilver: Int,
     val sellCopper: Int
-) {
+) : Parcelable {
     fun toDAO(): me.xhsun.gw2leo.storage.datastore.entity.Item {
         return me.xhsun.gw2leo.storage.datastore.entity.Item(
             id = id,
@@ -43,8 +48,8 @@ data class Item(
         buy: Int,
         sell: Int
     ): Item {
-        val buyPrice = this.parseCoins(buy)
-        val sellPrice = this.parseCoins(sell)
+        val buyPrice = parseCoins(buy)
+        val sellPrice = parseCoins(sell)
         return Item(
             id = id,
             chatLink = chatLink,
@@ -65,18 +70,40 @@ data class Item(
         )
     }
 
-    /**
-     * Convert given value to coins
-     * @return Triple<gold, silver, copper>
-     */
-    private fun parseCoins(value: Int): Triple<Int, Int, Int> {
-        if (value < 0) return Triple(0, 0, 0)
-        var temp = value
-        val copper = temp % 100
-        temp /= 100
-        val silver = temp % 100
-        val gold = temp / 100
-        return Triple(gold, silver, copper)
-    }
+    companion object {
+        /**
+         * Convert given value to coins
+         * @return Triple<gold, silver, copper>
+         */
+        @JvmStatic
+        fun parseCoins(value: Int): Triple<Int, Int, Int> {
+            if (value <= 0) return Triple(0, 0, 0)
+            var temp = value
+            val copper = temp % 100
+            temp /= 100
+            val silver = temp % 100
+            val gold = temp / 100
+            return Triple(gold, silver, copper)
+        }
 
+        /**
+         * Convert given rarity to color code
+         */
+        @JvmStatic
+        fun getColorCode(rarity: String): Int {
+            return when (rarity) {
+                "Junk" -> COLOR_Junk
+                "Fine" -> COLOR_Fine
+                "Masterwork" -> COLOR_Masterwork
+                "Rare" -> COLOR_Rare
+                "Exotic" -> COLOR_Exotic
+                "Ascended" -> COLOR_Ascended
+                "Legendary" -> COLOR_Legendary
+                "Basic" -> COLOR_Basic
+                else -> COLOR_Basic
+            }
+        }
+    }
 }
+
+

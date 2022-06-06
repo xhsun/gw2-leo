@@ -20,4 +20,11 @@
     <string name="menu_Material">Materials</string>
     <string name="menu_Inventory">Bags</string>
     <string name="navigation_fab">Refresh</string>
+    <string name="item_level_prefix">Required Level:</string>
+    <string name="item_binding_prefix">Bind to:</string>
+    <string name="item_price_title">Prices</string>
+    <string name="item_buy_price_title">Buy Price</string>
+    <string name="item_sell_price_title">Sell Price</string>
+    <string name="item_total_buy_price_title">Total Buy Price</string>
+    <string name="item_total_sell_price_title">Total Sell Price</string>
 </resources>
