@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/button_retry"
+                android:onClick="@{()->viewmodel.onRetry()}"
                 android:visibility="@{viewmodel.storageErrMsg.empty? View.GONE : View.VISIBLE}" />
         </LinearLayout>
 

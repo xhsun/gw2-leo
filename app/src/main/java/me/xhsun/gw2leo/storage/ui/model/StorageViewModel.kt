@@ -19,6 +19,7 @@ import me.xhsun.gw2leo.R
 import me.xhsun.gw2leo.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.config.STORAGE_DISPLAY_KEY
 import me.xhsun.gw2leo.storage.service.IStorageService
+import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +28,7 @@ class StorageViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), Observable {
     private val callbacks: PropertyChangeRegistry by lazy { PropertyChangeRegistry() }
+    private lateinit var adapter: StorageAdapter
 
     @get:Bindable
     var storageLoading: Boolean = false
@@ -64,6 +66,19 @@ class StorageViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
+    fun updateItem(storageDisplay: StorageDisplay, adapter: StorageAdapter) {
+        storageLoading = true
+        storageErrMsg = ""
+        this.adapter = adapter
+        savedStateHandle[STORAGE_DISPLAY_KEY] = storageDisplay
+    }
+
+    fun onRetry() {
+        storageLoading = true
+        storageErrMsg = ""
+        adapter.retry()
+    }
+
     fun changeState(list: RecyclerView, state: CombinedLoadStates) {
         when (state.refresh) {
             is LoadState.NotLoading -> {
@@ -87,11 +102,6 @@ class StorageViewModel @Inject constructor(
         }
     }
 
-    fun updateItem(storageDisplay: StorageDisplay) {
-        storageLoading = true
-        storageErrMsg = ""
-        savedStateHandle[STORAGE_DISPLAY_KEY] = storageDisplay
-    }
 
     /**
      * Notifies listeners that a specific property has changed. The getter for the property

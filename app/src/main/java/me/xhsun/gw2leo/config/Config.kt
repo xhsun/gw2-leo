@@ -25,7 +25,7 @@ const val ORDER_BY_SELL = "sell"
 const val STORAGE_TYPE_KEY = "storageType"
 const val STORAGE_DISPLAY_KEY = "STORAGE_DISPLAY"
 
-const val STORAGE_LIST_COLUMN_WIDTH = 84
+const val STORAGE_LIST_COLUMN_WIDTH = 82
 const val COLOR_Junk = -0x55554a
 const val COLOR_Basic = -0x1000000
 const val COLOR_Fine = -0x9b4a0a

@@ -23,13 +23,16 @@ import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
 import me.xhsun.gw2leo.storage.ui.model.StorageDisplay
 import me.xhsun.gw2leo.storage.ui.model.StorageViewModel
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class StorageFragment : Fragment() {
     private lateinit var storageType: String
     private lateinit var accountID: String
     private lateinit var viewModel: StorageViewModel
-    private lateinit var storageAdapter: StorageAdapter
+
+    @Inject
+    lateinit var storageAdapter: StorageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,14 +51,14 @@ class StorageFragment : Fragment() {
         }
         Timber.d("Displaying storage list for $accountID::$storageType")
 
-        storageAdapter = StorageAdapter()
         viewModel = ViewModelProvider(this)[StorageViewModel::class.java]
         viewModel.updateItem(
             StorageDisplay(
                 storageType,
                 ORDER_BY_BUY,
                 true
-            )
+            ),
+            storageAdapter
         )
     }
 

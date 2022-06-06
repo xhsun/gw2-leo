@@ -4,8 +4,10 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import me.xhsun.gw2leo.storage.StorageItem
+import javax.inject.Inject
 
-class StorageAdapter() :
+
+class StorageAdapter @Inject constructor() :
     PagingDataAdapter<StorageItem, StorageViewHolder>(STORAGE_COMPARATOR) {
     override fun onBindViewHolder(holder: StorageViewHolder, position: Int) {
         holder.bind(getItem(position), true)

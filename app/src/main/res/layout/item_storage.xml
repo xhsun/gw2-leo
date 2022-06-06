@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="94dp"
-        android:layout_height="110dp"
+        android:layout_width="82dp"
+        android:layout_height="95dp"
         android:background="@color/md_theme_light_background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/storage_item_rarity"
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -18,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/storage_item_img"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="78dp"
+                android:layout_height="78dp"
                 android:contentDescription="@string/storage_img_desc"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
                 android:shadowColor="@color/md_theme_dark_shadow"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="@color/md_theme_light_onPrimary"
-                android:textSize="13sp"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:shadowRadius="6" />
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textSize="13sp"
+                android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/storage_item_gold_img" />
 
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textSize="13sp"
+                android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/storage_item_silver_img" />
 
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textSize="13sp"
+                android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/storage_item_copper_img" />
 
@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?android:attr/textColorSecondary"
-            android:textSize="13sp"
+            android:textSize="11sp"
             android:text="@string/storage_not_sellable"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

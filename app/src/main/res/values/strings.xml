@@ -16,6 +16,6 @@
     <string name="err_items_not_found">No items were found, please try again"</string>
     <string name="menu_bank">Bank</string>
     <string name="menu_Material">Materials</string>
-    <string name="menu_Inventory">Inventories</string>
+    <string name="menu_Inventory">Bags</string>
     <string name="navigation_fab">Refresh</string>
 </resources>
