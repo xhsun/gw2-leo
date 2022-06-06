@@ -15,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 import me.xhsun.gw2leo.BR
-import me.xhsun.gw2leo.R
 import me.xhsun.gw2leo.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.config.STORAGE_DISPLAY_KEY
 import me.xhsun.gw2leo.storage.service.IStorageService
@@ -91,11 +90,6 @@ class StorageViewModel @Inject constructor(
                 list.scrollToPosition(0)
                 if (state.append.endOfPaginationReached || state.prepend.endOfPaginationReached) {
                     storageLoading = false
-                    storageErrMsg = if (list.adapter!!.itemCount < 1) {
-                        list.context.getString(R.string.err_items_not_found)
-                    } else {
-                        ""
-                    }
                 }
             }
             is LoadState.Error -> {
