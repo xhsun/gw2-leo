@@ -105,7 +105,6 @@ class StorageRetrievalService @Inject constructor(
         if (items.isNotEmpty()) {
             itemMap.putAll(items.associateBy({ it.id }, { it }))
         }
-        Timber.d("$itemMap")
         return itemMap
     }
 

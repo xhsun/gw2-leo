@@ -19,6 +19,15 @@
             app:menu="@menu/navigation_menu"
             app:menuGravity="center" />
 
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBaseline_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/navigation_rail"
+            app:layout_constraintEnd_toEndOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

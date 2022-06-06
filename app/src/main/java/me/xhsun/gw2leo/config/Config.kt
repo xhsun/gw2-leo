@@ -11,8 +11,10 @@ const val ID_SEPARATOR = ","
 
 const val DB_NAME = "gw2_leo_database"
 const val DB_BANK_KEY_FORMAT = "_BANK%s"
-const val DB_BANK_KEY_PREFIX = "_BANK"
+
+const val BANK_STORAGE_PREFIX = "_BANK"
 const val MATERIAL_STORAGE_PREFIX = "_MATERIAL"
+const val INVENTORY_STORAGE_PREFIX = "_INVENTORY"
 
 const val SHARED_PREFERENCES_FILE_NAME = "account"
 const val ACCOUNT_ID_KEY = "accountID"
