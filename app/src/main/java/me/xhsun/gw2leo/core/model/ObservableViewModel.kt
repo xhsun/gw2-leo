@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.model
+package me.xhsun.gw2leo.core.model
 
 import androidx.databinding.Bindable
 import androidx.databinding.Observable

@@ -11,8 +11,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import me.xhsun.gw2leo.R
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.account.ui.LoginActivity
-import me.xhsun.gw2leo.config.ACCOUNT_ID_KEY
-import me.xhsun.gw2leo.config.CHARACTER_LIST_KEY
+import me.xhsun.gw2leo.core.config.ACCOUNT_ID_KEY
+import me.xhsun.gw2leo.core.config.CHARACTER_LIST_KEY
 import me.xhsun.gw2leo.databinding.FragmentInventoryBinding
 import me.xhsun.gw2leo.storage.ui.adapter.InventoryCollectionAdapter
 import timber.log.Timber

@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.refresh.service
+package me.xhsun.gw2leo.core.refresh.service
 
 interface IAccountRefreshService {
     /**

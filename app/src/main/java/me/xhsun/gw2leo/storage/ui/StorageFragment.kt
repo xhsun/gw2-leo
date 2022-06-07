@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
 import me.xhsun.gw2leo.R
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.account.ui.LoginActivity
-import me.xhsun.gw2leo.config.*
+import me.xhsun.gw2leo.core.config.*
 import me.xhsun.gw2leo.databinding.FragmentStorageBinding
 import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
 import me.xhsun.gw2leo.storage.ui.model.SortState

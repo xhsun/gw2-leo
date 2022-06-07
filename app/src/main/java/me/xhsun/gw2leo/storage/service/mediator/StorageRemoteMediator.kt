@@ -4,7 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import me.xhsun.gw2leo.refresh.service.IStorageRefreshService
+import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
 import me.xhsun.gw2leo.storage.datastore.entity.Storage
 import timber.log.Timber
 import javax.inject.Inject

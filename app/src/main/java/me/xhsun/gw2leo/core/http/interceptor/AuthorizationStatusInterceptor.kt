@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.http.interceptor
+package me.xhsun.gw2leo.core.http.interceptor
 
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import okhttp3.Interceptor

@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.config
+package me.xhsun.gw2leo.core.config
 
 const val BASE_URL = "https://api.guildwars2.com/v2/"
 const val TIMEOUT = 30   //In seconds

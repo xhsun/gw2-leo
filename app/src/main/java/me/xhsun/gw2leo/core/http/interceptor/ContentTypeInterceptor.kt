@@ -1,7 +1,7 @@
-package me.xhsun.gw2leo.http.interceptor
+package me.xhsun.gw2leo.core.http.interceptor
 
-import me.xhsun.gw2leo.config.CONTENT_TYPE
-import me.xhsun.gw2leo.config.CONTENT_VALUE
+import me.xhsun.gw2leo.core.config.CONTENT_TYPE
+import me.xhsun.gw2leo.core.config.CONTENT_VALUE
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

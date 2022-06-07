@@ -1,10 +1,10 @@
-package me.xhsun.gw2leo.http.interceptor
+package me.xhsun.gw2leo.core.http.interceptor
 
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.account.service.IAccountService
-import me.xhsun.gw2leo.config.AUTH_BODY_FORMAT
-import me.xhsun.gw2leo.config.AUTH_HEADER
-import me.xhsun.gw2leo.config.NO_AUTH_INJECTION
+import me.xhsun.gw2leo.core.config.AUTH_BODY_FORMAT
+import me.xhsun.gw2leo.core.config.AUTH_HEADER
+import me.xhsun.gw2leo.core.config.NO_AUTH_INJECTION
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

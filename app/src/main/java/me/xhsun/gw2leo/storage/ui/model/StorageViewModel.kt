@@ -12,9 +12,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 import me.xhsun.gw2leo.BR
-import me.xhsun.gw2leo.config.MATERIAL_STORAGE_PREFIX
-import me.xhsun.gw2leo.config.STORAGE_DISPLAY_KEY
-import me.xhsun.gw2leo.model.ObservableViewModel
+import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
+import me.xhsun.gw2leo.core.config.STORAGE_DISPLAY_KEY
+import me.xhsun.gw2leo.core.model.ObservableViewModel
 import me.xhsun.gw2leo.storage.service.IStorageService
 import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
 import javax.inject.Inject

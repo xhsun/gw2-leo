@@ -12,8 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.xhsun.gw2leo.BR
 import me.xhsun.gw2leo.account.error.NotLoggedInError
-import me.xhsun.gw2leo.model.ObservableViewModel
-import me.xhsun.gw2leo.refresh.service.IAccountRefreshService
+import me.xhsun.gw2leo.core.model.ObservableViewModel
+import me.xhsun.gw2leo.core.refresh.service.IAccountRefreshService
 import timber.log.Timber
 import javax.inject.Inject
 

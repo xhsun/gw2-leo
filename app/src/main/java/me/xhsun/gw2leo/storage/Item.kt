@@ -2,7 +2,7 @@ package me.xhsun.gw2leo.storage
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import me.xhsun.gw2leo.config.*
+import me.xhsun.gw2leo.core.config.*
 
 @Parcelize
 data class Item(

@@ -1,6 +1,6 @@
 package me.xhsun.gw2leo.storage.datastore.entity
 
-import me.xhsun.gw2leo.config.MATERIAL_STORAGE_PREFIX
+import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.MaterialCategory
 import me.xhsun.gw2leo.storage.StorageItem

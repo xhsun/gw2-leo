@@ -12,10 +12,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import me.xhsun.gw2leo.R
-import me.xhsun.gw2leo.config.COIN_COPPER
-import me.xhsun.gw2leo.config.COIN_GOLD
-import me.xhsun.gw2leo.config.COIN_SILVER
-import me.xhsun.gw2leo.config.ITEM_DIALOG_TAG
+import me.xhsun.gw2leo.core.config.COIN_COPPER
+import me.xhsun.gw2leo.core.config.COIN_GOLD
+import me.xhsun.gw2leo.core.config.COIN_SILVER
+import me.xhsun.gw2leo.core.config.ITEM_DIALOG_TAG
 import me.xhsun.gw2leo.databinding.ItemStorageBinding
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.StorageItem

@@ -1,15 +1,15 @@
-package me.xhsun.gw2leo.refresh.service
+package me.xhsun.gw2leo.core.refresh.service
 
 import androidx.room.withTransaction
 import me.xhsun.gw2leo.account.datastore.IAccountIDRepository
 import me.xhsun.gw2leo.account.datastore.entity.Character
 import me.xhsun.gw2leo.account.service.IAccountService
 import me.xhsun.gw2leo.account.service.ICharacterService
-import me.xhsun.gw2leo.config.AUTH_BODY_FORMAT
-import me.xhsun.gw2leo.config.BANK_STORAGE_KEY_FORMAT
-import me.xhsun.gw2leo.datastore.IDatastoreRepository
-import me.xhsun.gw2leo.http.IGW2Repository
-import me.xhsun.gw2leo.http.IGW2RepositoryFactory
+import me.xhsun.gw2leo.core.config.AUTH_BODY_FORMAT
+import me.xhsun.gw2leo.core.config.BANK_STORAGE_KEY_FORMAT
+import me.xhsun.gw2leo.core.datastore.IDatastoreRepository
+import me.xhsun.gw2leo.core.http.IGW2Repository
+import me.xhsun.gw2leo.core.http.IGW2RepositoryFactory
 import timber.log.Timber
 import javax.inject.Inject
 

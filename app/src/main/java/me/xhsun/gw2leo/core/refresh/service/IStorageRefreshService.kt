@@ -1,6 +1,6 @@
-package me.xhsun.gw2leo.refresh.service
+package me.xhsun.gw2leo.core.refresh.service
 
-import me.xhsun.gw2leo.config.MIN_REFRESH_RATE_HR
+import me.xhsun.gw2leo.core.config.MIN_REFRESH_RATE_HR
 
 interface IStorageRefreshService {
     /**

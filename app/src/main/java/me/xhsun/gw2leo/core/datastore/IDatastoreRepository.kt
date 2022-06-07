@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.datastore
+package me.xhsun.gw2leo.core.datastore
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,13 +1,13 @@
-package me.xhsun.gw2leo.http
+package me.xhsun.gw2leo.core.http
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import me.xhsun.gw2leo.BuildConfig
-import me.xhsun.gw2leo.config.BASE_URL
-import me.xhsun.gw2leo.config.TIMEOUT
-import me.xhsun.gw2leo.http.interceptor.AuthorizationInterceptor
-import me.xhsun.gw2leo.http.interceptor.AuthorizationStatusInterceptor
-import me.xhsun.gw2leo.http.interceptor.ContentTypeInterceptor
+import me.xhsun.gw2leo.core.config.BASE_URL
+import me.xhsun.gw2leo.core.config.TIMEOUT
+import me.xhsun.gw2leo.core.http.interceptor.AuthorizationInterceptor
+import me.xhsun.gw2leo.core.http.interceptor.AuthorizationStatusInterceptor
+import me.xhsun.gw2leo.core.http.interceptor.ContentTypeInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

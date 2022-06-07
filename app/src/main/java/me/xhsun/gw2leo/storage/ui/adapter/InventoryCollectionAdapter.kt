@@ -3,8 +3,8 @@ package me.xhsun.gw2leo.storage.ui.adapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import me.xhsun.gw2leo.config.ACCOUNT_ID_KEY
-import me.xhsun.gw2leo.config.STORAGE_TYPE_KEY
+import me.xhsun.gw2leo.core.config.ACCOUNT_ID_KEY
+import me.xhsun.gw2leo.core.config.STORAGE_TYPE_KEY
 import me.xhsun.gw2leo.storage.ui.StorageFragment
 
 class InventoryCollectionAdapter(

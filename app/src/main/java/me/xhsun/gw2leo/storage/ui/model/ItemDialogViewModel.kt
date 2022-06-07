@@ -5,7 +5,7 @@ import android.text.Spanned
 import androidx.databinding.Bindable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.xhsun.gw2leo.BR
-import me.xhsun.gw2leo.model.ObservableViewModel
+import me.xhsun.gw2leo.core.model.ObservableViewModel
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.StorageItem
 import javax.inject.Inject

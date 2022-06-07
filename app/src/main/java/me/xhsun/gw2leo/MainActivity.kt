@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 import me.xhsun.gw2leo.account.service.IAccountService
 import me.xhsun.gw2leo.account.service.ICharacterService
 import me.xhsun.gw2leo.account.ui.LoginActivity
-import me.xhsun.gw2leo.config.BANK_STORAGE_PREFIX
-import me.xhsun.gw2leo.config.INVENTORY_STORAGE_PREFIX
-import me.xhsun.gw2leo.config.MATERIAL_STORAGE_PREFIX
+import me.xhsun.gw2leo.core.config.BANK_STORAGE_PREFIX
+import me.xhsun.gw2leo.core.config.INVENTORY_STORAGE_PREFIX
+import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.databinding.ActivityMainBinding
 import me.xhsun.gw2leo.storage.ui.InventoryFragment
 import me.xhsun.gw2leo.storage.ui.StorageFragment

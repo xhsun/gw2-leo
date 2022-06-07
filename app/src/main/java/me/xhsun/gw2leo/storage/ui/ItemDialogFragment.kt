@@ -11,10 +11,10 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import me.xhsun.gw2leo.R
-import me.xhsun.gw2leo.config.COIN_COPPER
-import me.xhsun.gw2leo.config.COIN_GOLD
-import me.xhsun.gw2leo.config.COIN_SILVER
-import me.xhsun.gw2leo.config.STORAGE_ITEM_KEY
+import me.xhsun.gw2leo.core.config.COIN_COPPER
+import me.xhsun.gw2leo.core.config.COIN_GOLD
+import me.xhsun.gw2leo.core.config.COIN_SILVER
+import me.xhsun.gw2leo.core.config.STORAGE_ITEM_KEY
 import me.xhsun.gw2leo.databinding.FragmentItemDialogBinding
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.StorageItem

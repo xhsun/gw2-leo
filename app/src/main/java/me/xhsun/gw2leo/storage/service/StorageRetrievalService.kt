@@ -1,11 +1,11 @@
 package me.xhsun.gw2leo.storage.service
 
 import me.xhsun.gw2leo.account.service.IAccountService
-import me.xhsun.gw2leo.config.BANK_STORAGE_KEY_FORMAT
-import me.xhsun.gw2leo.config.ID_SEPARATOR
-import me.xhsun.gw2leo.config.MAX_RESPONSE_SIZE
-import me.xhsun.gw2leo.http.IGW2Repository
-import me.xhsun.gw2leo.http.IGW2RepositoryFactory
+import me.xhsun.gw2leo.core.config.BANK_STORAGE_KEY_FORMAT
+import me.xhsun.gw2leo.core.config.ID_SEPARATOR
+import me.xhsun.gw2leo.core.config.MAX_RESPONSE_SIZE
+import me.xhsun.gw2leo.core.http.IGW2Repository
+import me.xhsun.gw2leo.core.http.IGW2RepositoryFactory
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.StorageItem
 import me.xhsun.gw2leo.storage.error.NoItemFoundError

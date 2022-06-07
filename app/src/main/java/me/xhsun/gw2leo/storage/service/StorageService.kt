@@ -4,8 +4,8 @@ import androidx.paging.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import me.xhsun.gw2leo.config.MAX_RESPONSE_SIZE
-import me.xhsun.gw2leo.datastore.IDatastoreRepository
+import me.xhsun.gw2leo.core.config.MAX_RESPONSE_SIZE
+import me.xhsun.gw2leo.core.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.storage.StorageItem
 import me.xhsun.gw2leo.storage.StorageState
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage

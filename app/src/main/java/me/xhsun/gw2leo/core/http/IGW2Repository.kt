@@ -1,7 +1,7 @@
-package me.xhsun.gw2leo.http
+package me.xhsun.gw2leo.core.http
 
 import me.xhsun.gw2leo.account.http.model.AccountDTO
-import me.xhsun.gw2leo.config.AUTH_HEADER
+import me.xhsun.gw2leo.core.config.AUTH_HEADER
 import me.xhsun.gw2leo.storage.http.model.*
 import retrofit2.http.GET
 import retrofit2.http.Header

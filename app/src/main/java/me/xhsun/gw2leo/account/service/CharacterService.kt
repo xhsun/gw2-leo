@@ -2,8 +2,8 @@ package me.xhsun.gw2leo.account.service
 
 import me.xhsun.gw2leo.account.datastore.entity.Character
 import me.xhsun.gw2leo.account.error.NotLoggedInError
-import me.xhsun.gw2leo.config.BANK_STORAGE_KEY_FORMAT
-import me.xhsun.gw2leo.datastore.IDatastoreRepository
+import me.xhsun.gw2leo.core.config.BANK_STORAGE_KEY_FORMAT
+import me.xhsun.gw2leo.core.datastore.IDatastoreRepository
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton

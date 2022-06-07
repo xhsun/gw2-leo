@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.xhsun.gw2leo.BR
 import me.xhsun.gw2leo.R
-import me.xhsun.gw2leo.model.ObservableViewModel
+import me.xhsun.gw2leo.core.model.ObservableViewModel
 import javax.inject.Inject
 
 @HiltViewModel

@@ -2,8 +2,8 @@ package me.xhsun.gw2leo.account.datastore
 
 import android.content.Context
 import android.content.SharedPreferences
-import me.xhsun.gw2leo.config.ACCOUNT_ID_KEY
-import me.xhsun.gw2leo.config.SHARED_PREFERENCES_FILE_NAME
+import me.xhsun.gw2leo.core.config.ACCOUNT_ID_KEY
+import me.xhsun.gw2leo.core.config.SHARED_PREFERENCES_FILE_NAME
 import javax.inject.Inject
 
 
