@@ -20,7 +20,7 @@ class StorageRemoteMediator @Inject constructor(
         state: PagingState<Int, Storage>
     ): MediatorResult {
         return try {
-            if (loadType != LoadType.REFRESH || refreshService.shouldUpdate(storageType)) {
+            if (loadType != LoadType.REFRESH || !refreshService.shouldUpdate(storageType)) {
                 MediatorResult.Success(endOfPaginationReached = true)
             }
             refreshService.updateStorage(storageType)

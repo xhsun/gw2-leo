@@ -23,7 +23,7 @@ class MaterialStorageRemoteMediator @Inject constructor(
     ): MediatorResult {
         return try {
             val storageType = MATERIAL_STORAGE_PREFIX.format(accountService.accountID())
-            if (loadType != LoadType.REFRESH || refreshService.shouldUpdate(storageType)) {
+            if (loadType != LoadType.REFRESH || !refreshService.shouldUpdate(storageType)) {
                 MediatorResult.Success(endOfPaginationReached = true)
             }
 
