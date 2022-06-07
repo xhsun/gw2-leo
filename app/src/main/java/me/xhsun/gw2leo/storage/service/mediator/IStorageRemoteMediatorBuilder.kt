@@ -1,4 +1,4 @@
-package me.xhsun.gw2leo.storage.service
+package me.xhsun.gw2leo.storage.service.mediator
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.RemoteMediator

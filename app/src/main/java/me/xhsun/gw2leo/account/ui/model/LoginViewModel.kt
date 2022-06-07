@@ -12,15 +12,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.xhsun.gw2leo.BR
 import me.xhsun.gw2leo.account.error.NotLoggedInError
-import me.xhsun.gw2leo.account.service.IRefreshService
 import me.xhsun.gw2leo.model.ObservableViewModel
+import me.xhsun.gw2leo.refresh.service.IAccountRefreshService
 import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val refreshService: IRefreshService,
+    private val refreshService: IAccountRefreshService,
 ) : ObservableViewModel() {
 
     @get:Bindable
@@ -85,14 +85,8 @@ class LoginViewModel @Inject constructor(
     private fun initializeAccount(api: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val result = refreshService.initializeAccount(api)
-                if (result) {
-                    states.postValue(UIState(shouldTransfer = true))
-                } else {
-                    loading = false
-                    Timber.d("Unexpected issue happened when initializing account::${api}")
-                    errMsg = "Unexpected error, please try again"
-                }
+                refreshService.initialize(api)
+                states.postValue(UIState(shouldTransfer = true))
             } catch (e: Exception) {
                 loading = false
                 Timber.d("Unable to initialize account information::${api}::${e.message}")
@@ -101,7 +95,7 @@ class LoginViewModel @Inject constructor(
                         "Unable to authenticate, please try a different API key"
                     }
                     else -> {
-                        "Network issue, please try again"
+                        "Unexpected error, please try again"
                     }
                 }
             }

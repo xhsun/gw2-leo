@@ -11,10 +11,10 @@ import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorageBase
 @Dao
 interface MaterialStorageDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(items: List<MaterialStorageBase>)
+    suspend fun insertAll(items: List<MaterialStorageBase>)
 
     @Query("DELETE FROM materialstorage WHERE accountID = :accountID")
-    fun bulkDelete(accountID: String)
+    suspend fun bulkDelete(accountID: String)
 
     @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND storage.categoryID = t.id ORDER BY i.buy ASC")
     fun getAllOderByBuyAscending(): PagingSource<Int, MaterialStorage>

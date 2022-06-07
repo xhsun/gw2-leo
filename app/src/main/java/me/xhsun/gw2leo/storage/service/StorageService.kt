@@ -9,6 +9,7 @@ import me.xhsun.gw2leo.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.storage.StorageItem
 import me.xhsun.gw2leo.storage.StorageState
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
+import me.xhsun.gw2leo.storage.service.mediator.IStorageRemoteMediatorBuilder
 import timber.log.Timber
 import javax.inject.Inject
 

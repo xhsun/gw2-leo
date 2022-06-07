@@ -1,17 +1,16 @@
-package me.xhsun.gw2leo.storage.service
+package me.xhsun.gw2leo.storage.service.mediator
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.RemoteMediator
-import me.xhsun.gw2leo.datastore.IDatastoreRepository
+import me.xhsun.gw2leo.refresh.service.IStorageRefreshService
 import me.xhsun.gw2leo.storage.datastore.entity.Storage
 import javax.inject.Inject
 
 class StorageRemoteMediatorBuilder @Inject constructor(
-    private val storageRetrievalService: IStorageRetrievalService,
-    private val datastore: IDatastoreRepository
+    private val refreshService: IStorageRefreshService
 ) : IStorageRemoteMediatorBuilder {
     @OptIn(ExperimentalPagingApi::class)
     override fun build(storageType: String): RemoteMediator<Int, Storage> {
-        return StorageRemoteMediator(storageType, storageRetrievalService, datastore)
+        return StorageRemoteMediator(storageType, refreshService)
     }
 }

@@ -11,6 +11,9 @@ interface LastModifiedDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(lastModified: LastModified)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(lastModified: List<LastModified>)
+
     @Query("SELECT * FROM lastmodified WHERE type = :type")
     suspend fun get(type: String): LastModified?
 }

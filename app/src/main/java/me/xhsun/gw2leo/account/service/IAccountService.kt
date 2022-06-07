@@ -5,16 +5,7 @@ interface IAccountService {
     fun accountID(): String
 
     /**
-     * Update just the account API
-     *
-     * ONLY use this when loading new account information
-     */
-    fun updateAPI(api: String)
-
-    /**
      * Sync currently selected account to the provided one
-     * and update cache/datastore
-     * @param accountID account ID of the new account
      */
-    fun sync(accountID: String)
+    suspend fun sync()
 }

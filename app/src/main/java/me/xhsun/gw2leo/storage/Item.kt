@@ -74,6 +74,8 @@ data class Item(
         )
     }
 
+    override fun equals(other: Any?) = (other is Item) && id == other.id
+
     companion object {
         /**
          * Convert given value to coins

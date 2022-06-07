@@ -22,10 +22,10 @@ class CharacterService @Inject constructor(
             val accountID = accountService.accountID()
             val bankKey = BANK_STORAGE_KEY_FORMAT.format(accountID)
             Timber.d("Account character list is empty, attempt to retrieve from cache")
+            val characters = datastore.characterDAO.getAll(accountService.accountID()).map {
+                it.name
+            }.filter { it != bankKey }
             synchronized(this.characters) {
-                val characters = datastore.characterDAO.getAll(accountService.accountID()).map {
-                    it.name
-                }.filter { it != bankKey }
                 if (characters.isNotEmpty()) {
                     this.characters = characters
                 } else {

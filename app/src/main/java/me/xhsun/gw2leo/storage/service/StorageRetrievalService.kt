@@ -191,5 +191,4 @@ class StorageRetrievalService @Inject constructor(
         Timber.d("Successfully retrieved item prices::${result.size}")
         return result
     }
-
 }
