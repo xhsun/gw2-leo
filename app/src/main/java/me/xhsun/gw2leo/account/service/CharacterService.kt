@@ -4,8 +4,6 @@ import me.xhsun.gw2leo.account.datastore.entity.Character
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.config.BANK_STORAGE_KEY_FORMAT
 import me.xhsun.gw2leo.datastore.IDatastoreRepository
-import me.xhsun.gw2leo.http.IGW2Repository
-import me.xhsun.gw2leo.http.IGW2RepositoryFactory
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,10 +11,8 @@ import javax.inject.Singleton
 @Singleton
 class CharacterService @Inject constructor(
     private val datastore: IDatastoreRepository,
-    gw2RepositoryFactory: IGW2RepositoryFactory,
     private val accountService: IAccountService
 ) : ICharacterService {
-    private val gw2Repository: IGW2Repository = gw2RepositoryFactory.gw2Repository()
 
     @Volatile
     private var characters: List<String> = emptyList()
@@ -41,23 +37,13 @@ class CharacterService @Inject constructor(
         return this.characters
     }
 
-    override suspend fun update(): Boolean {
+    override fun sync(characters: List<Character>) {
         val accountID = accountService.accountID()
         val bankKey = BANK_STORAGE_KEY_FORMAT.format(accountID)
         Timber.d("Start update character list information::${accountID}")
-        val characters = gw2Repository.getAllCharacterName().toMutableList()
-        characters.add(BANK_STORAGE_KEY_FORMAT.format(accountID))
-        val characterArr = characters.map {
-            Character(
-                name = it,
-                accountID = accountID
-            )
-        }.toTypedArray()
         synchronized(this.characters) {
-            this.characters = characters.toList().filter { it != bankKey }
-            datastore.characterDAO.insertAll(*characterArr)
+            this.characters = characters.map { it.name }.filter { it != bankKey }
         }
         Timber.d("Character list information updated::${this.characters}")
-        return true
     }
 }

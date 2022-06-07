@@ -12,9 +12,9 @@ interface IAccountService {
     fun updateAPI(api: String)
 
     /**
-     * Update currently selected account to the provided one
+     * Sync currently selected account to the provided one
      * and update cache/datastore
      * @param accountID account ID of the new account
      */
-    fun update(accountID: String)
+    fun sync(accountID: String)
 }

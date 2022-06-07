@@ -55,7 +55,7 @@ class AccountService @Inject constructor(
         }
     }
 
-    override fun update(accountID: String) {
+    override fun sync(accountID: String) {
         synchronized(this) {
             this.accountID = accountIDRepository.getCurrent()
             api = ""

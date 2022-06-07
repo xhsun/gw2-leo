@@ -61,6 +61,11 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$pagingVersion"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshVersion"
 
+    // Work Manager
+    implementation "androidx.work:work-runtime-ktx:$workVersion"
+    androidTestImplementation "androidx.work:work-testing:$workVersion"
+    implementation "androidx.work:work-multiprocess:$workVersion"
+    
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"

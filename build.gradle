@@ -28,6 +28,8 @@ ext {
     lifecycleExtVersion = "2.2.0"
     pagingVersion = "3.1.1"
     swipeRefreshVersion = "1.1.0"
+    workVersion = "2.7.1"
+
 
     loggerVersion = "5.0.1"
     qrScannerVersion = "1.4.2"
