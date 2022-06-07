@@ -51,6 +51,16 @@
                 style="?attr/materialButtonOutlinedStyle" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/sort_sellable_toggle"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="@={viewmodel.sellable}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sort_direction_toggle"
+            android:text="@string/button_sellable" />
+
         <CheckBox
             android:id="@+id/sort_direction_toggle"
             android:layout_width="wrap_content"

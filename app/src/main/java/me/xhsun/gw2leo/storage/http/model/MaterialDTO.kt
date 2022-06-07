@@ -35,7 +35,8 @@ data class MaterialDTO(
                 sell = 0,
                 sellGold = 0,
                 sellSilver = 0,
-                sellCopper = 0
+                sellCopper = 0,
+                type = ""
             ),
             binding = binding ?: "",
             count = count,

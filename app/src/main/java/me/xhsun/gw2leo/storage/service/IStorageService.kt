@@ -4,31 +4,28 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import me.xhsun.gw2leo.storage.StorageItem
+import me.xhsun.gw2leo.storage.StorageState
 
 interface IStorageService {
     /**
      * @param storageType Either character name or formatted bank key
-     * @param orderBy Either [ORDER_BY_BUY] or [ORDER_BY_SELL]
-     * @param isAsc True to order by ascending, false otherwise
+     * @param storageState Filtering/sorting state
      * @param scope Scope to cache result in
      * @return Storage paging data
      */
     fun storageStream(
         storageType: String,
-        orderBy: String,
-        isAsc: Boolean,
+        storageState: StorageState,
         scope: CoroutineScope
     ): Flow<PagingData<StorageItem>>
 
     /**
-     * @param orderBy Either [ORDER_BY_BUY] or [ORDER_BY_SELL]
-     * @param isAsc True to order by ascending, false otherwise
+     * @param storageState Filtering/sorting state
      * @param scope Scope to cache result in
      * @return Material storage paging data
      */
     fun materialStorageData(
-        orderBy: String,
-        isAsc: Boolean,
+        storageState: StorageState,
         scope: CoroutineScope
     ): Flow<PagingData<StorageItem>>
 }

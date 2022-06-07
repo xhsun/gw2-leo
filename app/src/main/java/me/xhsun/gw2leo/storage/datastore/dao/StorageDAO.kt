@@ -35,4 +35,24 @@ interface StorageDAO {
     fun getAllOderBySellDescending(
         storageType: String
     ): PagingSource<Int, Storage>
+
+    @Query("SELECT *, i.id as itemItemID FROM storage INNER JOIN item as i ON storage.itemID = i.id AND i.sellable = 1 AND NULLIF(storage.binding, '') IS NULL  AND storage.storageType = :storageType ORDER BY i.buy ASC")
+    fun getAllOderByBuyAscendingSellable(
+        storageType: String
+    ): PagingSource<Int, Storage>
+
+    @Query("SELECT *, i.id as itemItemID FROM storage INNER JOIN item as i ON storage.itemID = i.id AND i.sellable = 1 AND NULLIF(storage.binding, '') IS NULL AND storage.storageType = :storageType ORDER BY i.buy DESC")
+    fun getAllOderByBuyDescendingSellable(
+        storageType: String
+    ): PagingSource<Int, Storage>
+
+    @Query("SELECT *, i.id as itemItemID FROM storage INNER JOIN item as i ON storage.itemID = i.id AND i.sellable = 1 AND NULLIF(storage.binding, '') IS NULL AND storage.storageType = :storageType ORDER BY i.sell ASC")
+    fun getAllOderBySellAscendingSellable(
+        storageType: String
+    ): PagingSource<Int, Storage>
+
+    @Query("SELECT *, i.id as itemItemID FROM storage INNER JOIN item as i ON storage.itemID = i.id AND i.sellable = 1 AND NULLIF(storage.binding, '') IS NULL AND storage.storageType = :storageType ORDER BY i.sell DESC")
+    fun getAllOderBySellDescendingSellable(
+        storageType: String
+    ): PagingSource<Int, Storage>
 }

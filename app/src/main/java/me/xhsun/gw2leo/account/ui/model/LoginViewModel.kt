@@ -1,8 +1,9 @@
 package me.xhsun.gw2leo.account.ui.model
 
-import androidx.databinding.*
+import androidx.databinding.Bindable
+import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 import me.xhsun.gw2leo.BR
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.account.service.IRefreshService
+import me.xhsun.gw2leo.model.ObservableViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -19,8 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val refreshService: IRefreshService,
-) : ViewModel(), Observable {
-    private val callbacks: PropertyChangeRegistry by lazy { PropertyChangeRegistry() }
+) : ObservableViewModel() {
 
     @get:Bindable
     var loading: Boolean = false
@@ -105,25 +106,6 @@ class LoginViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    /**
-     * Notifies listeners that a specific property has changed. The getter for the property
-     * that changes should be marked with [Bindable] to generate a field in
-     * `BR` to be used as `fieldId`.
-     *
-     * @param fieldId The generated BR id for the Bindable field.
-     */
-    private fun notifyPropertyChanged(fieldId: Int) {
-        callbacks.notifyCallbacks(this, fieldId, null)
-    }
-
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        callbacks.add(callback)
-    }
-
-    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        callbacks.remove(callback)
     }
 
     companion object {

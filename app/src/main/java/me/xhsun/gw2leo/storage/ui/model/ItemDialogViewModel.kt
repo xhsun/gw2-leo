@@ -3,18 +3,15 @@ package me.xhsun.gw2leo.storage.ui.model
 import android.text.Html
 import android.text.Spanned
 import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.PropertyChangeRegistry
-import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.xhsun.gw2leo.BR
+import me.xhsun.gw2leo.model.ObservableViewModel
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.StorageItem
 import javax.inject.Inject
 
 @HiltViewModel
-class ItemDialogViewModel @Inject constructor() : ViewModel(), Observable {
-    private val callbacks: PropertyChangeRegistry by lazy { PropertyChangeRegistry() }
+class ItemDialogViewModel @Inject constructor() : ObservableViewModel() {
 
     @get:Bindable
     var item: StorageItem = StorageItem.emptyStorageItem()
@@ -99,24 +96,4 @@ class ItemDialogViewModel @Inject constructor() : ViewModel(), Observable {
                 notifyPropertyChanged(BR.bindingVisible)
             }
         }
-
-
-    /**
-     * Notifies listeners that a specific property has changed. The getter for the property
-     * that changes should be marked with [Bindable] to generate a field in
-     * `BR` to be used as `fieldId`.
-     *
-     * @param fieldId The generated BR id for the Bindable field.
-     */
-    private fun notifyPropertyChanged(fieldId: Int) {
-        callbacks.notifyCallbacks(this, fieldId, null)
-    }
-
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        callbacks.add(callback)
-    }
-
-    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        callbacks.remove(callback)
-    }
 }

@@ -27,4 +27,16 @@ interface MaterialStorageDAO {
 
     @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND storage.categoryID = t.id ORDER BY i.sell DESC")
     fun getAllOderBySellDescending(): PagingSource<Int, MaterialStorage>
+
+    @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND i.sellable = 1 AND storage.categoryID = t.id ORDER BY i.buy ASC")
+    fun getAllOderByBuyAscendingSellable(): PagingSource<Int, MaterialStorage>
+
+    @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND i.sellable = 1 AND storage.categoryID = t.id ORDER BY i.buy DESC")
+    fun getAllOderByBuyDescendingSellable(): PagingSource<Int, MaterialStorage>
+
+    @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND i.sellable = 1 AND storage.categoryID = t.id ORDER BY i.sell ASC")
+    fun getAllOderBySellAscendingSellable(): PagingSource<Int, MaterialStorage>
+
+    @Query("SELECT *, i.id as itemItemID, t.id as categoryCategoryID, t.name as categoryName FROM materialstorage as storage INNER JOIN item as i INNER JOIN materialtype as t ON storage.itemID = i.id AND i.sellable = 1 AND storage.categoryID = t.id ORDER BY i.sell DESC")
+    fun getAllOderBySellDescendingSellable(): PagingSource<Int, MaterialStorage>
 }

@@ -8,21 +8,29 @@ data class ItemDTO(
     @Json(name = "chat_link") val chatLink: String,
     val name: String,
     val icon: String,
+    val type: String,
     val description: String?,
     val rarity: String,
     val level: Int,
-    val flags: List<String>
+    val flags: List<String>,
+    val details: ItemDetailDTO?
 ) {
     fun toDomain(): Item {
+        var description = details?.asString() ?: ""
+        if (this.description != null) {
+            description += if (description.isEmpty()) this.description else "<br>${this.description}"
+        }
+        description = description.trim().replace("\n", "<br>")
         return Item(
             id = id,
             chatLink = chatLink,
             name = name,
             icon = icon,
-            description = description ?: "",
+            type = type,
+            description = description,
             rarity = rarity,
             level = level,
-            sellable = !flags.contains("NoSell"),
+            sellable = true,
             buy = 0,
             buyGold = 0,
             buySilver = 0,

@@ -24,7 +24,6 @@ import me.xhsun.gw2leo.databinding.FragmentStorageBinding
 import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
 import me.xhsun.gw2leo.storage.ui.model.SortState
 import me.xhsun.gw2leo.storage.ui.model.SortViewModel
-import me.xhsun.gw2leo.storage.ui.model.StorageDisplay
 import me.xhsun.gw2leo.storage.ui.model.StorageViewModel
 import timber.log.Timber
 
@@ -61,12 +60,12 @@ class StorageFragment : Fragment() {
 
         val sortObserver = Observer<SortState> {
             if (it != null) {
-                this.update(it.isBuy, it.isAsc)
+                this.update(it)
             }
         }
 
         sortViewModel.sortState.observe(this, sortObserver)
-        this.update(isBuy = true, isAsc = false)
+        this.update(SortState())
     }
 
     override fun onCreateView(
@@ -105,14 +104,10 @@ class StorageFragment : Fragment() {
         return binding.root
     }
 
-    private fun update(isBuy: Boolean, isAsc: Boolean) {
-        Timber.d("Update storage sorting::isBuy(${isBuy})::isAsc(${isAsc})")
+    private fun update(state: SortState) {
+        Timber.d("Update storage sorting::${state}")
         viewModel.update(
-            StorageDisplay(
-                storageType,
-                if (isBuy) ORDER_BY_BUY else ORDER_BY_SELL,
-                isAsc
-            ),
+            state.toStorageDisplay(storageType),
             storageAdapter
         )
     }

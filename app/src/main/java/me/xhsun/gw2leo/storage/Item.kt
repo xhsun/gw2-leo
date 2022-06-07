@@ -10,6 +10,7 @@ data class Item(
     val chatLink: String,
     val name: String,
     val icon: String,
+    val type: String,
     val description: String,
     val rarity: String,
     val level: Int,
@@ -29,6 +30,7 @@ data class Item(
             chatLink = chatLink,
             name = name,
             icon = icon,
+            type = type,
             description = description,
             rarity = rarity,
             level = level,
@@ -46,7 +48,8 @@ data class Item(
 
     fun updatePrice(
         buy: Int,
-        sell: Int
+        sell: Int,
+        sellable: Boolean = true
     ): Item {
         val buyPrice = parseCoins(buy)
         val sellPrice = parseCoins(sell)
@@ -55,6 +58,7 @@ data class Item(
             chatLink = chatLink,
             name = name,
             icon = icon,
+            type = type,
             description = description,
             rarity = rarity,
             level = level,

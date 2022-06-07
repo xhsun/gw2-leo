@@ -79,12 +79,22 @@
                     android:text="@{viewmodel.item.detail.name}" />
 
                 <TextView
-                    android:id="@+id/item_level_prefix"
+                    android:id="@+id/item_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
                     app:layout_constraintTop_toBottomOf="@+id/item_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="@{viewmodel.item.detail.type}" />
+
+                <TextView
+                    android:id="@+id/item_level_prefix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:layout_constraintTop_toBottomOf="@+id/item_type"
                     app:layout_constraintStart_toStartOf="parent"
                     android:text="@string/item_level_prefix"
                     android:visibility="@{viewmodel.levelVisible ? View.VISIBLE : View.GONE}" />
@@ -95,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
-                    app:layout_constraintTop_toBottomOf="@+id/item_title"
+                    app:layout_constraintTop_toBottomOf="@+id/item_type"
                     app:layout_constraintStart_toEndOf="@+id/item_level_prefix"
                     android:text="@{String.valueOf(viewmodel.item.detail.level)}"
                     android:visibility="@{viewmodel.levelVisible ? View.VISIBLE : View.GONE}" />

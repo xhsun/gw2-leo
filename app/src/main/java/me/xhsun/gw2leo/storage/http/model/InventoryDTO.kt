@@ -30,7 +30,8 @@ data class InventoryDTO(
                 sell = 0,
                 sellGold = 0,
                 sellSilver = 0,
-                sellCopper = 0
+                sellCopper = 0,
+                type = ""
             ),
             storageType = storageType,
             binding = binding ?: "",

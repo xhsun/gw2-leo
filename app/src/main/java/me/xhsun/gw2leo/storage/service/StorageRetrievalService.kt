@@ -103,7 +103,12 @@ class StorageRetrievalService @Inject constructor(
 
         items = this.getItemPrices(items)
         if (items.isNotEmpty()) {
-            itemMap.putAll(items.associateBy({ it.id }, { it }))
+            val prices = items.associateBy({ it.id }, { it })
+            itemMap.putAll(prices)
+            val noSell = itemMap.filterNot { i -> items.any { it.id == i.key } }.mapValues {
+                it.value.updatePrice(0, 0, sellable = false)
+            }
+            itemMap.putAll(noSell)
         }
         return itemMap
     }
@@ -120,28 +125,29 @@ class StorageRetrievalService @Inject constructor(
 
         val idChunks = ids.chunked(MAX_RESPONSE_SIZE)
         val items = emptyList<Item>().toMutableList()
-        try {
-            idChunks.forEach {
-                val id = it.joinToString(separator = ID_SEPARATOR)
-                Timber.d("Start retrieving items::${id}")
-                val t = gw2Repository.getItems(id)
-                items.addAll(t.map { i ->
+
+        idChunks.forEach {
+            val id = it.joinToString(separator = ID_SEPARATOR)
+            Timber.d("Start retrieving items::${id}")
+            try {
+                items.addAll(gw2Repository.getItems(id).map { i ->
                     i.toDomain()
                 })
-
-            }
-        } catch (e: Exception) {
-            Timber.d("Encountered an error while retrieving items::${e.message}")
-            when (e) {
-                is HttpException -> {
-                    if (e.code() == 400) {
-                        Timber.d("Error is recoverable, return items::${items.size}")
-                        return items
+            } catch (e: Exception) {
+                Timber.d("Encountered an error while retrieving items::${e.message}")
+                when (e) {
+                    is HttpException -> {
+                        if (e.code() == 400 || e.code() == 404) {
+                            Timber.d("Error is recoverable, continue")
+                        } else {
+                            throw e
+                        }
                     }
+                    else -> throw e
                 }
             }
-            throw e
         }
+
         Timber.d("Successfully retrieved items::${items.size}")
         return items
     }
@@ -153,32 +159,34 @@ class StorageRetrievalService @Inject constructor(
      * @return List of updated items
      */
     private suspend fun getItemPrices(shouldUpdate: List<Item>): List<Item> {
-        val itemChunks = shouldUpdate.filter { it.sellable }.chunked(MAX_RESPONSE_SIZE)
+        val itemChunks = shouldUpdate.chunked(MAX_RESPONSE_SIZE)
         val result = emptyList<Item>().toMutableList()
 
-        try {
-            itemChunks.forEach {
-                val items = it.associateBy({ i -> i.id }, { i -> i })
-                val id = items.keys.joinToString(separator = ID_SEPARATOR)
-                Timber.d("Start retrieving item prices::${id}")
+        itemChunks.forEach {
+            val items = it.associateBy({ i -> i.id }, { i -> i })
+            val id = items.keys.joinToString(separator = ID_SEPARATOR)
+            Timber.d("Start retrieving item prices::${id}")
+            try {
                 result.addAll(gw2Repository.getPrices(id).mapNotNull { i ->
                     items[i.id]?.updatePrice(
                         i.buys.unitPrice,
-                        i.sells.unitPrice
+                        i.sells.unitPrice,
+                        sellable = true
                     )
                 })
-            }
-        } catch (e: Exception) {
-            Timber.d("Encountered an error while retrieving item prices::${e.message}")
-            when (e) {
-                is HttpException -> {
-                    if (e.code() == 400) {
-                        Timber.d("Error is recoverable, return item prices::${result.size}")
-                        return result
+            } catch (e: Exception) {
+                Timber.d("Encountered an error while retrieving item prices::${e.message}")
+                when (e) {
+                    is HttpException -> {
+                        if (e.code() == 400 || e.code() == 404) {
+                            Timber.d("Error is recoverable, continue")
+                        } else {
+                            throw e
+                        }
                     }
+                    else -> throw e
                 }
             }
-            throw e
         }
         Timber.d("Successfully retrieved item prices::${result.size}")
         return result

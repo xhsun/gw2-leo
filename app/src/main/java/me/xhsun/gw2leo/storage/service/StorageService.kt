@@ -5,9 +5,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.xhsun.gw2leo.config.MAX_RESPONSE_SIZE
-import me.xhsun.gw2leo.config.ORDER_BY_BUY
 import me.xhsun.gw2leo.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.storage.StorageItem
+import me.xhsun.gw2leo.storage.StorageState
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,11 +21,10 @@ class StorageService @Inject constructor(
 
     override fun storageStream(
         storageType: String,
-        orderBy: String,
-        isAsc: Boolean,
+        storageState: StorageState,
         scope: CoroutineScope
     ): Flow<PagingData<StorageItem>> {
-        val isBuy = orderBy == ORDER_BY_BUY
+        var isBuy = true
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
@@ -34,18 +33,35 @@ class StorageService @Inject constructor(
             ),
             remoteMediator = storageRemoteMediatorBuilder.build(storageType),
             pagingSourceFactory = {
-                Timber.d("Display storage items::$orderBy::Ascending($isAsc)")
-                if (isBuy) {
-                    if (isAsc) {
-                        datastore.storageDAO.getAllOderByBuyAscending(storageType)
-                    } else {
-                        datastore.storageDAO.getAllOderByBuyDescending(storageType)
+                Timber.d("Display storage items::$storageType::$storageState")
+                when (storageState) {
+                    StorageState.SELL_ASC_SELLABLE -> {
+                        isBuy = false
+                        datastore.storageDAO.getAllOderBySellAscendingSellable(storageType)
                     }
-                } else {
-                    if (isAsc) {
+                    StorageState.SELL_ASC -> {
+                        isBuy = false
                         datastore.storageDAO.getAllOderBySellAscending(storageType)
-                    } else {
+                    }
+                    StorageState.SELL_DESC_SELLABLE -> {
+                        isBuy = false
+                        datastore.storageDAO.getAllOderBySellDescendingSellable(storageType)
+                    }
+                    StorageState.SELL_DESC -> {
+                        isBuy = false
                         datastore.storageDAO.getAllOderBySellDescending(storageType)
+                    }
+                    StorageState.BUY_ASC_SELLABLE -> {
+                        datastore.storageDAO.getAllOderByBuyAscendingSellable(storageType)
+                    }
+                    StorageState.BUY_ASC -> {
+                        datastore.storageDAO.getAllOderByBuyAscending(storageType)
+                    }
+                    StorageState.BUY_DESC_SELLABLE -> {
+                        datastore.storageDAO.getAllOderByBuyDescendingSellable(storageType)
+                    }
+                    else -> {
+                        datastore.storageDAO.getAllOderByBuyDescending(storageType)
                     }
                 }
             }
@@ -56,11 +72,10 @@ class StorageService @Inject constructor(
 
 
     override fun materialStorageData(
-        orderBy: String,
-        isAsc: Boolean,
+        storageState: StorageState,
         scope: CoroutineScope
     ): Flow<PagingData<StorageItem>> {
-        val isBuy = orderBy == ORDER_BY_BUY
+        var isBuy = true
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
@@ -69,18 +84,35 @@ class StorageService @Inject constructor(
             ),
             remoteMediator = materialStorageRemoteMediator,
             pagingSourceFactory = {
-                Timber.d("Display storage items::$orderBy::Ascending($isAsc)")
-                if (isBuy) {
-                    if (isAsc) {
-                        datastore.materialStorageDAO.getAllOderByBuyAscending()
-                    } else {
-                        datastore.materialStorageDAO.getAllOderByBuyDescending()
+                Timber.d("Display material storage items::$storageState")
+                when (storageState) {
+                    StorageState.SELL_ASC_SELLABLE -> {
+                        isBuy = false
+                        datastore.materialStorageDAO.getAllOderBySellAscendingSellable()
                     }
-                } else {
-                    if (isAsc) {
+                    StorageState.SELL_ASC -> {
+                        isBuy = false
                         datastore.materialStorageDAO.getAllOderBySellAscending()
-                    } else {
+                    }
+                    StorageState.SELL_DESC_SELLABLE -> {
+                        isBuy = false
+                        datastore.materialStorageDAO.getAllOderBySellDescendingSellable()
+                    }
+                    StorageState.SELL_DESC -> {
+                        isBuy = false
                         datastore.materialStorageDAO.getAllOderBySellDescending()
+                    }
+                    StorageState.BUY_ASC_SELLABLE -> {
+                        datastore.materialStorageDAO.getAllOderByBuyAscendingSellable()
+                    }
+                    StorageState.BUY_ASC -> {
+                        datastore.materialStorageDAO.getAllOderByBuyAscending()
+                    }
+                    StorageState.BUY_DESC_SELLABLE -> {
+                        datastore.materialStorageDAO.getAllOderByBuyDescendingSellable()
+                    }
+                    else -> {
+                        datastore.materialStorageDAO.getAllOderByBuyDescending()
                     }
                 }
             }

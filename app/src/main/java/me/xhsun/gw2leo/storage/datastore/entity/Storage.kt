@@ -19,6 +19,7 @@ data class Storage(
     val rarity: String,
     val level: Int,
     val sellable: Boolean,
+    val type: String,
     val buy: Int,
     val buyGold: Int,
     val buySilver: Int,
@@ -47,7 +48,8 @@ data class Storage(
                 sell = sell,
                 sellGold = sellGold,
                 sellSilver = sellSilver,
-                sellCopper = sellCopper
+                sellCopper = sellCopper,
+                type = type
             ),
             storageType = storageType,
             count = count,

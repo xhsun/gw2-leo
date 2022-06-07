@@ -18,6 +18,7 @@ data class MaterialStorage(
     val chatLink: String,
     val name: String,
     val icon: String,
+    val type: String,
     val description: String,
     val rarity: String,
     val level: Int,
@@ -70,7 +71,8 @@ data class MaterialStorage(
                 sell = sell,
                 sellGold = sellGold,
                 sellSilver = sellSilver,
-                sellCopper = sellCopper
+                sellCopper = sellCopper,
+                type = type
             ),
             storageType = MATERIAL_STORAGE_PREFIX,
             bindTo = "",

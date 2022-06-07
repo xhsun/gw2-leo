@@ -11,7 +11,7 @@ import me.xhsun.gw2leo.storage.datastore.entity.*
 
 @Database(
     entities = [Account::class, Character::class, Item::class, MaterialStorageBase::class, MaterialType::class, StorageBase::class, LastModified::class],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 abstract class IDatastoreRepository : RoomDatabase() {

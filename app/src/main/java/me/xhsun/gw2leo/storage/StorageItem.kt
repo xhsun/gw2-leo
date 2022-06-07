@@ -87,7 +87,8 @@ data class StorageItem(
                     sell = 0,
                     sellGold = 0,
                     sellSilver = 0,
-                    sellCopper = 0
+                    sellCopper = 0,
+                    type = ""
                 ),
                 category = null,
                 storageType = "",

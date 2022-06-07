@@ -1,0 +1,5 @@
+package me.xhsun.gw2leo.storage
+
+enum class StorageState {
+    BUY_ASC, BUY_DESC, BUY_ASC_SELLABLE, BUY_DESC_SELLABLE, SELL_ASC, SELL_DESC, SELL_ASC_SELLABLE, SELL_DESC_SELLABLE
+}
