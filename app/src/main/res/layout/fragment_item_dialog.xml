@@ -176,7 +176,7 @@
             app:layout_constraintTop_toBottomOf="@+id/item_price_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_sell_price_container"
-            android:visibility="@{viewmodel.item.detail.sellable ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewmodel.item.detail.buy > 0 || viewmodel.item.detail.sellable ? View.VISIBLE : View.GONE}">
 
             <TextView
                 android:id="@+id/item_buy_price_title"
@@ -265,7 +265,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_buy_price_container"
             app:layout_constraintTop_toBottomOf="@+id/item_price_title"
-            android:visibility="@{viewmodel.item.detail.sellable ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewmodel.item.detail.sell > 0 || viewmodel.item.detail.sellable ? View.VISIBLE : View.GONE}">
 
             <TextView
                 android:id="@+id/item_sell_price_title"
@@ -519,6 +519,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/item_price_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="item_total_buy_price_container, item_total_sell_price_container" />
+
         <TextView
             android:id="@+id/item_not_sellable"
             android:layout_width="wrap_content"
@@ -529,7 +536,7 @@
             android:text="@string/storage_not_sellable"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_price_title"
+            app:layout_constraintTop_toBottomOf="@+id/item_price_barrier"
             android:visibility="@{viewmodel.item.detail.sellable ? View.GONE : View.VISIBLE}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

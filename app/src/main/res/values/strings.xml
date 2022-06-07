@@ -8,7 +8,7 @@
     <string name="storage_silver_img">Silver</string>
     <string name="storage_copper_img">Copper</string>
     <string name="storage_img_desc">Item Image Icon</string>
-    <string name="storage_not_sellable">Not Sellable</string>
+    <string name="storage_not_sellable">Can\'t be sold</string>
     <string name="button_enter">Enter</string>
     <string name="button_retry">Retry</string>
     <string name="button_buy">BUY</string>

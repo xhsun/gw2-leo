@@ -30,6 +30,7 @@ class StorageViewHolder(view: View, private val fragmentManager: FragmentManager
     private val amount: TextView = binding.storageItemAmount
     private val priceContainer: ConstraintLayout = binding.storageItemPriceContainer
     private val notSellable: TextView = binding.storageItemNotSellable
+    private val strikethrough: View = binding.storageItemStrike
     private val goldImage: ImageView = binding.storageItemGoldImg
     private val silverImage: ImageView = binding.storageItemSilverImg
     private val copperImage: ImageView = binding.storageItemCopperImg
@@ -80,9 +81,14 @@ class StorageViewHolder(view: View, private val fragmentManager: FragmentManager
             Glide.with(this.itemView).load(COIN_COPPER)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .into(copperImage)
+
+            if (item?.binding!!.isNotEmpty()) {
+                strikethrough.visibility = VISIBLE
+            }
         } else {
             notSellable.visibility = VISIBLE
             priceContainer.visibility = GONE
+            strikethrough.visibility = GONE
         }
     }
 

@@ -25,7 +25,7 @@ class StorageRetrievalService @Inject constructor(
         val response = gw2Repository.getBank()
         val res = response.mapNotNull {
             it?.toDomain(BANK_STORAGE_KEY_FORMAT.format(accountID))
-        }.filter { it.count > 1 }
+        }.filter { it.count > 0 }
         if (res.isEmpty()) {
             Timber.d("Got empty bank storage item list")
             throw NoItemFoundError()
@@ -48,7 +48,7 @@ class StorageRetrievalService @Inject constructor(
             bag.inventory.mapNotNull {
                 it?.toDomain(characterName)
             }
-        }.filter { it.count > 1 }
+        }.filter { it.count > 0 }
         if (res.isEmpty()) {
             Timber.d("Got empty bank storage item list")
             throw NoItemFoundError()
@@ -68,7 +68,7 @@ class StorageRetrievalService @Inject constructor(
         val accountID = accountService.accountID()
         Timber.d("Start update material storage items")
         val response = gw2Repository.getMaterialBank()
-        val res = response.map { it.toDomain(accountID) }.filter { it.count > 1 }
+        val res = response.map { it.toDomain(accountID) }.filter { it.count > 0 }
         if (res.isEmpty()) {
             Timber.d("Got empty material storage item list")
             throw NoItemFoundError()
@@ -124,9 +124,11 @@ class StorageRetrievalService @Inject constructor(
             idChunks.forEach {
                 val id = it.joinToString(separator = ID_SEPARATOR)
                 Timber.d("Start retrieving items::${id}")
-                items.addAll(gw2Repository.getItems(id).map { i ->
+                val t = gw2Repository.getItems(id)
+                items.addAll(t.map { i ->
                     i.toDomain()
                 })
+
             }
         } catch (e: Exception) {
             Timber.d("Encountered an error while retrieving items::${e.message}")
