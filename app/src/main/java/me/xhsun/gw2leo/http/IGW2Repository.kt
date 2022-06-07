@@ -1,8 +1,10 @@
 package me.xhsun.gw2leo.http
 
 import me.xhsun.gw2leo.account.http.model.AccountDTO
+import me.xhsun.gw2leo.config.AUTH_HEADER
 import me.xhsun.gw2leo.storage.http.model.*
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -11,13 +13,13 @@ interface IGW2Repository {
      * Returns information about player accounts
      */
     @GET("account")
-    suspend fun getAccount(): AccountDTO
+    suspend fun getAccount(@Header(AUTH_HEADER) token: String): AccountDTO
 
     /**
      * Return an array of characters by name
      */
     @GET("characters")
-    suspend fun getAllCharacterName(): List<String>
+    suspend fun getAllCharacterName(@Header(AUTH_HEADER) token: String): List<String>
 
     /**
      * Returns information about the inventory of a character attached to a specific account

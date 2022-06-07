@@ -8,6 +8,7 @@ const val CONTENT_TYPE = "Content-Type"
 const val CONTENT_VALUE = "application/json"
 const val MAX_RESPONSE_SIZE = 200
 const val ID_SEPARATOR = ","
+val NO_AUTH_INJECTION = arrayOf("account", "characters")
 
 const val DB_NAME = "gw2_leo_database"
 
