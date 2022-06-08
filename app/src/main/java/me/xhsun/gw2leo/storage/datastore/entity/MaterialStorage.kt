@@ -33,19 +33,6 @@ data class MaterialStorage(
     val sellCopper: Int
 ) {
     fun toDomain(isBuy: Boolean): StorageItem {
-        var sellable = false
-        var price = 0
-        var gold = 0
-        var silver = 0
-        var copper = 0
-        if (binding.isEmpty()) {
-            sellable = this.sellable
-            price = if (isBuy) buy else sell
-            gold = if (isBuy) buyGold else sellGold
-            silver = if (isBuy) buySilver else sellSilver
-            copper = if (isBuy) buyCopper else sellCopper
-        }
-
         return StorageItem(
             id = id,
             accountID = accountID,
@@ -63,7 +50,7 @@ data class MaterialStorage(
                 description = description,
                 rarity = rarity,
                 level = level,
-                sellable = sellable,
+                sellable = if (binding.isEmpty()) sellable else false,
                 buy = buy,
                 buyGold = buyGold,
                 buySilver = buySilver,
@@ -77,10 +64,10 @@ data class MaterialStorage(
             storageType = MATERIAL_STORAGE_PREFIX,
             bindTo = "",
             charges = null,
-            price = price,
-            gold = gold,
-            silver = silver,
-            copper = copper
+            price = if (isBuy) buy else sell,
+            gold = if (isBuy) buyGold else sellGold,
+            silver = if (isBuy) buySilver else sellSilver,
+            copper = if (isBuy) buyCopper else sellCopper
         )
     }
 }

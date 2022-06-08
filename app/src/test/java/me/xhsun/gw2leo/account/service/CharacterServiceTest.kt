@@ -5,7 +5,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import me.xhsun.gw2leo.account.datastore.entity.Character
+import me.xhsun.gw2leo.DataFaker
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.core.datastore.IDatastoreRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -15,6 +15,7 @@ import org.junit.jupiter.api.assertThrows
 
 internal class CharacterServiceTest {
     private val faker = Faker()
+    private val dataFaker = DataFaker()
     private lateinit var accountID: String
     private lateinit var datastoreMock: IDatastoreRepository
     private lateinit var accountServiceMock: IAccountService
@@ -30,10 +31,7 @@ internal class CharacterServiceTest {
     fun `characters() should retrieve new`(): Unit = runBlocking {
         val expected = faker.random.randomString()
         val input = listOf(
-            Character(
-                name = expected,
-                accountID = accountID
-            )
+            dataFaker.characterDAOFaker(expected, accountID)
         )
 
         every { accountServiceMock.accountID() } returns accountID
@@ -48,10 +46,7 @@ internal class CharacterServiceTest {
     fun `sync() should update and characters() should return existing`(): Unit = runBlocking {
         val expected = faker.random.randomString()
         val input = listOf(
-            Character(
-                name = expected,
-                accountID = accountID
-            )
+            dataFaker.characterDAOFaker(expected, accountID)
         )
 
         every { accountServiceMock.accountID() } returns accountID
@@ -87,10 +82,7 @@ internal class CharacterServiceTest {
     fun `sync() should return error due to accountID not found`(): Unit = runBlocking {
         val expected = faker.random.randomString()
         val input = listOf(
-            Character(
-                name = expected,
-                accountID = accountID
-            )
+            dataFaker.characterDAOFaker(expected, accountID)
         )
 
         every { accountServiceMock.accountID() } throws NotLoggedInError()

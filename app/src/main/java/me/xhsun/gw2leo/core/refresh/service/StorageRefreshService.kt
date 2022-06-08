@@ -115,12 +115,12 @@ class StorageRefreshService @Inject constructor(
     }
 
     override suspend fun updateMaterial() {
-        val accountID = accountService.accountID()
         val items = storageRetrievalService.materialItems()
         if (items.isEmpty()) {
             throw NoItemFoundError()
         }
 
+        val accountID = accountService.accountID()
         datastore.withTransaction {
             datastore.materialStorageDAO.bulkDelete(accountID)
             datastore.itemDAO.insertAll(items.map { it.detail.toDAO() })

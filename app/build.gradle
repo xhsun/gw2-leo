@@ -17,7 +17,15 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "me.xhsun.gw2leo.registry.CustomTestRunner"
+    }
+
+    testOptions {
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging true
+            }
+        }
     }
 
     buildFeatures {
@@ -64,9 +72,9 @@ dependencies {
 
     // Work Manager
     implementation "androidx.work:work-runtime-ktx:$workVersion"
-    androidTestImplementation "androidx.work:work-testing:$workVersion"
     implementation "androidx.work:work-multiprocess:$workVersion"
     implementation "androidx.hilt:hilt-work:$hiltWorkVersion"
+    androidTestImplementation "androidx.work:work-testing:$workVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltWorkVersion"
 
     // Coroutines
@@ -88,6 +96,8 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltVersion"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    testImplementation("com.google.dagger:hilt-android-testing:$hiltVersion")
+
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
@@ -116,7 +126,17 @@ dependencies {
     testImplementation "io.mockk:mockk:$mockVersion"
     testImplementation "io.mockk:mockk-agent-jvm:$mockVersion"
     testImplementation "org.assertj:assertj-core:$assertjVersion"
+    androidTestImplementation "io.github.serpro69:kotlin-faker:$fakerVersion"
+    androidTestImplementation "org.assertj:assertj-core:$assertjVersion"
+    androidTestImplementation "io.mockk:mockk-android:$mockVersion"
+    androidTestImplementation "io.mockk:mockk-agent-jvm:$mockVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+}
+
+configurations {
+    androidTestImplementation {
+        exclude group: 'io.mockk', module: 'mockk-agent-jvm'
+    }
 }
 
 kapt {

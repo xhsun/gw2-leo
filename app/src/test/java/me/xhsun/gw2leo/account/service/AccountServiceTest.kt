@@ -4,8 +4,8 @@ import io.github.serpro69.kfaker.Faker
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import me.xhsun.gw2leo.DataFaker
 import me.xhsun.gw2leo.account.datastore.IAccountIDRepository
-import me.xhsun.gw2leo.account.datastore.entity.Account
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.core.datastore.IDatastoreRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -15,10 +15,11 @@ import org.junit.jupiter.api.assertThrows
 
 internal class AccountServiceTest {
     private val faker = Faker()
+    private val dataFaker = DataFaker()
     private lateinit var accountID: String
     private lateinit var datastoreMock: IDatastoreRepository
     private lateinit var accountIDRepositoryMock: IAccountIDRepository
-    
+
     @BeforeEach
     fun setUp() {
         accountID = faker.random.nextUUID()
@@ -30,11 +31,7 @@ internal class AccountServiceTest {
     @Test
     fun `api() should return existing`(): Unit = runBlocking {
         val expected = faker.random.randomString()
-        val input = Account(
-            id = accountID,
-            name = faker.random.randomString(),
-            API = expected
-        )
+        val input = dataFaker.accountDAOFaker(id = accountID, api = expected)
 
         every { accountIDRepositoryMock.getCurrent() } returns accountID
         every { datastoreMock.accountDAO.getByID(accountID) } returns input
@@ -48,11 +45,7 @@ internal class AccountServiceTest {
     @Test
     fun `api() should retrieve new`() {
         val expected = faker.random.randomString()
-        val input = Account(
-            id = accountID,
-            name = faker.random.randomString(),
-            API = expected
-        )
+        val input = dataFaker.accountDAOFaker(id = accountID, api = expected)
 
         every { accountIDRepositoryMock.getCurrent() } returns accountID
         every { datastoreMock.accountDAO.getByID(accountID) } returns input
@@ -104,11 +97,7 @@ internal class AccountServiceTest {
 
     @Test
     fun `sync() should set account info`(): Unit = runBlocking {
-        val expected = Account(
-            id = accountID,
-            name = faker.random.randomString(),
-            API = faker.random.randomString()
-        )
+        val expected = dataFaker.accountDAOFaker(id = accountID)
 
         every { accountIDRepositoryMock.getCurrent() } returns accountID
         every { datastoreMock.accountDAO.getByID(accountID) } returns expected

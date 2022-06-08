@@ -31,8 +31,7 @@ ext {
     swipeRefreshVersion = "1.1.0"
     workVersion = "2.7.1"
     hiltWorkVersion = "1.0.0"
-
-
+    
     loggerVersion = "5.0.1"
     qrScannerVersion = "1.4.2"
     coroutinesVersion = '1.6.2'
@@ -46,7 +45,8 @@ ext {
     fakerVersion = "1.11.0"
     archVersion = "2.1.0"
     junitVersion = '5.8.2'
-    mockVersion = '1.12.4'
+    junitAndroidVersion = "1.3.0"
+    mockVersion = '1.12.3'
     assertjVersion = '3.22.0'
     espressoVersion = '3.4.0'
     androidXTextVersion = '1.4.0'
