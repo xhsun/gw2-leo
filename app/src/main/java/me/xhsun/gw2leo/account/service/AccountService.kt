@@ -23,11 +23,21 @@ class AccountService @Inject constructor(
     private var name: String = ""
 
     override fun api(): String {
-        if (api.isEmpty()) {
-            Timber.d("API is empty, no way to recovery, ask user to log in")
-            throw NotLoggedInError()
+        return api.ifEmpty {
+            Timber.d("Account API key is empty, attempt to retrieve from cache")
+            if (accountID.isEmpty()) {
+                Timber.d("Account ID is empty, no way to recovery, ask user to log in")
+                throw NotLoggedInError()
+            }
+            val account =
+                datastore.accountDAO.getByID(accountID) ?: throw NotLoggedInError()
+            synchronized(this) {
+                api = account.API
+                name = account.name
+            }
+            Timber.d("Account API key retrieved::$api")
+            api
         }
-        return api
     }
 
     override fun accountID(): String {

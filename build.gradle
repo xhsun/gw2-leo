@@ -29,6 +29,7 @@ ext {
     pagingVersion = "3.1.1"
     swipeRefreshVersion = "1.1.0"
     workVersion = "2.7.1"
+    hiltWorkVersion = "1.0.0"
 
 
     loggerVersion = "5.0.1"

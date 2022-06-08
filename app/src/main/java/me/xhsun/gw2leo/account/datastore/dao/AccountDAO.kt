@@ -12,7 +12,7 @@ interface AccountDAO {
     suspend fun delete(account: Account)
 
     @Query("SELECT * FROM account WHERE id= :id LIMIT 1")
-    suspend fun getByID(id: String): Account?
+    fun getByID(id: String): Account?
 
     @Query("SELECT * FROM account")
     suspend fun getAll(): List<Account>

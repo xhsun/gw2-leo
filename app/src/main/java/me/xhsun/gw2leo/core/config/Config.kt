@@ -17,7 +17,10 @@ const val BANK_STORAGE_KEY_FORMAT = "_BANK%s"
 const val MATERIAL_STORAGE_PREFIX = "_MATERIAL"
 const val MATERIAL_STORAGE_KEY_FORMAT = "_MATERIAL%s"
 const val INVENTORY_STORAGE_PREFIX = "_INVENTORY"
+
+const val REFRESH_WORK_TAG = "GW2_LEO_REFRESH_WORK"
 const val MIN_REFRESH_RATE_HR = 1
+const val REFRESH_RATE_HR = 2
 
 const val SHARED_PREFERENCES_FILE_NAME = "account"
 const val ACCOUNT_ID_KEY = "accountID"
@@ -25,8 +28,6 @@ const val CHARACTER_LIST_KEY = "characters"
 const val STORAGE_ITEM_KEY = "storageItem"
 const val ITEM_DIALOG_TAG = "storageItemDialog"
 
-const val ORDER_BY_BUY = "buy"
-const val ORDER_BY_SELL = "sell"
 const val STORAGE_TYPE_KEY = "storageType"
 const val STORAGE_DISPLAY_KEY = "STORAGE_DISPLAY"
 

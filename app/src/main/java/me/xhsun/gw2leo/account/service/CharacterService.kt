@@ -33,7 +33,7 @@ class CharacterService @Inject constructor(
                 }
             }
         }
-        Timber.d("Account API key retrieved::${this.characters}")
+        Timber.d("Account character list retrieved::${this.characters}")
         return this.characters
     }
 

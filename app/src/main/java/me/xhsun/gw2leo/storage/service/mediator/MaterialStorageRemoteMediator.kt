@@ -25,11 +25,11 @@ class MaterialStorageRemoteMediator @Inject constructor(
             val storageType = MATERIAL_STORAGE_PREFIX.format(accountService.accountID())
             if (loadType != LoadType.REFRESH || !refreshService.shouldUpdate(storageType)) {
                 MediatorResult.Success(endOfPaginationReached = true)
+            } else {
+                refreshService.updateMaterial()
+                Timber.d("Successfully refreshed material storage items")
+                MediatorResult.Success(endOfPaginationReached = true)
             }
-
-            refreshService.updateMaterial()
-            Timber.d("Successfully refreshed material storage items")
-            MediatorResult.Success(endOfPaginationReached = true)
         } catch (e: Exception) {
             Timber.d("Encountered an error while loading material storage data::${e.message}")
             MediatorResult.Error(e)

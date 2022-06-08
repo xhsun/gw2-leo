@@ -8,7 +8,6 @@ import me.xhsun.gw2leo.core.http.IGW2Repository
 import me.xhsun.gw2leo.core.http.IGW2RepositoryFactory
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.StorageItem
-import me.xhsun.gw2leo.storage.error.NoItemFoundError
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,7 +27,7 @@ class StorageRetrievalService @Inject constructor(
         }.filter { it.count > 0 }
         if (res.isEmpty()) {
             Timber.d("Got empty bank storage item list")
-            throw NoItemFoundError()
+            return res
         }
         val items = this.fullItemDetails(res.map { it.detail.id }.toSet())
         return res.mapNotNull {
@@ -51,7 +50,7 @@ class StorageRetrievalService @Inject constructor(
         }.filter { it.count > 0 }
         if (res.isEmpty()) {
             Timber.d("Got empty bank storage item list")
-            throw NoItemFoundError()
+            return res
         }
         val items = this.fullItemDetails(res.map { it.detail.id }.toSet())
         return res.mapNotNull {
@@ -71,7 +70,7 @@ class StorageRetrievalService @Inject constructor(
         val res = response.map { it.toDomain(accountID) }.filter { it.count > 0 }
         if (res.isEmpty()) {
             Timber.d("Got empty material storage item list")
-            throw NoItemFoundError()
+            return res
         }
         val categories =
             gw2Repository.getMaterialBankInfo(res.map { it.category!!.id }
@@ -96,7 +95,7 @@ class StorageRetrievalService @Inject constructor(
         Timber.d("Start retrieving item information:: ${ids.size}")
         var items = this.getItems(ids)
         if (items.isEmpty()) {
-            throw NoItemFoundError()
+            return emptyMap()
         }
 
         val itemMap = items.associateBy({ it.id }, { it }).toMutableMap()

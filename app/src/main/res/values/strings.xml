@@ -16,7 +16,7 @@
     <string name="button_sellable">Sellable</string>
     <string name="err_missing_permission">Missing Permission</string>
     <string name="err_cancel">Operation Canceled</string>
-    <string name="err_items_not_found">No items were found, please try again"</string>
+    <string name="err_items_not_found">No Item Found</string>
     <string name="menu_bank">Bank</string>
     <string name="menu_Material">Materials</string>
     <string name="menu_Inventory">Bags</string>
