@@ -7,7 +7,7 @@ import dagger.hilt.android.HiltAndroidApp
 import me.xhsun.gw2leo.core.config.MIN_REFRESH_RATE_HR
 import me.xhsun.gw2leo.core.config.REFRESH_RATE_HR
 import me.xhsun.gw2leo.core.config.REFRESH_WORK_TAG
-import me.xhsun.gw2leo.core.refresh.work.RefreshWorker
+import me.xhsun.gw2leo.core.refresh.work.BackgroundRefreshWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -42,7 +42,10 @@ open class App : Application(), Configuration.Provider {
             .build()
 
         val refreshWork =
-            PeriodicWorkRequestBuilder<RefreshWorker>(REFRESH_RATE_HR.toLong(), TimeUnit.HOURS)
+            PeriodicWorkRequestBuilder<BackgroundRefreshWorker>(
+                REFRESH_RATE_HR.toLong(),
+                TimeUnit.HOURS
+            )
                 .setConstraints(constraints)
                 .setInitialDelay(MIN_REFRESH_RATE_HR.toLong(), TimeUnit.HOURS)
                 .build()

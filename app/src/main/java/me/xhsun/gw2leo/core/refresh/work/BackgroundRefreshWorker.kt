@@ -15,7 +15,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 
 @HiltWorker
-class RefreshWorker @AssistedInject constructor(
+class BackgroundRefreshWorker @AssistedInject constructor(
     @Assisted ctx: Context,
     @Assisted params: WorkerParameters,
     private val accountRefreshService: IAccountRefreshService,

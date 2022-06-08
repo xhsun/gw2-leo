@@ -1,6 +1,8 @@
 package me.xhsun.gw2leo.storage.ui.model
 
+import android.content.Context
 import androidx.databinding.Bindable
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -8,6 +10,10 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.cachedIn
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
@@ -15,9 +21,12 @@ import me.xhsun.gw2leo.BR
 import me.xhsun.gw2leo.R
 import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.core.config.STORAGE_DISPLAY_KEY
+import me.xhsun.gw2leo.core.config.STORAGE_TYPE_KEY
 import me.xhsun.gw2leo.core.model.ObservableViewModel
+import me.xhsun.gw2leo.core.refresh.work.StorageRefreshWorker
 import me.xhsun.gw2leo.storage.service.IStorageService
 import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,13 +46,19 @@ class StorageViewModel @Inject constructor(
         }
 
     @get:Bindable
-    var storageErrMsg: String = "NO ITEM FOUND"
+    var storageErrMsg: String = ""
         set(value) {
             if (value != field) {
                 field = value
                 notifyPropertyChanged(BR.storageErrMsg)
             }
         }
+
+    fun onRetry() {
+        storageLoading = true
+        storageErrMsg = ""
+        adapter.refresh()
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val items = savedStateHandle.getLiveData<StorageDisplay>(STORAGE_DISPLAY_KEY)
@@ -74,14 +89,19 @@ class StorageViewModel @Inject constructor(
         }
     }
 
-    private fun shouldUpdate(storageDisplay: StorageDisplay): Boolean {
-        return savedStateHandle.get<StorageDisplay>(STORAGE_DISPLAY_KEY) != storageDisplay
-    }
+    fun hardRefresh(ctx: Context, storageType: String): LiveData<WorkInfo?> {
+        Timber.d("Start hard refresh process")
+        val builder = Data.Builder()
+        builder.putString(STORAGE_TYPE_KEY, storageType)
+        val input = builder.build()
 
-    fun onRetry() {
-        storageLoading = true
-        storageErrMsg = ""
-        adapter.refresh()
+        val workManager = WorkManager.getInstance(ctx)
+        val worker =
+            OneTimeWorkRequestBuilder<StorageRefreshWorker>()
+                .setInputData(input)
+                .build()
+        workManager.enqueue(worker)
+        return workManager.getWorkInfoByIdLiveData(worker.id)
     }
 
     fun changeState(list: RecyclerView, state: CombinedLoadStates) {
@@ -103,5 +123,9 @@ class StorageViewModel @Inject constructor(
                 storageErrMsg = ""
             }
         }
+    }
+
+    private fun shouldUpdate(storageDisplay: StorageDisplay): Boolean {
+        return savedStateHandle.get<StorageDisplay>(STORAGE_DISPLAY_KEY) != storageDisplay
     }
 }

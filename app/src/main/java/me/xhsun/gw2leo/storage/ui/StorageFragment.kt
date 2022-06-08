@@ -59,11 +59,8 @@ class StorageFragment : Fragment() {
         storageAdapter = StorageAdapter(childFragmentManager)
 
         val sortObserver = Observer<SortState> {
-            if (it != null) {
-                this.update(it)
-            }
+            this.update(it)
         }
-
         sortViewModel.sortState.observe(this, sortObserver)
         this.update(SortState())
     }
@@ -84,8 +81,13 @@ class StorageFragment : Fragment() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            storageAdapter.refresh()
-            binding.swipeRefresh.isRefreshing = false
+            viewModel.hardRefresh(requireContext(), storageType)
+                .observe(viewLifecycleOwner) { workInfo ->
+                    if (workInfo != null) {
+                        Timber.d("Hard refresh completed::${workInfo.state}")
+                        binding.swipeRefresh.isRefreshing = false
+                    }
+                }
         }
 
         lifecycleScope.launchWhenCreated {
@@ -104,12 +106,15 @@ class StorageFragment : Fragment() {
         return binding.root
     }
 
-    private fun update(state: SortState) {
-        Timber.d("Update storage sorting::${state}")
-        viewModel.update(
-            state.toStorageDisplay(storageType),
-            storageAdapter
-        )
+
+    private fun update(state: SortState?) {
+        if (state != null) {
+            Timber.d("Update storage sorting::${state}")
+            viewModel.update(
+                state.toStorageDisplay(storageType),
+                storageAdapter
+            )
+        }
     }
 
     private fun layoutManager(recyclerView: RecyclerView): GridLayoutManager {
