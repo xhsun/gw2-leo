@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id "dagger.hilt.android.plugin"
     id 'kotlin-parcelize'
+    id "de.mannodermaus.android-junit5"
 }
 
 android {
@@ -68,7 +69,6 @@ dependencies {
     implementation "androidx.hilt:hilt-work:$hiltWorkVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltWorkVersion"
 
-
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
@@ -104,14 +104,19 @@ dependencies {
     // QR Code
     implementation("io.github.g00fy2.quickie:quickie-bundled:$qrScannerVersion")
 
-    implementation "io.github.serpro69:kotlin-faker:$fakerVersion"
+    //Junit
     testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    androidTestImplementation "androidx.test:runner:$androidXTextVersion"
+    androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$junitExtVersion"
+    androidTestImplementation "androidx.test:rules:$androidXTextVersion"
+
+    testImplementation "io.github.serpro69:kotlin-faker:$fakerVersion"
     testImplementation "io.mockk:mockk:$mockVersion"
     testImplementation "io.mockk:mockk-agent-jvm:$mockVersion"
-    androidTestImplementation "org.assertj:assertj-core:$assertjVersion"
+    testImplementation "org.assertj:assertj-core:$assertjVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation "androidx.test:runner:$androidXTextVersion"
-    androidTestImplementation "androidx.test:rules:$androidXTextVersion"
 }
 
 kapt {

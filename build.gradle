@@ -5,6 +5,7 @@ buildscript {
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0"
     }
 }
 
@@ -49,4 +50,6 @@ ext {
     assertjVersion = '3.22.0'
     espressoVersion = '3.4.0'
     androidXTextVersion = '1.4.0'
+    androidTextRunnerVerion = '1.2.0'
+    junitExtVersion = '1.1.3'
 }

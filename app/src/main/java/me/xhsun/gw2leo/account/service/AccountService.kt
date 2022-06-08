@@ -50,6 +50,10 @@ class AccountService @Inject constructor(
 
     override suspend fun sync() {
         val accountID = accountIDRepository.getCurrent()
+        if (accountID.isEmpty()) {
+            Timber.d("Account ID is empty, no way to recovery, ask user to log in")
+            throw NotLoggedInError()
+        }
         val account = datastore.accountDAO.getByID(accountID) ?: throw NotLoggedInError()
         synchronized(this) {
             this.accountID = accountID

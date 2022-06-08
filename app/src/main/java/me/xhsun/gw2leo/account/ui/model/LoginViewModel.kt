@@ -67,12 +67,13 @@ class LoginViewModel @Inject constructor(
     fun handleQR(result: QRResult) {
         val text = when (result) {
             is QRResult.QRSuccess -> result.content.rawValue
-            QRResult.QRUserCanceled -> "Operation Canceled"
-            QRResult.QRMissingPermission -> "Permission Denied"
+            is QRResult.QRUserCanceled -> "Operation Canceled"
+            is QRResult.QRMissingPermission -> "Permission Denied"
             is QRResult.QRError -> {
                 Timber.d("QR error::${result.exception.message}")
                 result.exception.localizedMessage
             }
+            else -> "Unexpected error"
         }
         if (result is QRResult.QRSuccess) {
             errMsg = ""
