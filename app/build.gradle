@@ -129,10 +129,12 @@ dependencies {
     testImplementation "org.assertj:assertj-core:$assertjVersion"
     testImplementation "androidx.arch.core:core-testing:$archVersion"
     testImplementation "com.google.dagger:hilt-android-testing:$hiltVersion"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hiltVersion"
     testImplementation "androidx.room:room-testing:$roomVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "androidx.work:work-testing:$workVersion"
+
 
     // Android Test
     androidTestImplementation "androidx.test:core:$androidXTestVersion"

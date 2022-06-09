@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StorageViewModel @Inject constructor(
-    private val storageService: IStorageRepository,
+    private val storageRepository: IStorageRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ObservableViewModel() {
     private lateinit var adapter: StorageAdapter
@@ -54,24 +54,17 @@ class StorageViewModel @Inject constructor(
             }
         }
 
-    fun onRetry() {
-        storageLoading = true
-        storageErrMsg = ""
-        adapter.refresh()
-    }
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val items = savedStateHandle.getLiveData<StorageDisplay>(STORAGE_DISPLAY_KEY)
         .asFlow()
         .flatMapLatest {
-            val isMaterial = it.storageType.contains(MATERIAL_STORAGE_PREFIX)
-            if (isMaterial) {
-                storageService.materialStorageData(
+            if (it.storageType.contains(MATERIAL_STORAGE_PREFIX)) {
+                storageRepository.materialStorageData(
                     it.storageState,
                     viewModelScope
                 )
             } else {
-                storageService.storageStream(
+                storageRepository.storageStream(
                     it.storageType,
                     it.storageState,
                     viewModelScope
@@ -110,8 +103,10 @@ class StorageViewModel @Inject constructor(
                 list.scrollToPosition(0)
                 if (state.append.endOfPaginationReached || state.prepend.endOfPaginationReached) {
                     storageLoading = false
-                    if (list.adapter == null || list.adapter!!.itemCount < 1) {
-                        storageErrMsg = list.context.getString(R.string.err_items_not_found)
+                    storageErrMsg = if (list.adapter == null || list.adapter!!.itemCount < 1) {
+                        list.context.getString(R.string.err_items_not_found)
+                    } else {
+                        ""
                     }
                 }
             }
@@ -123,6 +118,12 @@ class StorageViewModel @Inject constructor(
                 storageErrMsg = ""
             }
         }
+    }
+
+    fun onRetry() {
+        storageLoading = true
+        storageErrMsg = ""
+        adapter.refresh()
     }
 
     private fun shouldUpdate(storageDisplay: StorageDisplay): Boolean {

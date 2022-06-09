@@ -63,10 +63,18 @@ data class StorageItem(
     }
 
     companion object {
+        /**
+         * @return True if icon is a url, false otherwise
+         */
+        @JvmStatic
         fun shouldShowIcon(item: StorageItem?): Boolean {
             return item?.detail?.icon?.startsWith("http") == true
         }
 
+        /**
+         * @return True if price is not zero or item is sellable
+         */
+        @JvmStatic
         fun isSellable(item: StorageItem?): Boolean {
             return item?.price!! > 0 || item.detail.sellable
         }

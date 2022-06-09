@@ -7,10 +7,12 @@ import me.xhsun.gw2leo.account.http.model.AccountDTO
 import me.xhsun.gw2leo.storage.Item
 import me.xhsun.gw2leo.storage.MaterialCategory
 import me.xhsun.gw2leo.storage.StorageItem
+import me.xhsun.gw2leo.storage.StorageState
 import me.xhsun.gw2leo.storage.datastore.entity.LastModified
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
 import me.xhsun.gw2leo.storage.datastore.entity.Storage
 import me.xhsun.gw2leo.storage.http.model.*
+import me.xhsun.gw2leo.storage.ui.model.StorageDisplay
 import java.util.concurrent.TimeUnit
 
 class DataFaker {
@@ -61,17 +63,24 @@ class DataFaker {
     }
 
     fun storageItemFaker(
+        id: Int = faker.random.nextInt(5000),
         sellable: Boolean = true,
+        icon: String = faker.internet.domain(),
         itemID: Int = faker.random.nextInt(5000),
         bindTo: String = faker.random.randomString(),
         binding: String = faker.random.randomString(),
         storageType: String = faker.random.randomString(),
         description: String = faker.random.randomString(),
+        price: Int = -1,
         isBuy: Boolean = true
     ): StorageItem {
-        val i = itemFaker(sellable = sellable, id = itemID, description = description)
+        val i = itemFaker(sellable = sellable, id = itemID, description = description, icon = icon)
+        var p = if (isBuy) i.buy else i.sell
+        if (price > -1) {
+            p = price
+        }
         return StorageItem(
-            id = faker.random.nextInt(),
+            id = id,
             detail = i,
             storageType = storageType,
             count = faker.random.nextInt(1, 10),
@@ -83,7 +92,7 @@ class DataFaker {
                 id = faker.random.nextInt(),
                 name = faker.random.randomString()
             ),
-            price = if (isBuy) i.buy else i.sell,
+            price = p,
             gold = if (isBuy) i.buyGold else i.sellGold,
             silver = if (isBuy) i.buySilver else i.sellSilver,
             copper = if (isBuy) i.buyCopper else i.sellCopper
@@ -326,6 +335,13 @@ class DataFaker {
             id,
             faker.random.randomString(),
             faker.random.nextInt()
+        )
+    }
+
+    fun storageDisplayFaker(type: String = faker.random.randomString()): StorageDisplay {
+        return StorageDisplay(
+            type,
+            faker.random.nextEnum(StorageState::class.java)
         )
     }
 

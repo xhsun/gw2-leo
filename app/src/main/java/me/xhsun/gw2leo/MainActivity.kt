@@ -49,20 +49,10 @@ class MainActivity : AppCompatActivity() {
             val accountID = accountService.accountID()
             Timber.d("Currently logged in for $accountID")
             lifecycleScope.launch(Dispatchers.IO) {
-                val characters = characterService.characters().toTypedArray()
-                if (savedInstanceState == null) {
-                    fragments[BANK_STORAGE_PREFIX] =
-                        StorageFragment.newInstance(BANK_STORAGE_PREFIX, accountID)
-                    fragments[MATERIAL_STORAGE_PREFIX] = StorageFragment.newInstance(
-                        MATERIAL_STORAGE_PREFIX, accountID
-                    )
-                    fragments[INVENTORY_STORAGE_PREFIX] =
-                        InventoryFragment.newInstance(characters, accountID)
-                }
-                displayFragment(BANK_STORAGE_PREFIX)
+                initializeFragments(savedInstanceState, accountID)
             }
         } catch (e: Exception) {
-            Timber.d("Start login process")
+            Timber.d("Account or character information not found, start login process::${e.message}")
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
@@ -73,6 +63,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.navigationRail.setOnItemSelectedListener { this.navigation(it) }
+    }
+
+    private suspend fun initializeFragments(
+        savedInstanceState: Bundle?,
+        accountID: String
+    ) {
+        if (savedInstanceState == null) {
+            fragments[BANK_STORAGE_PREFIX] =
+                StorageFragment.newInstance(BANK_STORAGE_PREFIX, accountID)
+            fragments[MATERIAL_STORAGE_PREFIX] = StorageFragment.newInstance(
+                MATERIAL_STORAGE_PREFIX, accountID
+            )
+            fragments[INVENTORY_STORAGE_PREFIX] =
+                InventoryFragment.newInstance(
+                    characterService.characters().toTypedArray(),
+                    accountID
+                )
+        }
+        displayFragment(BANK_STORAGE_PREFIX)
     }
 
     private fun navigation(item: MenuItem): Boolean {

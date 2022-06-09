@@ -65,4 +65,51 @@ internal class StorageItemTest {
         val actual = target.update(inputItem, inputCategory)
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `shouldShowIcon() should return true when icon is URL`() {
+        val target = dataFaker.storageItemFaker(icon = "http://${faker.internet.domain()}")
+        val actual = StorageItem.shouldShowIcon(target)
+        assertThat(actual).isTrue
+    }
+
+    @Test
+    fun `shouldShowIcon() should return true when icon is not URL`() {
+        val target = dataFaker.storageItemFaker(icon = faker.random.randomString())
+        val actual = StorageItem.shouldShowIcon(target)
+        assertThat(actual).isFalse
+    }
+
+    @Test
+    fun `shouldShowIcon() should return false when null`() {
+        val actual = StorageItem.shouldShowIcon(null)
+        assertThat(actual).isFalse
+    }
+
+    @Test
+    fun `isSellable() should return true when price exist`() {
+        val target = dataFaker.storageItemFaker(sellable = false)
+        val actual = StorageItem.isSellable(target)
+        assertThat(actual).isTrue
+    }
+
+    @Test
+    fun `isSellable() should return true when sellable is true`() {
+        val target = dataFaker.storageItemFaker(price = 0)
+        val actual = StorageItem.isSellable(target)
+        assertThat(actual).isTrue
+    }
+
+    @Test
+    fun `isSellable() should return true when not sellable and no price`() {
+        val target = dataFaker.storageItemFaker(price = 0, sellable = false)
+        val actual = StorageItem.isSellable(target)
+        assertThat(actual).isFalse
+    }
+
+    @Test
+    fun `isSellable() should return false when null`() {
+        val actual = StorageItem.isSellable(null)
+        assertThat(actual).isFalse
+    }
 }
