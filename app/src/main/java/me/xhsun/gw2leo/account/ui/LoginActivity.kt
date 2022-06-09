@@ -22,7 +22,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
-    private val viewModel by viewModels<LoginViewModel>()
+    val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

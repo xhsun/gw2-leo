@@ -13,7 +13,6 @@ import androidx.work.testing.WorkManagerTestInitHelper
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import dagger.hilt.android.testing.UninstallModules
 import io.github.serpro69.kfaker.Faker
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -24,7 +23,6 @@ import me.xhsun.gw2leo.DataFaker
 import me.xhsun.gw2leo.R
 import me.xhsun.gw2leo.core.config.STORAGE_DISPLAY_KEY
 import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
-import me.xhsun.gw2leo.registry.AppModule
 import me.xhsun.gw2leo.storage.service.IStorageRepository
 import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
 import org.assertj.core.api.Assertions.assertThat
@@ -36,7 +34,6 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import javax.inject.Inject
 
-@UninstallModules(AppModule::class)
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
 @Config(application = HiltTestApplication::class)

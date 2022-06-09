@@ -60,7 +60,7 @@ class FakeAppModule {
     @Provides
     fun provideAccountRefreshService(
     ): IAccountRefreshService {
-        return mockk()
+        return mockk(relaxed = true)
     }
 
     @Provides
@@ -72,7 +72,7 @@ class FakeAppModule {
     @Provides
     fun provideStorageRefreshService(
     ): IStorageRefreshService {
-        return mockk()
+        return mockk(relaxed = true)
     }
 
     @Provides

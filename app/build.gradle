@@ -41,10 +41,12 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+            testCoverageEnabled true
         }
         release {
             debuggable false
-            minifyEnabled false
+            minifyEnabled true
+            testCoverageEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

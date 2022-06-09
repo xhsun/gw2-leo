@@ -45,6 +45,7 @@
             app:layout_constraintWidth_percent=".8" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/login_input_card"
             style="?attr/materialCardViewElevatedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -99,6 +100,7 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/login_input_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/login_input_hint"

@@ -68,7 +68,10 @@ data class StorageItem(
          */
         @JvmStatic
         fun shouldShowIcon(item: StorageItem?): Boolean {
-            return item?.detail?.icon?.startsWith("http") == true
+            if (item == null) {
+                return false
+            }
+            return item.detail.icon.startsWith("http")
         }
 
         /**
@@ -76,7 +79,10 @@ data class StorageItem(
          */
         @JvmStatic
         fun isSellable(item: StorageItem?): Boolean {
-            return item?.price!! > 0 || item.detail.sellable
+            if (item == null) {
+                return false
+            }
+            return item.price > 0 || item.detail.sellable
         }
 
         /**
