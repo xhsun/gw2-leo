@@ -2,7 +2,6 @@ package me.xhsun.gw2leo.storage.ui.model
 
 import android.view.View
 import android.widget.CheckBox
-import androidx.annotation.IdRes
 import androidx.databinding.Bindable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,22 +24,22 @@ class SortViewModel @Inject constructor() : ObservableViewModel() {
             if (value != field) {
                 field = value
                 notifyPropertyChanged(BR.sellable)
-                mutableSort.postValue(SortState(isAsc, isBuy, value))
+                mutableSort.postValue(SortState(isBuy, isAsc, value))
             }
         }
 
     fun onSortDirectionChange(view: View) {
         if (view is CheckBox && view.isChecked != isAsc) {
             isAsc = view.isChecked
-            mutableSort.postValue(SortState(isAsc, isBuy, sellable))
+            mutableSort.postValue(SortState(isBuy, isAsc, sellable))
         }
     }
 
-    fun onSortFieldChange(@IdRes checkedId: Int) {
+    fun onSortFieldChange(checkedId: Int) {
         val isBuy = checkedId == R.id.sort_field_buy
         if (this.isBuy != isBuy) {
             this.isBuy = isBuy
-            mutableSort.postValue(SortState(isAsc, this.isBuy, sellable))
+            mutableSort.postValue(SortState(this.isBuy, isAsc, sellable))
         }
     }
 }

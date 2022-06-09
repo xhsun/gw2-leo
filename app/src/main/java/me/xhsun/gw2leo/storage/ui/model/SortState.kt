@@ -3,8 +3,8 @@ package me.xhsun.gw2leo.storage.ui.model
 import me.xhsun.gw2leo.storage.StorageState
 
 data class SortState(
-    val isAsc: Boolean = false,
     val isBuy: Boolean = true,
+    val isAsc: Boolean = false,
     val sellable: Boolean = false
 ) {
     fun toStorageDisplay(storageType: String): StorageDisplay {
