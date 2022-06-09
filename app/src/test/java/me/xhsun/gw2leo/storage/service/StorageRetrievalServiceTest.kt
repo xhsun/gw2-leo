@@ -359,4 +359,22 @@ internal class StorageRetrievalServiceTest {
             assertThat(actualNotSellable.buy).isEqualTo(0)
             assertThat(actualNotSellable.sell).isEqualTo(0)
         }
+
+    @Test
+    fun `fullItemDetails() should throw error due to unexpected price error`(): Unit = runBlocking {
+        val inputItemID =
+            listOf(faker.random.nextInt(5000, 6000), faker.random.nextInt(5000, 6000))
+        val inputIds = inputItemID.joinToString(separator = ID_SEPARATOR)
+        val inputItem = listOf(
+            dataFaker.itemDTOFaker(id = inputItemID[0]),
+            dataFaker.itemDTOFaker(id = inputItemID[1])
+        )
+
+        coEvery { gw2RepositoryMock.getItems(inputIds) } returns inputItem
+        coEvery { gw2RepositoryMock.getPrices(inputIds) } throws Exception()
+
+        assertThrows<Exception> {
+            target.fullItemDetails(inputItemID.toSet())
+        }
+    }
 }

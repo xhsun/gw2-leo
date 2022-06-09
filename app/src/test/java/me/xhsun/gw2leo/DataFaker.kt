@@ -338,4 +338,11 @@ class DataFaker {
             count
         )
     }
+
+    fun materialCategoryFaker(): MaterialCategory {
+        return MaterialCategory(
+            faker.random.nextInt(5000),
+            faker.random.randomString()
+        )
+    }
 }

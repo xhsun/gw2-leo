@@ -76,6 +76,27 @@ data class Item(
 
     override fun equals(other: Any?) = (other is Item) && id == other.id
 
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + chatLink.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + icon.hashCode()
+        result = 31 * result + type.hashCode()
+        result = 31 * result + description.hashCode()
+        result = 31 * result + rarity.hashCode()
+        result = 31 * result + level
+        result = 31 * result + sellable.hashCode()
+        result = 31 * result + buy
+        result = 31 * result + buyGold
+        result = 31 * result + buySilver
+        result = 31 * result + buyCopper
+        result = 31 * result + sell
+        result = 31 * result + sellGold
+        result = 31 * result + sellSilver
+        result = 31 * result + sellCopper
+        return result
+    }
+
     companion object {
         /**
          * Convert given value to coins

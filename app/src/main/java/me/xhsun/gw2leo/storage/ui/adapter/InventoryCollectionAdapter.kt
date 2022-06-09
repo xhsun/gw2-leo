@@ -11,8 +11,7 @@ class InventoryCollectionAdapter(
     fragment: Fragment,
     private val characters: List<String>,
     private val accountID: String,
-) :
-    FragmentStateAdapter(fragment) {
+) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return characters.size
     }
