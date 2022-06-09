@@ -14,11 +14,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class StorageService @Inject constructor(
+class StorageRepository @Inject constructor(
     private val datastore: IDatastoreRepository,
     private val storageRemoteMediatorBuilder: IStorageRemoteMediatorBuilder,
     private val materialStorageRemoteMediator: RemoteMediator<Int, MaterialStorage>
-) : IStorageService {
+) : IStorageRepository {
 
     override fun storageStream(
         storageType: String,

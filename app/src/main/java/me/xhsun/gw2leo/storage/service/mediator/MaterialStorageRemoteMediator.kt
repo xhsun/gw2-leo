@@ -5,7 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import me.xhsun.gw2leo.account.service.IAccountService
-import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
+import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_KEY_FORMAT
 import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
 import timber.log.Timber
@@ -22,8 +22,10 @@ class MaterialStorageRemoteMediator @Inject constructor(
         state: PagingState<Int, MaterialStorage>
     ): MediatorResult {
         return try {
-            val storageType = MATERIAL_STORAGE_PREFIX.format(accountService.accountID())
-            if (loadType != LoadType.REFRESH || !refreshService.shouldUpdate(storageType)) {
+            if (loadType != LoadType.REFRESH || !refreshService.shouldUpdate(
+                    MATERIAL_STORAGE_KEY_FORMAT.format(accountService.accountID())
+                )
+            ) {
                 MediatorResult.Success(endOfPaginationReached = true)
             } else {
                 refreshService.updateMaterial()

@@ -24,14 +24,14 @@ import me.xhsun.gw2leo.core.config.STORAGE_DISPLAY_KEY
 import me.xhsun.gw2leo.core.config.STORAGE_TYPE_KEY
 import me.xhsun.gw2leo.core.model.ObservableViewModel
 import me.xhsun.gw2leo.core.refresh.work.StorageRefreshWorker
-import me.xhsun.gw2leo.storage.service.IStorageService
+import me.xhsun.gw2leo.storage.service.IStorageRepository
 import me.xhsun.gw2leo.storage.ui.adapter.StorageAdapter
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class StorageViewModel @Inject constructor(
-    private val storageService: IStorageService,
+    private val storageService: IStorageRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ObservableViewModel() {
     private lateinit var adapter: StorageAdapter

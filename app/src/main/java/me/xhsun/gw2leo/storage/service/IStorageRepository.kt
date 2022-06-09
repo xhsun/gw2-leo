@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import me.xhsun.gw2leo.storage.StorageItem
 import me.xhsun.gw2leo.storage.StorageState
 
-interface IStorageService {
+interface IStorageRepository {
     /**
      * @param storageType Either character name or formatted bank key
      * @param storageState Filtering/sorting state

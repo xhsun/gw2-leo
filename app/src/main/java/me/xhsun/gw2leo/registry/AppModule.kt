@@ -27,10 +27,10 @@ import me.xhsun.gw2leo.core.refresh.service.IAccountRefreshService
 import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
 import me.xhsun.gw2leo.core.refresh.service.StorageRefreshService
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
+import me.xhsun.gw2leo.storage.service.IStorageRepository
 import me.xhsun.gw2leo.storage.service.IStorageRetrievalService
-import me.xhsun.gw2leo.storage.service.IStorageService
+import me.xhsun.gw2leo.storage.service.StorageRepository
 import me.xhsun.gw2leo.storage.service.StorageRetrievalService
-import me.xhsun.gw2leo.storage.service.StorageService
 import me.xhsun.gw2leo.storage.service.mediator.IStorageRemoteMediatorBuilder
 import me.xhsun.gw2leo.storage.service.mediator.MaterialStorageRemoteMediator
 import me.xhsun.gw2leo.storage.service.mediator.StorageRemoteMediatorBuilder
@@ -128,12 +128,12 @@ class AppModule {
 
     @Provides
     @OptIn(ExperimentalPagingApi::class)
-    fun provideStorageService(
+    fun provideStorageRepository(
         datastore: IDatastoreRepository,
         storageRemoteMediatorBuilder: IStorageRemoteMediatorBuilder,
         materialStorageRemoteMediator: RemoteMediator<Int, MaterialStorage>
-    ): IStorageService {
-        return StorageService(
+    ): IStorageRepository {
+        return StorageRepository(
             datastore,
             storageRemoteMediatorBuilder,
             materialStorageRemoteMediator

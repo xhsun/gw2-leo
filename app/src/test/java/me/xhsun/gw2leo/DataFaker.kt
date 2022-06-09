@@ -10,6 +10,7 @@ import me.xhsun.gw2leo.storage.StorageItem
 import me.xhsun.gw2leo.storage.datastore.entity.LastModified
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
 import me.xhsun.gw2leo.storage.datastore.entity.Storage
+import me.xhsun.gw2leo.storage.http.model.*
 import java.util.concurrent.TimeUnit
 
 class DataFaker {
@@ -259,6 +260,82 @@ class DataFaker {
             sellGold,
             sellSilver,
             sellCopper
+        )
+    }
+
+    fun inventoryDTOFaker(
+        id: Int = faker.random.nextInt(5000),
+        count: Int = faker.random.nextInt(1, 100)
+    ): InventoryDTO {
+        return InventoryDTO(
+            id,
+            count,
+            faker.random.nextInt(),
+            faker.random.randomString(),
+            faker.random.randomString()
+        )
+    }
+
+    fun bagDTOFaker(
+        inventory: List<InventoryDTO?> = listOf(
+            this.inventoryDTOFaker(),
+            null
+        )
+    ): BagDTO {
+        return BagDTO(
+            faker.random.nextInt(),
+            faker.random.nextInt(),
+            inventory
+        )
+    }
+
+    fun priceDTOFaker(id: Int = faker.random.nextInt(5000)): PriceDTO {
+        return PriceDTO(
+            id, faker.random.nextBoolean(),
+            UnitPriceDTO(
+                faker.random.nextInt(1, 5000),
+                faker.random.nextInt()
+            ),
+            UnitPriceDTO(
+                faker.random.nextInt(1, 5000),
+                faker.random.nextInt()
+            ),
+        )
+    }
+
+    fun itemDTOFaker(id: Int = faker.random.nextInt(5000)): ItemDTO {
+        return ItemDTO(
+            id,
+            faker.random.randomString(),
+            faker.random.randomString(),
+            faker.random.randomString(),
+            faker.random.randomString(),
+            faker.random.randomString(),
+            faker.random.randomString(),
+            faker.random.nextInt(),
+            emptyList(),
+            null
+        )
+    }
+
+    fun materialTypeDTOFaker(id: Int = faker.random.nextInt(5000)): MaterialTypeDTO {
+        return MaterialTypeDTO(
+            id,
+            faker.random.randomString(),
+            faker.random.nextInt()
+        )
+    }
+
+    fun materialDTOFaker(
+        id: Int = faker.random.nextInt(5000),
+        categoryID: Int = faker.random.nextInt(5000),
+        count: Int = faker.random.nextInt(1, 100)
+    ): MaterialDTO {
+        return MaterialDTO(
+            id,
+            categoryID,
+            faker.random.randomString(),
+            count
         )
     }
 }

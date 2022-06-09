@@ -3,7 +3,10 @@ package me.xhsun.gw2leo.core.refresh.service
 import androidx.room.withTransaction
 import me.xhsun.gw2leo.account.service.IAccountService
 import me.xhsun.gw2leo.account.service.ICharacterService
-import me.xhsun.gw2leo.core.config.*
+import me.xhsun.gw2leo.core.config.BANK_STORAGE_KEY_FORMAT
+import me.xhsun.gw2leo.core.config.BANK_STORAGE_PREFIX
+import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_KEY_FORMAT
+import me.xhsun.gw2leo.core.config.MIN_REFRESH_RATE_HR
 import me.xhsun.gw2leo.core.datastore.IDatastoreRepository
 import me.xhsun.gw2leo.storage.datastore.entity.LastModified
 import me.xhsun.gw2leo.storage.error.NoItemFoundError
@@ -44,7 +47,7 @@ class StorageRefreshService @Inject constructor(
         if (materialItems.isNotEmpty()) {
             lastModified.add(
                 LastModified(
-                    MATERIAL_STORAGE_PREFIX.format(accountID),
+                    MATERIAL_STORAGE_KEY_FORMAT.format(accountID),
                     System.currentTimeMillis()
                 )
             )

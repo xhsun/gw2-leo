@@ -15,8 +15,8 @@ import me.xhsun.gw2leo.core.http.IGW2RepositoryFactory
 import me.xhsun.gw2leo.core.refresh.service.IAccountRefreshService
 import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
 import me.xhsun.gw2leo.storage.datastore.entity.MaterialStorage
+import me.xhsun.gw2leo.storage.service.IStorageRepository
 import me.xhsun.gw2leo.storage.service.IStorageRetrievalService
-import me.xhsun.gw2leo.storage.service.IStorageService
 import me.xhsun.gw2leo.storage.service.mediator.IStorageRemoteMediatorBuilder
 import javax.inject.Singleton
 
@@ -77,7 +77,7 @@ class FakeAppModule {
 
     @Provides
     fun provideStorageService(
-    ): IStorageService {
+    ): IStorageRepository {
         return mockk()
     }
 

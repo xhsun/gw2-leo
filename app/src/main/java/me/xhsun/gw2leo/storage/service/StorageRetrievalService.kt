@@ -73,8 +73,10 @@ class StorageRetrievalService @Inject constructor(
             return res
         }
         val categories =
-            gw2Repository.getMaterialBankInfo(res.map { it.category!!.id }
-                .joinToString(separator = ID_SEPARATOR))
+            gw2Repository.getMaterialBankInfo(
+                res.map { it.category!!.id }.toSet()
+                    .joinToString(separator = ID_SEPARATOR)
+            )
                 .map {
                     it.toDomain()
                 }.associateBy({ it.id }, { it })
@@ -104,11 +106,11 @@ class StorageRetrievalService @Inject constructor(
         if (items.isNotEmpty()) {
             val prices = items.associateBy({ it.id }, { it })
             itemMap.putAll(prices)
-            val noSell = itemMap.filterNot { i -> items.any { it.id == i.key } }.mapValues {
-                it.value.updatePrice(0, 0, sellable = false)
-            }
-            itemMap.putAll(noSell)
         }
+        val noSell = itemMap.filterNot { i -> items.any { it.id == i.key } }.mapValues {
+            it.value.updatePrice(0, 0, sellable = false)
+        }
+        itemMap.putAll(noSell)
         return itemMap
     }
 
