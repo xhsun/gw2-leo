@@ -32,6 +32,7 @@ class BackgroundRefreshWorker @AssistedInject constructor(
                 Timber.e(throwable, "Encountered an error while running background refresh")
                 when (throwable) {
                     is HttpException -> Result.retry()
+                    is NotLoggedInError -> Result.success()
                     else -> {
                         if (throwable.cause != null && throwable.cause is NotLoggedInError) {
                             Result.success()

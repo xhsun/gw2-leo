@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +37,6 @@ class StorageFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         try {
             arguments?.let {
                 storageType = it.getString(STORAGE_TYPE_KEY) ?: throw IllegalArgumentException()
@@ -55,14 +53,8 @@ class StorageFragment : Fragment() {
             startActivity(intent)
         }
         Timber.d("Displaying storage list for $accountID::$storageType")
-
         storageAdapter = StorageAdapter(childFragmentManager)
-
-        val sortObserver = Observer<SortState> {
-            this.update(it)
-        }
-        sortViewModel.sortState.observe(this, sortObserver)
-        this.update(SortState())
+        this.registerSortStateObserver()
     }
 
     override fun onCreateView(
@@ -75,6 +67,11 @@ class StorageFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
 
+        this.setupRecyclerView(binding)
+        return binding.root
+    }
+
+    private fun setupRecyclerView(binding: FragmentStorageBinding) {
         binding.storageList.apply {
             adapter = storageAdapter
             layoutManager = layoutManager(this)
@@ -103,9 +100,14 @@ class StorageFragment : Fragment() {
                     viewModel.changeState(binding.storageList, it)
                 }
         }
-        return binding.root
     }
 
+    private fun registerSortStateObserver() {
+        sortViewModel.sortState.observe(this) {
+            this.update(it)
+        }
+        this.update(SortState())
+    }
 
     private fun update(state: SortState?) {
         if (state != null) {

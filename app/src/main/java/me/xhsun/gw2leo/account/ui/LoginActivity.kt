@@ -2,10 +2,10 @@ package me.xhsun.gw2leo.account.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,29 +38,27 @@ class LoginActivity : AppCompatActivity() {
                 ScannerConfig.build {
                     setBarcodeFormats(listOf(BarcodeFormat.FORMAT_QR_CODE))
                     setOverlayStringRes(R.string.login_title)
-                    setHapticSuccessFeedback(false)
                     setShowTorchToggle(true)
-                    setHorizontalFrameRatio(2.2f)
                     setUseFrontCamera(false)
                 }
             )
         }
 
-        val stateObserver = Observer<UIState> {
-            if (it != null) {
-                if (it.snackbarText.isNotEmpty()) {
-                    Snackbar.make(binding.root, it.snackbarText, Snackbar.LENGTH_SHORT).show()
-                }
-                if (it.shouldTransfer) {
-                    Timber.d("Acquired account information, complete login process")
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    startActivity(intent)
-                    finishAndRemoveTask()
-                }
+        viewModel.states.observe(this) { this.stateObserver(it, binding.root) }
+    }
+
+    private fun stateObserver(state: UIState?, view: View) {
+        if (state != null) {
+            if (state.snackbarText.isNotEmpty()) {
+                Snackbar.make(view, state.snackbarText, Snackbar.LENGTH_SHORT).show()
+            }
+            if (state.shouldTransfer) {
+                Timber.d("Acquired account information, complete login process")
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
+                finishAndRemoveTask()
             }
         }
-
-        viewModel.states.observe(this, stateObserver)
     }
 }

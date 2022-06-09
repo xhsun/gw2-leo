@@ -63,6 +63,14 @@ data class StorageItem(
     }
 
     companion object {
+        fun shouldShowIcon(item: StorageItem?): Boolean {
+            return item?.detail?.icon?.startsWith("http") == true
+        }
+
+        fun isSellable(item: StorageItem?): Boolean {
+            return item?.price!! > 0 || item.detail.sellable
+        }
+
         /**
          * Create an empty story item
          */

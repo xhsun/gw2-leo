@@ -2,13 +2,10 @@ package me.xhsun.gw2leo.core.refresh.work
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import androidx.work.testing.TestListenableWorkerBuilder
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -16,20 +13,16 @@ import kotlinx.coroutines.runBlocking
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.core.refresh.service.IAccountRefreshService
 import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import retrofit2.HttpException
 import retrofit2.Response
 
-@HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
 internal class BackgroundRefreshWorkerTest {
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
-
     private lateinit var accountRefreshServiceMock: IAccountRefreshService
     private lateinit var storageRefreshServiceServiceMock: IStorageRefreshService
 
@@ -66,7 +59,7 @@ internal class BackgroundRefreshWorkerTest {
 
         val actual = target.doWork()
 
-        assertThat(actual).isInstanceOf(ListenableWorker.Result.Success::class.java)
+        Assertions.assertThat(actual).isInstanceOf(ListenableWorker.Result.Success::class.java)
         coVerify(exactly = 1) { accountRefreshServiceMock.update() }
         coVerify(exactly = 1) { storageRefreshServiceServiceMock.updateAll() }
     }
@@ -77,7 +70,7 @@ internal class BackgroundRefreshWorkerTest {
 
         val actual = target.doWork()
 
-        assertThat(actual).isInstanceOf(ListenableWorker.Result.Success::class.java)
+        Assertions.assertThat(actual).isInstanceOf(ListenableWorker.Result.Success::class.java)
     }
 
     @Test
@@ -91,7 +84,7 @@ internal class BackgroundRefreshWorkerTest {
 
         val actual = target.doWork()
 
-        assertThat(actual).isInstanceOf(ListenableWorker.Result.Retry::class.java)
+        Assertions.assertThat(actual).isInstanceOf(ListenableWorker.Result.Retry::class.java)
     }
 
     @Test
@@ -101,6 +94,6 @@ internal class BackgroundRefreshWorkerTest {
 
         val actual = target.doWork()
 
-        assertThat(actual).isInstanceOf(ListenableWorker.Result.Failure::class.java)
+        Assertions.assertThat(actual).isInstanceOf(ListenableWorker.Result.Failure::class.java)
     }
 }

@@ -2,14 +2,11 @@ package me.xhsun.gw2leo.core.refresh.work
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.Data
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import androidx.work.testing.TestListenableWorkerBuilder
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
 import io.github.serpro69.kfaker.Faker
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,17 +17,13 @@ import me.xhsun.gw2leo.core.config.STORAGE_TYPE_KEY
 import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
 import org.assertj.core.api.Assertions
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-@HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
 class StorageRefreshWorkerTest {
     private val faker = Faker()
-
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
 
     private lateinit var storageRefreshServiceServiceMock: IStorageRefreshService
     private lateinit var targetBuilder: TestListenableWorkerBuilder<StorageRefreshWorker>

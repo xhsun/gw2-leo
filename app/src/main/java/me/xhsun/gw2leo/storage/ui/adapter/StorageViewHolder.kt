@@ -53,8 +53,8 @@ class StorageViewHolder(view: View, private val fragmentManager: FragmentManager
     fun bind(item: StorageItem?) {
         this.item = item
         rarity.setBackgroundColor(Item.getColorCode(item?.detail?.rarity ?: ""))
-        if (item?.detail?.icon?.startsWith("http") == true) {
-            Glide.with(this.itemView).load(item.detail.icon)
+        if (StorageItem.shouldShowIcon(this.item)) {
+            Glide.with(this.itemView).load(item?.detail?.icon)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .into(icon)
         } else {
@@ -64,8 +64,7 @@ class StorageViewHolder(view: View, private val fragmentManager: FragmentManager
 
         amount.text = this.item?.count.toString()
 
-        val isSellable = this.item?.price!! > 0 || this.item?.detail?.sellable ?: false
-        if (isSellable) {
+        if (StorageItem.isSellable(this.item)) {
             notSellable.visibility = GONE
             priceContainer.visibility = VISIBLE
             gold.text = this.item?.gold.toString()

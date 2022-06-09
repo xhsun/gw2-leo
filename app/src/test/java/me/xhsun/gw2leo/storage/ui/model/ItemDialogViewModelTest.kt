@@ -6,8 +6,11 @@ import me.xhsun.gw2leo.storage.Item
 import org.assertj.core.api.Assertions
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-class ItemDialogViewModelTest {
+@RunWith(RobolectricTestRunner::class)
+internal class ItemDialogViewModelTest {
     private val faker = Faker()
     private val dataFaker = DataFaker()
 

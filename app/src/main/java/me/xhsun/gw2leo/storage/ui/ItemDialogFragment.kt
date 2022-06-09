@@ -49,10 +49,19 @@ class ItemDialogFragment : DialogFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
 
+        this.setRarityColor(binding)
+        this.fillImages(binding)
+
+        return binding.root
+    }
+
+    private fun setRarityColor(binding: FragmentItemDialogBinding) {
         val color = Item.getColorCode(viewModel.item.detail.rarity)
         binding.itemRarity.setBackgroundColor(color)
         binding.itemTitle.setTextColor(color)
+    }
 
+    private fun fillImages(binding: FragmentItemDialogBinding) {
         Glide.with(this).load(viewModel.item.detail.icon)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(binding.itemImg)
@@ -92,10 +101,7 @@ class ItemDialogFragment : DialogFragment() {
         Glide.with(this).load(COIN_COPPER)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(binding.itemTotalSellCopperImg)
-
-        return binding.root
     }
-
 
     companion object {
         /**
