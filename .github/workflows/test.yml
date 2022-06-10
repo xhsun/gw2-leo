@@ -37,7 +37,7 @@ jobs:
           VERSION_CODE: ${{ github.run_number }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        run: gradle assembleRelease --info --stacktrace
+        run: ./gradlew assembleRelease --info --stacktrace
       - uses: actions/upload-artifact@v3
         with:
           name: apk
