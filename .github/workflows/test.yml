@@ -25,10 +25,11 @@ jobs:
         env:
           SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
         run: openssl base64 -d -in $SIGNING_KEYSTORE > key.jks
+      - name: Set env
+        run: echo "VERSION=$(date '+%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Build APK
         env:
-          VERSION: "$(date '+%Y-%m-%d')-${{ env.GIT_PR_SHA:0:10 }}"
-          VERSION_CODE: ${{env.GITHUB_RUN_NUMBER}}
+          VERSION_CODE: ${{ GITHUB_RUN_NUMBER }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: gradle assembleRelease --info
