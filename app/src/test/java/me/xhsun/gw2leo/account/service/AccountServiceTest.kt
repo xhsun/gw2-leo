@@ -105,7 +105,7 @@ internal class AccountServiceTest {
         val target = AccountService(datastoreMock, accountIDRepositoryMock)
 
         target.sync()
-        assertThat(target.api()).isEqualTo(expected.API)
+        assertThat(target.api()).isEqualTo(expected.api)
         assertThat(target.accountID()).isEqualTo(accountID)
     }
 

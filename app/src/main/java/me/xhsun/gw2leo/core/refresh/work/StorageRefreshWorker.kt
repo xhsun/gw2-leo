@@ -6,18 +6,20 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.core.config.STORAGE_TYPE_KEY
 import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
+import me.xhsun.gw2leo.registry.IoDispatcher
 import timber.log.Timber
 
 @HiltWorker
 class StorageRefreshWorker @AssistedInject constructor(
     @Assisted ctx: Context,
     @Assisted params: WorkerParameters,
-    private val storageRefreshService: IStorageRefreshService
+    private val storageRefreshService: IStorageRefreshService,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         val storageType = inputData.getString(STORAGE_TYPE_KEY)
@@ -25,7 +27,7 @@ class StorageRefreshWorker @AssistedInject constructor(
             Timber.d("Storage type is required for refresh worker")
             return Result.failure()
         }
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             try {
                 Timber.d("Start refresh::$storageType")
                 if (storageType.contains(MATERIAL_STORAGE_PREFIX)) {

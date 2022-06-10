@@ -11,6 +11,7 @@ import io.github.serpro69.kfaker.Faker
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.core.config.STORAGE_TYPE_KEY
@@ -45,7 +46,8 @@ class StorageRefreshWorkerTest {
                     return StorageRefreshWorker(
                         appContext,
                         workerParameters,
-                        storageRefreshServiceServiceMock
+                        storageRefreshServiceServiceMock,
+                        Dispatchers.IO
                     )
                 }
             })

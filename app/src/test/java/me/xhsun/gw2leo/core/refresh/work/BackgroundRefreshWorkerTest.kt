@@ -9,6 +9,7 @@ import androidx.work.testing.TestListenableWorkerBuilder
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.core.refresh.service.IAccountRefreshService
@@ -45,7 +46,8 @@ internal class BackgroundRefreshWorkerTest {
                         appContext,
                         workerParameters,
                         accountRefreshServiceMock,
-                        storageRefreshServiceServiceMock
+                        storageRefreshServiceServiceMock,
+                        Dispatchers.IO
                     )
                 }
             })

@@ -7,6 +7,8 @@ import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import me.xhsun.gw2leo.account.datastore.IAccountIDRepository
 import me.xhsun.gw2leo.account.service.IAccountService
 import me.xhsun.gw2leo.account.service.ICharacterService
@@ -26,6 +28,10 @@ import javax.inject.Singleton
     replaces = [AppModule::class]
 )
 class FakeAppModule {
+    @IoDispatcher
+    @Provides
+    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+    
     @Provides
     @Singleton
     fun provideGW2RepositoryFactory(): IGW2RepositoryFactory {

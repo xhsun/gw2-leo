@@ -8,12 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.g00fy2.quickie.QRResult
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import me.xhsun.gw2leo.BR
 import me.xhsun.gw2leo.account.error.NotLoggedInError
 import me.xhsun.gw2leo.core.model.ObservableViewModel
 import me.xhsun.gw2leo.core.refresh.service.IAccountRefreshService
+import me.xhsun.gw2leo.registry.IoDispatcher
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val refreshService: IAccountRefreshService,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ObservableViewModel() {
 
     @get:Bindable
@@ -84,7 +86,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun initializeAccount(api: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             try {
                 refreshService.initialize(api)
                 states.postValue(UIState(shouldTransfer = true))

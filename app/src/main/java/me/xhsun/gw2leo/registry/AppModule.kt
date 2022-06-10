@@ -9,6 +9,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import me.xhsun.gw2leo.account.datastore.AccountIDRepository
 import me.xhsun.gw2leo.account.datastore.IAccountIDRepository
 import me.xhsun.gw2leo.account.service.AccountService
@@ -34,13 +36,20 @@ import me.xhsun.gw2leo.storage.service.StorageRetrievalService
 import me.xhsun.gw2leo.storage.service.mediator.IStorageRemoteMediatorBuilder
 import me.xhsun.gw2leo.storage.service.mediator.MaterialStorageRemoteMediator
 import me.xhsun.gw2leo.storage.service.mediator.StorageRemoteMediatorBuilder
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class IoDispatcher
 
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-
+    @IoDispatcher
+    @Provides
+    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+    
     @Provides
     @Singleton
     fun provideGW2RepositoryFactory(
