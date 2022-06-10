@@ -117,7 +117,7 @@ class StorageViewModel @Inject constructor(
 
     fun checkEmpty() {
         if (adapter != null) {
-            storageErrMsg = if (adapter!!.itemCount < 1 && !storageLoading) {
+            storageErrMsg = if (!storageLoading && adapter!!.itemCount < 1) {
                 "No Item Found"
             } else {
                 ""
