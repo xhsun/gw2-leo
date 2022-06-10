@@ -1,17 +1,18 @@
-name: Release APK
+name: Test
+
 on:
   push:
-    branches: [main]
-    paths-ignore:
-      - 'README.md'
-      - '.idea/**'
-      - 'app/src/test/**'
-      - 'app/src/androidTest/**'
+    # branches: [main]
+    # paths-ignore:
+    #   - 'README.md'
+    #   - '.idea/**'
+    #   - 'app/src/test/**'
+    #   - 'app/src/androidTest/**'
 
 jobs:
-  release:
+  test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    # if: github.ref == 'refs/heads/master'
     steps:
        - uses: actions/checkout@v2
         with:
@@ -31,3 +32,9 @@ jobs:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: gradle assembleRelease --info
+      - uses: actions/upload-artifact@v3
+        with:
+          name: apk
+          path: '**/release/app-release.apk'
+          if-no-files-found: error
+          retention-days: 1
