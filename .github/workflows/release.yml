@@ -1,24 +1,24 @@
-name: Test
+name: Draft Release
 
 on:
   push:
-    # branches: [main]
-    # paths-ignore:
-    #   - 'README.md'
-    #   - '.idea/**'
-    #   - 'app/src/test/**'
-    #   - 'app/src/androidTest/**'
+    branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - '.idea/**'
+      - 'app/src/test/**'
+      - 'app/src/androidTest/**'
 
 env:
   APK_LOCATION: app/build/outputs/apk/release/app-release.apk
   APK_NAME: gw2-leo
-  CHECKSUM_NAME: SHA256SUM
+  CHECKSUM_NAME: SHA256SUMS
   SIGNING_KEY_LOCATION: key.jks
 
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
         with:
@@ -36,7 +36,7 @@ jobs:
         run: echo "VERSION=$(date '+%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Setup Release File Name
         run: echo "APK_FILE=${APK_NAME}-${VERSION}.apk" >> $GITHUB_ENV
-      - name: Test Release
+      - name: Run Tests
         run: ./gradlew testRelease --info
       - name: Setup Signing Store
         env:
@@ -50,7 +50,7 @@ jobs:
         run: ./gradlew assembleRelease --info --stacktrace
       - name: Prepare Files
         run: cp ${APK_LOCATION} ${APK_FILE} && sha256sum ${APK_FILE} > ${CHECKSUM_NAME}
-      - name: Release
+      - name: Create Draft Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.VERSION }}
