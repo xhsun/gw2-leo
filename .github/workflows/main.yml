@@ -39,6 +39,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: **/reports/*
+          path: '**/reports/*'
           retention-days: 1
           if-no-files-found: error
