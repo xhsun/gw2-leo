@@ -50,7 +50,7 @@ jobs:
       # - name: Prepare Files
       #   run: cp ${APK_LOCATION} ${APK_FILE} && sha256sum ${APK_FILE} > ${CHECKSUM_NAME}
       - name: Prepare Files
-        run: touch ${APK_FILE} && touch ${CHECKSUM_NAME} && touch ${APK_LOCATION}
+        run: touch ${APK_FILE} && touch ${CHECKSUM_NAME}
       - uses: actions/upload-artifact@v3
         with:
           name: test
