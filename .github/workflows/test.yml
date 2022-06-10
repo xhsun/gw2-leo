@@ -35,10 +35,10 @@ jobs:
         env:
           SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
         run: echo "$SIGNING_KEYSTORE" | openssl base64 -d -out key.jks
-      - name: Versioning
-        run: |
-          echo "VERSION=$(date '+%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "APK_FILE=${APK_NAME}-${VERSION}.apk" >> $GITHUB_ENV
+      - name: Setup Version
+        run: echo "VERSION=$(date '+%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Setup Release File Name
+        run: echo "APK_FILE=${APK_NAME}-${VERSION}.apk" >> $GITHUB_ENV
       - name: Build APK
         env:
           VERSION_CODE: ${{ github.run_number }}
@@ -46,15 +46,14 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: ./gradlew assembleRelease --info --stacktrace
       - name: Prepare Release
-        run: |
-          cp $APK_LOCATION $APK_FILE
-          sha256sum $APK_FILE > $CHECKSUM_NAME
+        run: cp ${APK_LOCATION} ${APK_FILE} && sha256sum ${APK_FILE} > ${CHECKSUM_NAME}
       - uses: actions/upload-artifact@v3
         with:
           name: test
           path: |
-            $APK_FILE
-            $CHECKSUM_NAME
+            ${APK_LOCATION}
+            ${APK_FILE}
+            ${CHECKSUM_NAME}
             LICENSE 
           if-no-files-found: error
           retention-days: 1
