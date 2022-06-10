@@ -12,7 +12,6 @@
             android:id="@+id/inventory_tabs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="?actionBarSize"
             app:tabGravity="start"
             app:tabMode="scrollable"
             app:layout_constraintTop_toTopOf="parent"
