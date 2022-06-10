@@ -1,0 +1,62 @@
+name: Draft Release
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - '.idea/**'
+      - 'app/src/test/**'
+      - 'app/src/androidTest/**'
+
+env:
+  APK_LOCATION: app/build/outputs/apk/release/app-release.apk
+  APK_NAME: gw2-leo
+  CHECKSUM_NAME: SHA256SUMS
+  SIGNING_KEY_LOCATION: key.jks
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Cache Gradle Packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+      - name: Setup Version
+        run: echo "VERSION=$(date '+%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Setup Release File Name
+        run: echo "APK_FILE=${APK_NAME}-${VERSION}.apk" >> $GITHUB_ENV
+      - name: Run Tests
+        run: ./gradlew testRelease --info
+      - name: Setup Signing Store
+        env:
+          SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
+        run: echo "${SIGNING_KEYSTORE}" | openssl base64 -d -out ${SIGNING_KEY_LOCATION}
+      - name: Build APK
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: ./gradlew assembleRelease --info --stacktrace
+      - name: Prepare Files
+        run: cp ${APK_LOCATION} ${APK_FILE} && sha256sum ${APK_FILE} > ${CHECKSUM_NAME}
+      - name: Create Draft Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          draft: true
+          generate_release_notes: true
+          files: |
+            ${{ env.APK_FILE }}
+            ${{ env.CHECKSUM_NAME }}
+            LICENSE

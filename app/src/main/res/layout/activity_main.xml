@@ -15,22 +15,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.navigationrail.NavigationRailView
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation_rail"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            style="@style/Widget.MaterialComponents.BottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:labelVisibilityMode="selected"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/navigation_menu"
-            style="@style/Widget.MaterialComponents.NavigationRailView.Compact"
-            app:menuGravity="center" />
+            app:menu="@menu/navigation_menu" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toEndOf="@+id/navigation_rail"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/sort_barrier" />
@@ -47,9 +47,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@+id/navigation_rail"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/navigation_rail"
             app:singleSelection="true"
+            app:selectionRequired="true"
             app:checkedButton="@+id/sort_field_buy">
 
             <Button
@@ -73,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="@={viewmodel.sellable}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/navigation_rail"
             app:layout_constraintEnd_toStartOf="@+id/sort_direction_toggle"
             android:text="@string/button_sellable" />
 
@@ -82,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/sl_sort_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/navigation_rail"
             app:layout_constraintEnd_toEndOf="parent"
             app:buttonTint="@color/md_theme_light_primary"
             android:onClick="@{viewmodel::onSortDirectionChange}" />

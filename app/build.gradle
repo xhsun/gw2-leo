@@ -14,8 +14,8 @@ android {
         applicationId "me.xhsun.gw2leo"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode System.getenv("VERSION_CODE") as Integer
+        versionName System.getenv("VERSION")
 
         testInstrumentationRunner = "me.xhsun.gw2leo.registry.CustomTestRunner"
     }
@@ -44,6 +44,15 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file("../key.jks")
+            keyAlias System.getenv("SIGNING_KEY_ALIAS")
+            storePassword System.getenv("SIGNING_KEY_PASSWORD")
+            keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
         debug {
             debuggable true
@@ -54,13 +63,16 @@ android {
             debuggable false
             minifyEnabled false
             testCoverageEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
@@ -69,6 +81,16 @@ android {
     packagingOptions {
         resources.excludes += "DebugProbesKt.bin"
     }
+}
+
+configurations {
+    androidTestImplementation {
+        exclude group: 'io.mockk', module: 'mockk-agent-jvm'
+    }
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -171,15 +193,4 @@ dependencies {
     androidTestImplementation "androidx.work:work-testing:$workVersion"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltVersion"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hiltVersion"
-//    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-}
-
-configurations {
-    androidTestImplementation {
-        exclude group: 'io.mockk', module: 'mockk-agent-jvm'
-    }
-}
-
-kapt {
-    correctErrorTypes = true
 }
