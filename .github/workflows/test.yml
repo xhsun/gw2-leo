@@ -26,36 +26,38 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Cache Gradle Packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+      # - name: Cache Gradle Packages
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: ~/.gradle/caches
+      #     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
       - name: Setup Version
         run: echo "VERSION=$(date '+%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Setup Release File Name
         run: echo "APK_FILE=${APK_NAME}-${VERSION}.apk" >> $GITHUB_ENV
       # - name: Test Release
       #   run: ./gradlew testRelease --info
-      - name: Setup Signing Store
-        env:
-          SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
-        run: echo "$SIGNING_KEYSTORE" | openssl base64 -d -out key.jks
-      - name: Build APK
-        env:
-          VERSION_CODE: ${{ github.run_number }}
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        run: ./gradlew assembleRelease --info --stacktrace
+      # - name: Setup Signing Store
+      #   env:
+      #     SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
+      #   run: echo "$SIGNING_KEYSTORE" | openssl base64 -d -out key.jks
+      # - name: Build APK
+      #   env:
+      #     VERSION_CODE: ${{ github.run_number }}
+      #     SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+      #     SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      #   run: ./gradlew assembleRelease --info --stacktrace
+      # - name: Prepare Files
+      #   run: cp ${APK_LOCATION} ${APK_FILE} && sha256sum ${APK_FILE} > ${CHECKSUM_NAME}
       - name: Prepare Files
-        run: cp ${APK_LOCATION} ${APK_FILE} && sha256sum ${APK_FILE} > ${CHECKSUM_NAME}
+        run: touch ${APK_FILE} && touch ${CHECKSUM_NAME} && touch ${APK_LOCATION}
       - uses: actions/upload-artifact@v3
         with:
           name: test
           path: |
-            ${APK_LOCATION}
-            ${APK_FILE}
-            ${CHECKSUM_NAME}
+            "${APK_LOCATION}"
+            "${APK_FILE}"
+            "${CHECKSUM_NAME}"
             LICENSE 
           if-no-files-found: error
           retention-days: 1
