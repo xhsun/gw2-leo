@@ -18,7 +18,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 import me.xhsun.gw2leo.BR
-import me.xhsun.gw2leo.R
 import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.core.config.STORAGE_DISPLAY_KEY
 import me.xhsun.gw2leo.core.config.STORAGE_TYPE_KEY
@@ -34,7 +33,7 @@ class StorageViewModel @Inject constructor(
     private val storageRepository: IStorageRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ObservableViewModel() {
-    private lateinit var adapter: StorageAdapter
+    private var adapter: StorageAdapter? = null
 
     @get:Bindable
     var storageLoading: Boolean = false
@@ -103,11 +102,7 @@ class StorageViewModel @Inject constructor(
                 list.scrollToPosition(0)
                 if (state.append.endOfPaginationReached || state.prepend.endOfPaginationReached) {
                     storageLoading = false
-                    storageErrMsg = if (list.adapter == null || list.adapter!!.itemCount < 1) {
-                        list.context.getString(R.string.err_items_not_found)
-                    } else {
-                        ""
-                    }
+                    checkEmpty()
                 }
             }
             is LoadState.Error -> {
@@ -120,10 +115,22 @@ class StorageViewModel @Inject constructor(
         }
     }
 
+    fun checkEmpty() {
+        if (adapter != null) {
+            storageErrMsg = if (adapter!!.itemCount < 1 && !storageLoading) {
+                "No Item Found"
+            } else {
+                ""
+            }
+        }
+    }
+
     fun onRetry() {
-        storageLoading = true
-        storageErrMsg = ""
-        adapter.refresh()
+        if (adapter != null) {
+            storageLoading = true
+            storageErrMsg = ""
+            adapter!!.refresh()
+        }
     }
 
     private fun shouldUpdate(storageDisplay: StorageDisplay): Boolean {

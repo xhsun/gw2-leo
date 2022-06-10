@@ -90,6 +90,7 @@ class StorageFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             viewModel.items.collectLatest {
                 storageAdapter.submitData(it)
+                viewModel.checkEmpty()
             }
         }
 
