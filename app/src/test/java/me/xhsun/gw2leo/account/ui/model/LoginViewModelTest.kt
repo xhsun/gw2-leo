@@ -6,6 +6,7 @@ import io.github.serpro69.kfaker.Faker
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -31,7 +32,7 @@ internal class LoginViewModelTest {
     @BeforeEach
     fun setUp() {
         refreshServiceMock = mockk()
-        target = LoginViewModel(refreshServiceMock)
+        target = LoginViewModel(refreshServiceMock, Dispatchers.IO)
     }
 
     @Test

@@ -24,7 +24,7 @@ class DataFaker {
         return Account(
             id = id,
             name = name,
-            API = api
+            api = api
         )
     }
 
@@ -36,7 +36,7 @@ class DataFaker {
         return me.xhsun.gw2leo.account.datastore.entity.Account(
             id = id,
             name = name,
-            API = api
+            api = api
         )
     }
 

@@ -21,6 +21,13 @@ android {
     }
 
     testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+                jvmArgs '-noverify'
+                excludes = ['jdk.internal.*']
+            }
+        }
         unitTests {
             includeAndroidResources = true
         }
@@ -45,7 +52,7 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             testCoverageEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

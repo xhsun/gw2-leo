@@ -65,7 +65,7 @@ internal class AccountRefreshServiceTest {
         coEvery { gw2RepositoryMock.getAccount(AUTH_BODY_FORMAT.format(inputAPI)) } returns inputDTO
         coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAPI)) } returns inputCharacters
         coEvery {
-            datastoreMock.accountDAO.insertAll(*varargAll { it.API == inputAPI })
+            datastoreMock.accountDAO.insertAll(*varargAll { it.api == inputAPI })
         } returns Unit
         coEvery { datastoreMock.characterDAO.insertAll(any()) } returns Unit
         every { accountIDRepositoryMock.updateCurrent(inputDTO.id) } returns true
@@ -100,8 +100,8 @@ internal class AccountRefreshServiceTest {
         every { accountServiceMock.accountID() } returns inputAccountDAO[0].id
         coEvery { datastoreMock.accountDAO.getAll() } returns inputAccountDAO
         coEvery { datastoreMock.characterDAO.getAll() } returns inputOld
-        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[0].API)) } returns nc1
-        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[1].API)) } returns nc2
+        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[0].api)) } returns nc1
+        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[1].api)) } returns nc2
         coEvery { datastoreMock.characterDAO.bulkDelete(capture(actualDelete)) } returns Unit
         coEvery { datastoreMock.characterDAO.bulkUpdate(capture(actualUpdate)) } returns Unit
         coEvery { datastoreMock.characterDAO.insertAll(capture(actualInsert)) } returns Unit
@@ -135,7 +135,7 @@ internal class AccountRefreshServiceTest {
         every { accountServiceMock.accountID() } returns inputAccountDAO[0].id
         coEvery { datastoreMock.accountDAO.getAll() } returns inputAccountDAO
         coEvery { datastoreMock.characterDAO.getAll() } returns inputOld
-        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[0].API)) } returns nc
+        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[0].api)) } returns nc
         coEvery { datastoreMock.characterDAO.bulkUpdate(capture(actualUpdate)) } returns Unit
         coEvery { datastoreMock.characterDAO.insertAll(capture(actualInsert)) } returns Unit
         coEvery { characterServiceMock.sync(any()) } returns Unit
@@ -160,7 +160,7 @@ internal class AccountRefreshServiceTest {
         every { accountServiceMock.accountID() } returns inputAccountDAO[0].id
         coEvery { datastoreMock.accountDAO.getAll() } returns inputAccountDAO
         coEvery { datastoreMock.characterDAO.getAll() } returns inputOld
-        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[0].API)) } returns nc
+        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[0].api)) } returns nc
         coEvery { datastoreMock.characterDAO.bulkDelete(capture(actualDelete)) } returns Unit
         coEvery { datastoreMock.characterDAO.insertAll(capture(actualInsert)) } returns Unit
         coEvery { characterServiceMock.sync(any()) } returns Unit
@@ -193,7 +193,7 @@ internal class AccountRefreshServiceTest {
         every { accountServiceMock.accountID() } returns inputAccountDAO[0].id
         coEvery { datastoreMock.accountDAO.getAll() } returns inputAccountDAO
         coEvery { datastoreMock.characterDAO.getAll() } returns inputOld
-        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[0].API)) } returns nc
+        coEvery { gw2RepositoryMock.getAllCharacterName(AUTH_BODY_FORMAT.format(inputAccountDAO[0].api)) } returns nc
         coEvery { datastoreMock.characterDAO.bulkDelete(capture(actualDelete)) } returns Unit
         coEvery { datastoreMock.characterDAO.bulkUpdate(capture(actualUpdate)) } returns Unit
         coEvery { characterServiceMock.sync(any()) } returns Unit

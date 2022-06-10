@@ -10,7 +10,7 @@ internal class AccountTest {
     @Test
     fun `toDAO() should map`() {
         val expected = dataFaker.accountDAOFaker()
-        val target = dataFaker.accountFaker(expected.id, expected.name, expected.API)
+        val target = dataFaker.accountFaker(expected.id, expected.name, expected.api)
         val actual = target.toDAO()
         Assertions.assertThat(actual).isEqualTo(expected)
     }

@@ -10,7 +10,7 @@ data class AccountDTO(
         return Account(
             id = id,
             name = name,
-            API = api
+            api = api
         )
     }
 }

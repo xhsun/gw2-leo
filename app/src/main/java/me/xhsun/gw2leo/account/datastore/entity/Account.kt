@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Account(
     @PrimaryKey val id: String,
     val name: String,
-    val API: String
+    val api: String
 )

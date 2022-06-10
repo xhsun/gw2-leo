@@ -23,10 +23,10 @@ class AccountRefreshService @Inject constructor(
 ) : IAccountRefreshService {
     private val gw2Repository: IGW2Repository = gw2RepositoryFactory.gw2Repository()
 
-    override suspend fun initialize(API: String) {
-        Timber.d("Start initializing account information::${API}")
-        val account = gw2Repository.getAccount(AUTH_BODY_FORMAT.format(API)).toDomain(API)
-        val characters = this.getCharacters(API, account.id)
+    override suspend fun initialize(api: String) {
+        Timber.d("Start initializing account information::${api}")
+        val account = gw2Repository.getAccount(AUTH_BODY_FORMAT.format(api)).toDomain(api)
+        val characters = this.getCharacters(api, account.id)
 
         Timber.d("Account information retrieved, start initializing cache::${account}::$characters")
         datastore.withTransaction {
@@ -48,7 +48,7 @@ class AccountRefreshService @Inject constructor(
         val accounts = datastore.accountDAO.getAll()
         val oldCharacters = datastore.characterDAO.getAll()
         val newCharacters = accounts.flatMap {
-            val c = getCharacters(it.API, it.id)
+            val c = getCharacters(it.api, it.id)
             if (it.id == current) {
                 currentCharacters = c
             }
@@ -83,8 +83,8 @@ class AccountRefreshService @Inject constructor(
     /**
      * Get list of characters from endpoint and add bank key into the list
      */
-    private suspend fun getCharacters(API: String, accountID: String): List<Character> {
-        val characters = gw2Repository.getAllCharacterName(AUTH_BODY_FORMAT.format(API)).map {
+    private suspend fun getCharacters(api: String, accountID: String): List<Character> {
+        val characters = gw2Repository.getAllCharacterName(AUTH_BODY_FORMAT.format(api)).map {
             Character(it, accountID)
         }.toMutableList()
         characters.add(Character(BANK_STORAGE_KEY_FORMAT.format(accountID), accountID))

@@ -50,7 +50,7 @@ data class MaterialStorage(
                 description = description,
                 rarity = rarity,
                 level = level,
-                sellable = if (binding.isEmpty()) sellable else false,
+                sellable = binding.isEmpty() && sellable,
                 buy = buy,
                 buyGold = buyGold,
                 buySilver = buySilver,

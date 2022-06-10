@@ -11,6 +11,7 @@ import io.github.serpro69.kfaker.Faker
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import me.xhsun.gw2leo.core.config.MATERIAL_STORAGE_PREFIX
 import me.xhsun.gw2leo.core.config.STORAGE_TYPE_KEY
@@ -45,7 +46,8 @@ class StorageRefreshWorkerTest {
                     return StorageRefreshWorker(
                         appContext,
                         workerParameters,
-                        storageRefreshServiceServiceMock
+                        storageRefreshServiceServiceMock,
+                        Dispatchers.IO
                     )
                 }
             })
@@ -92,5 +94,16 @@ class StorageRefreshWorkerTest {
         val actual = target.doWork()
 
         Assertions.assertThat(actual).isInstanceOf(ListenableWorker.Result.Success::class.java)
+    }
+
+    @Test
+    fun doWorkNoInput(): Unit = runBlocking {
+        val input = Data.Builder()
+        input.putString(STORAGE_TYPE_KEY, "")
+
+        val target = targetBuilder.setInputData(input.build()).build()
+        val actual = target.doWork()
+
+        Assertions.assertThat(actual).isInstanceOf(ListenableWorker.Result.Failure::class.java)
     }
 }
