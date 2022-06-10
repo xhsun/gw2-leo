@@ -126,7 +126,6 @@ data class Item(
                 "Exotic" -> COLOR_Exotic
                 "Ascended" -> COLOR_Ascended
                 "Legendary" -> COLOR_Legendary
-                "Basic" -> COLOR_Basic
                 else -> COLOR_Basic
             }
         }

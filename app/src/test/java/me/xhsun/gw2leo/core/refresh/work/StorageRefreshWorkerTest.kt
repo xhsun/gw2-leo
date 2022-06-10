@@ -93,4 +93,15 @@ class StorageRefreshWorkerTest {
 
         Assertions.assertThat(actual).isInstanceOf(ListenableWorker.Result.Success::class.java)
     }
+
+    @Test
+    fun doWorkNoInput(): Unit = runBlocking {
+        val input = Data.Builder()
+        input.putString(STORAGE_TYPE_KEY, "")
+
+        val target = targetBuilder.setInputData(input.build()).build()
+        val actual = target.doWork()
+
+        Assertions.assertThat(actual).isInstanceOf(ListenableWorker.Result.Failure::class.java)
+    }
 }

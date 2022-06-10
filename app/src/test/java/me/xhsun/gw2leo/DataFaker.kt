@@ -315,18 +315,26 @@ class DataFaker {
         )
     }
 
-    fun itemDTOFaker(id: Int = faker.random.nextInt(5000)): ItemDTO {
+    fun itemDTOFaker(
+        id: Int = faker.random.nextInt(5000),
+        description: String? = faker.random.randomString(),
+        detailEmpty: Boolean = true
+    ): ItemDTO {
         return ItemDTO(
             id,
             faker.random.randomString(),
             faker.random.randomString(),
             faker.random.randomString(),
             faker.random.randomString(),
-            faker.random.randomString(),
+            description,
             faker.random.randomString(),
             faker.random.nextInt(),
             emptyList(),
-            null
+            if (detailEmpty) null else ItemDetailDTO(
+                faker.random.randomString(),
+                faker.random.randomString(),
+                faker.random.randomString()
+            )
         )
     }
 

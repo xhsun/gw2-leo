@@ -112,4 +112,43 @@ internal class StorageItemTest {
         val actual = StorageItem.isSellable(null)
         assertThat(actual).isFalse
     }
+
+    @Test
+    fun `emptyStorageItem() should return empty`() {
+        val expected = StorageItem(
+            id = 0,
+            accountID = "",
+            detail = Item(
+                id = 0,
+                chatLink = "",
+                name = "",
+                icon = "",
+                description = "",
+                rarity = "",
+                level = 0,
+                sellable = false,
+                buy = 0,
+                buyGold = 0,
+                buySilver = 0,
+                buyCopper = 0,
+                sell = 0,
+                sellGold = 0,
+                sellSilver = 0,
+                sellCopper = 0,
+                type = ""
+            ),
+            category = null,
+            storageType = "",
+            charges = 0,
+            binding = "",
+            bindTo = "",
+            count = 0,
+            price = 0,
+            gold = 0,
+            silver = 0,
+            copper = 0
+        )
+        val actual = StorageItem.emptyStorageItem()
+        assertThat(actual).isEqualTo(expected)
+    }
 }

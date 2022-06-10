@@ -304,6 +304,13 @@ internal class StorageRetrievalServiceTest {
     }
 
     @Test
+    fun `fullItemDetails() should throw error due to empty list`(): Unit = runBlocking {
+        assertThrows<IllegalArgumentException> {
+            target.fullItemDetails(emptySet())
+        }
+    }
+
+    @Test
     fun `fullItemDetails() should return not sellable due to 400`(): Unit =
         runBlocking {
             val inputItemID =
