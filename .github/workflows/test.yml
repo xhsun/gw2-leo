@@ -9,6 +9,11 @@ on:
     #   - 'app/src/test/**'
     #   - 'app/src/androidTest/**'
 
+env:
+  APK_LOCATION: ./app/build/outputs/apk/release/app-release.apk
+  APK_NAME: gw2-leo
+  CHECKSUM_NAME: SHA256SUM
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -30,17 +35,26 @@ jobs:
         env:
           SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
         run: echo "$SIGNING_KEYSTORE" | openssl base64 -d -out key.jks
-      - name: Set Version
-        run: echo "VERSION=$(date '+%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Versioning
+        run: |
+          echo "VERSION=$(date '+%Y-%m-%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "APK_FILE=${APK_NAME}-${VERSION}.apk" >> $GITHUB_ENV
       - name: Build APK
         env:
           VERSION_CODE: ${{ github.run_number }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: ./gradlew assembleRelease --info --stacktrace
+      - name: Prepare Release
+        run: |
+          cp $APK_LOCATION $APK_FILE
+          sha256sum $APK_FILE > $CHECKSUM_NAME
       - uses: actions/upload-artifact@v3
         with:
-          name: apk
-          path: "**/release/app-release.apk"
+          name: test
+          path: |
+            $APK_FILE
+            $CHECKSUM_NAME
+            LICENSE 
           if-no-files-found: error
           retention-days: 1
