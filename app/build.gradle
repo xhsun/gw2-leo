@@ -14,8 +14,8 @@ android {
         applicationId "me.xhsun.gw2leo"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode System.getenv("VERSION_CODE")
+        versionName System.getenv("VERSION")
 
         testInstrumentationRunner = "me.xhsun.gw2leo.registry.CustomTestRunner"
     }

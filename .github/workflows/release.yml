@@ -1,8 +1,12 @@
 name: Release APK
 on:
-  workflow_dispatch:
   push:
     branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - '.idea/**'
+      - 'app/src/test/**'
+      - 'app/src/androidTest/**'
 
 jobs:
   release:
@@ -16,12 +20,14 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Setup Signing
+      - name: Setup Signing Store
         env:
           SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
-        run: echo $SIGNING_KEYSTORE > key.jks
+        run: openssl base64 -d -in $SIGNING_KEYSTORE > key.jks
       - name: Build APK
         env:
+          VERSION: "$(date '+%Y-%m-%d')-${{ env.GIT_PR_SHA:0:10 }}"
+          VERSION_CODE: ${{env.GITHUB_RUN_NUMBER}}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        run: gradle assembleRelease
+        run: gradle assembleRelease --info
