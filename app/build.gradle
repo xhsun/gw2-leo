@@ -86,7 +86,7 @@ dependencies {
 
     // Glide
     implementation "com.github.bumptech.glide:glide:$glidVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glidVersion"
+    kapt "com.github.bumptech.glide:compiler:$glidVersion"
 
     // QR Code
     implementation("io.github.g00fy2.quickie:quickie-bundled:$qrScannerVersion")

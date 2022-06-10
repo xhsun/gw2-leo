@@ -28,8 +28,10 @@ sonarqube {
         property "sonar.tests", ["src/test/java"]
         property "sonar.test.inclusions", "**/*Test*/**"
         property "sonar.sources", "src/main/java"
-        property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.jacoco.reportPath", "build/jacoco/*.exec"
+        property 'sonar.core.codeCoveragePlugin', 'jacoco'
+        property "sonar.verbose", "true"
+        property "sonar.log.level", "TRACE"
+        property 'sonar.coverage.jacoco.xmlReportPaths', "${projectDir}/app/build/reports/jacoco/jacocoTestReportDebug/jacocoTestReportDebug.xml"
         property "sonar.exclusions", "**/datastore/dao/**, **/*Binding*.*, **/*DataBind*.*, **/*Repository*.*, **/*Fragment*.*, **/*Activity*.*, **/BR.class, **/App.class, **/*AppModule.*, **/storage/ui/adapter/**, **/registry/**, **/*hilt*/**, **/generated/**, **/*InstanceHolder*.*, androidx/**/*.*, **/R.class, **/R\$*.class, **/BuildConfig.*, **/Manifest*.*, **/*Test*.*, android/**/*.*"
     }
 }

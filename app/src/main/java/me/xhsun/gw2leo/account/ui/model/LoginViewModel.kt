@@ -103,13 +103,10 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        @JvmStatic
-        @BindingAdapter("errorText")
-        fun displayErrorMessage(view: TextInputLayout, errorMessage: String?) {
-            view.errorIconDrawable = null
-            view.error = errorMessage
-        }
+    @BindingAdapter("errorText")
+    fun displayErrorMessage(view: TextInputLayout, errorMessage: String?) {
+        view.errorIconDrawable = null
+        view.error = errorMessage
     }
 }
 
