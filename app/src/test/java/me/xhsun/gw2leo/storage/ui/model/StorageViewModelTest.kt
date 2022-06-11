@@ -1,5 +1,6 @@
 package me.xhsun.gw2leo.storage.ui.model
 
+import android.os.StrictMode
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.CombinedLoadStates
@@ -20,7 +21,6 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import me.xhsun.gw2leo.DataFaker
-import me.xhsun.gw2leo.R
 import me.xhsun.gw2leo.core.config.STORAGE_DISPLAY_KEY
 import me.xhsun.gw2leo.core.refresh.service.IStorageRefreshService
 import me.xhsun.gw2leo.storage.service.IStorageRepository
@@ -54,6 +54,7 @@ internal class StorageViewModelTest {
 
     @Before
     fun setUp() {
+        StrictMode.enableDefaults()
         hiltRule.inject()
 
         storageRepositoryMock = mockk()
@@ -110,9 +111,9 @@ internal class StorageViewModelTest {
 
         every { inputState.refresh } returns mockk<LoadState.NotLoading>(relaxed = true)
         every { inputState.append.endOfPaginationReached } returns true
-        every { input.adapter } returns adapterMock
         every { adapterMock.itemCount } returns faker.random.nextInt(1, 10)
 
+        target.update(dataFaker.storageDisplayFaker(), adapterMock)
         target.storageLoading = true
         target.storageErrMsg = faker.random.randomString()
 
@@ -122,36 +123,15 @@ internal class StorageViewModelTest {
     }
 
     @Test
-    fun `changeState() should show error when not loading and adapter not attached`() {
+    fun `changeState() should show error when not loading and list empty`() {
         val input = mockk<RecyclerView>(relaxed = true)
         val inputState = mockk<CombinedLoadStates>(relaxed = true)
 
         every { inputState.refresh } returns mockk<LoadState.NotLoading>(relaxed = true)
         every { inputState.prepend.endOfPaginationReached } returns true
-        every { input.adapter } returns null
-        every { input.context.getString(R.string.err_items_not_found) } returns faker.random.randomString()
-
-        target.storageLoading = true
-        target.storageErrMsg = ""
-
-        target.changeState(input, inputState)
-        assertThat(target.storageLoading).isFalse
-        assertThat(target.storageErrMsg).isNotEmpty
-    }
-
-    @Test
-    fun `changeState() should show error when not loading and list is empty`() {
-        val input = mockk<RecyclerView>(relaxed = true)
-        val inputState = mockk<CombinedLoadStates>(relaxed = true)
-
-        every { inputState.refresh } returns mockk<LoadState.NotLoading>(relaxed = true)
-        every { inputState.prepend.endOfPaginationReached } returns true
-        every { input.adapter } returns adapterMock
         every { adapterMock.itemCount } returns 0
-        every { input.context.getString(R.string.err_items_not_found) } returns faker.random.randomString()
 
-        target.storageLoading = true
-        target.storageErrMsg = ""
+        target.update(dataFaker.storageDisplayFaker(), adapterMock)
 
         target.changeState(input, inputState)
         assertThat(target.storageLoading).isFalse
@@ -191,10 +171,67 @@ internal class StorageViewModelTest {
     }
 
     @Test
+    fun `checkEmpty() should do nothing`() {
+        every { adapterMock.itemCount } returns 0
+
+        target.storageLoading = false
+        target.storageErrMsg = ""
+
+        target.checkEmpty()
+        assertThat(target.storageLoading).isFalse
+        assertThat(target.storageErrMsg).isEmpty()
+    }
+
+    @Test
+    fun `checkEmpty() should show error`() {
+        every { adapterMock.itemCount } returns 0
+
+        target.update(dataFaker.storageDisplayFaker(), adapterMock)
+        target.storageLoading = false
+        target.storageErrMsg = ""
+
+        target.checkEmpty()
+        assertThat(target.storageLoading).isFalse
+        assertThat(target.storageErrMsg).isNotEmpty
+    }
+
+    @Test
+    fun `checkEmpty() should reset`() {
+        every { adapterMock.itemCount } returns faker.random.nextInt(1, 10)
+
+        target.update(dataFaker.storageDisplayFaker(), adapterMock)
+        target.storageLoading = false
+        target.storageErrMsg = faker.random.randomString()
+
+        target.checkEmpty()
+        assertThat(target.storageLoading).isFalse
+        assertThat(target.storageErrMsg).isEmpty()
+    }
+
+    @Test
+    fun `checkEmpty() should reset due to still loading`() {
+        every { adapterMock.itemCount } returns faker.random.nextInt(1, 10)
+
+        target.update(dataFaker.storageDisplayFaker(), adapterMock)
+        target.storageErrMsg = faker.random.randomString()
+
+        target.checkEmpty()
+        assertThat(target.storageLoading).isTrue
+        assertThat(target.storageErrMsg).isEmpty()
+    }
+
+    @Test
     fun onRetry() {
         target.update(dataFaker.storageDisplayFaker(), adapterMock)
         target.onRetry()
         assertThat(target.storageLoading).isTrue
         coVerify(exactly = 1) { adapterMock.refresh() }
+    }
+
+    @Test
+    fun `onRetry() no adapter provided`() {
+        target.onRetry()
+        assertThat(target.storageLoading).isFalse
+        coVerify(exactly = 0) { adapterMock.refresh() }
     }
 }
