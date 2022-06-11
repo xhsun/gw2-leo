@@ -18,7 +18,7 @@ Scan through [existing issues](https://github.com/xhsun/gw2-leo/issues) to find 
 
 When you're finished with the changes, create a pull request, also known as a PR.
 
-- Please follow all instructions in the [PR template](https://github.com/atom/atom/blob/main/.github/pull_request_template.md)
+- Please follow all instructions in the [PR template](https://github.com/xhsun/gw2-leo/blob/main/.github/pull_request_template.md)
 - Make sure your code follows the project [code style](#code-style)
 - After you submit your PR, verify that all status checks are passing
 
