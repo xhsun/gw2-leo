@@ -4,10 +4,6 @@ First off, thanks for taking the time to contribute!
 
 The following is a set of guidelines for contributing to this project. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-## Getting started
-
-TODO
-
 ## Issues
 
 ### Create a new issue
@@ -33,3 +29,18 @@ When you're finished with the changes, create a pull request, also known as a PR
     *Note: If you run into any merge issues, checkout this [git tutorial](https://github.com/skills/resolve-merge-conflicts) to help you resolve merge conflicts and other issues.*
 
 ## Code Style
+
+This project follows the [Android coding standards for Kotlin](https://developer.android.com/kotlin/style-guide), with a few additions:
+
+- Make sure to follow [SOLID principals](https://en.wikipedia.org/wiki/SOLID) and [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+- Interface name must be prefixed with `I` (e.g., `IStorageRefreshService`)
+- Class names must have their class type as a suffix. For example, account refresh service's class name should look like `AccountRefreshService`
+- A Repository class should be created as a facade for persistence that uses Collection style semantics to supply access to data/objects
+    - Repositories should only contain simple CRUD methods
+    - See [this documentation](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design) to read more about repository
+- A service class should be created to host your business logics
+    - Services should not know how to access data from persistence
+- `account` package contains all classes falls under the account domain
+- `storage` package contains all classes falls under the storage domain
+- `core` package contains cross domain functionalities and utilities
+- `registry` package contains DI
