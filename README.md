@@ -103,4 +103,4 @@ The application will also trigger a refresh the next time you open the applicati
 
 ## Notice Any Issues?
 
-If you noticed any issues with this application, please don't hesitate to let me know by opening an issue! But before you do that, pease take a look at [contributing guideline](https://github.com/atom/atom/blob/main/CONTRIBUTING.md#Issues).
+If you noticed any issues with this application, please don't hesitate to let me know by opening an issue! But before you do that, pease take a look at [contributing guideline](https://github.com/xhsun/gw2-leo/blob/main/CONTRIBUTING.md#issues).
